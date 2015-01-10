@@ -63,6 +63,10 @@ include_once("header.php");
 			<div class="panel-heading" id="releases"><?php echo lang("about_releases_legend"); ?></div>
 			<div class="panel-body"><?php echo lang("about_releases_content"); ?></div>
 			<ul class="list-group">
+				<li class="list-group-item"><a href="https://github.com/ArmagNet/opentweetbar"
+						target="_blank">Github Repository</a><span class="badge"><a class="color-inherit"
+						href="https://github.com/ArmagNet/opentweetbar" target="_blank"><span
+						class="glyphicon glyphicon-chevron-right"></span></a></span></li>
 				<li class="list-group-item"><a href="releases/OpenTweetBar.1.0.0.tar.gz"
 						target="_blank">OpenTweetBar.1.0.0.tar.gz</a><span class="badge"><a class="color-inherit"
 						href="releases/OpenTweetBar.1.0.0.tar.gz" target="_blank">c4e211ba2715ebd4a5ffe2607c226808 <span

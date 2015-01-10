@@ -36,9 +36,10 @@ $lang["about_help_us_content"] = "OpenTweetBar est édité par l'association, de
 nous aider par des dons pour que nous puissions :
 <ul>
 	<li>Acheter/Renouveller un certificat pour l'HTTPS</li>
+	<li>Payer les noms de domaine</li>
 	<li>Payer nos serveurs</li>
 </ul>
-Soit un budget pour l'année 2015 de 370€.<br />
+Soit un budget pour l'année 2015 de 450€.<br />
 <br />
 Pour cela vous pouvez nous envoyez des sous sous forme de chèque à l'adresse suivante :
 <div class=\"well well-sm\">

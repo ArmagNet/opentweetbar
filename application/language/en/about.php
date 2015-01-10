@@ -34,9 +34,10 @@ $lang["about_help_us_legend"] = "Help us";
 $lang["about_help_us_content"] = "OpenTweetBar is published by the 1901 law association <a href=\"https://www.armagnet.fr/\">ArmagNet</a>. You can help us by donations so that we can:
 <ul>
 	<li>Buy / Renew a certificate for HTTPS</li>
+	<li>Pay for our domain names</li>
 	<li>Pay for our servers</li>
 </ul>
-Ie a budget for 2015 of €370.<br />
+Ie a budget for 2015 of €450.<br />
 <br />
 For this you can send us money by check to the following address :
 <div class=\"well well-sm\">
