@@ -21,10 +21,12 @@ if (isset($lang)) {
     $lang = array();
 }
 
-function changeCharset($lang) {
-	foreach($lang as $key => $value) {
-		$lang[$key] = utf8_decode($value);
+function changeCharset($array) {
+	foreach($array as $key => $value) {
+		$array[$key] = utf8_decode($value);
 	}
+
+	return $array;
 }
 
 function getLanguage() {
