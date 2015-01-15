@@ -21,6 +21,12 @@ if (isset($lang)) {
     $lang = array();
 }
 
+function changeCharset($lang) {
+	foreach($lang as $key => $value) {
+		$lang[$key] = utf8_decode($value);
+	}
+}
+
 function getLanguage() {
 	if (isset($_SESSION["language"]) && $_SESSION["language"]) {
 		return $_SESSION["language"];
@@ -50,6 +56,9 @@ function lang($key, $htmlencode = true, $language = null) {
             }
         }
         $directoryHandler->close();
+
+        // Uncomment if you're not in UTF-8
+		// $lang = changeCharset($lang);
     }
 
     if (array_key_exists($key, $lang)) {
