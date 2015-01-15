@@ -187,7 +187,7 @@ $opentweetbarPath = str_replace("install.php", "", $_SERVER["SCRIPT_FILENAME"]);
 
 							<!-- Text input-->
 							<div class="form-group">
-								<label class="col-md-4 control-label" for="mailPortInput"><?php echo lang("install_mail_portInput");?>Port</label>
+								<label class="col-md-4 control-label" for="mailPortInput"><?php echo lang("install_mail_portInput");?></label>
 								<div class="col-md-6">
 									<input id="mailPortInput" name="mailPortInput" value="<?php echo @$config["smtp"]["port"];?>" type="text"
 										placeholder="<?php echo lang("install_mail_portPlaceholder");?>" class="form-control input-md">
