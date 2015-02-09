@@ -69,6 +69,26 @@ class UserBo {
 		}
 	}
 
+	function autologin($cookies, &$session) {
+		if (!isset($cookies["userId"])) return;
+		if (!isset($cookies["userCode"])) return;
+
+		global $config;
+
+		$userCode = $cookies["userCode"];
+		$userId = $cookies["userId"];
+
+		$verifyUserCode = hash("sha512", $userId . $config["salt"], false);
+
+		if ($verifyUserCode != $userCode) return;
+
+		$user = $this->get($userId);
+
+		if (!$user) return;
+
+		SessionUtils::login($session, $user);
+	}
+
 	function login($login, $password, &$session) {
 		$args = array("use_login" => $login);
 		$query = "SELECT * FROM users WHERE (use_login = :use_login OR use_mail = :use_login) AND use_activated = 1 ";

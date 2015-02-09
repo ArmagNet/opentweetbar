@@ -44,6 +44,7 @@ $lang["login_title"] = "Identifiez vous";
 $lang["login_loginInput"] = "Identifiant";
 $lang["login_passwordInput"] = "Mot de passe";
 $lang["login_button"] = "Me connecter";
+$lang["login_rememberMe"] = "Se souvenir de moi";
 $lang["register_link"] = "ou m'enregistrer";
 $lang["forgotten_link"] = "j'ai oublié mon mot de passe";
 

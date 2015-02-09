@@ -24,6 +24,13 @@ $data = array();
 
 SessionUtils::logout($_SESSION);
 
+if (isset($_COOKIE['userId'])) {
+	unset($_COOKIE['userId']);
+	unset($_COOKIE['userCode']);
+	setcookie('userId', "", -1);
+	setcookie('userCode', "", -1);
+}
+
 $data["ok"] = "ok";
 
 echo json_encode($data);

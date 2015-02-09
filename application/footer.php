@@ -39,3 +39,5 @@ if (is_file("js/perpage/" . $page . ".js")) {
 	echo "<script src=\"js/perpage/" . $page . ".js\"></script>\n";
 }
 ?>
+</body>
+</html>

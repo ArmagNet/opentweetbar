@@ -24,6 +24,9 @@ require_once("engine/bo/UserBo.php");
 
 $login = $_REQUEST["login"];
 $password = $_REQUEST["password"];
+
+$rememberMe = isset($_REQUEST["rememberMe"]) ? $_REQUEST["rememberMe"] : 0;
+
 $remoteIp = (isset($_SERVER["HTTP_X_REAL_IP"]) && $_SERVER["HTTP_X_REAL_IP"]) ? $_SERVER["HTTP_X_REAL_IP"] : $_SERVER["REMOTE_ADDR"];
 
 $userBo = UserBo::newInstance(openConnection());
@@ -40,6 +43,11 @@ $data = array();
 
 if ($userBo->login($login, $password, $_SESSION)) {
 	$data["ok"] = "ok";
+
+	if ($rememberMe) {
+		setcookie("userId", SessionUtils::getUserId($_SESSION), time() + 60 * 60 * 24 * 30);
+		setcookie("userCode", hash("sha512", SessionUtils::getUserId($_SESSION) . $config["salt"], false), time() + 60 * 60 * 24 * 30);
+	}
 }
 else {
 	$data["ko"] = "ko";

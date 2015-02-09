@@ -18,6 +18,15 @@
 */
 
 $(function() {
+	$("#rememberMe").click(function(event) {
+		if ($(this).attr("checked")) {
+			$(this).removeAttr("checked");
+		}
+		else {
+			$(this).attr("checked", "checked");
+		}
+	});
+
 	$("#loginLink, #connectButton").click(function(event) {
 		event.stopPropagation();
 		event.preventDefault();
@@ -35,7 +44,8 @@ $(function() {
 
 		var myform = {
 			login : $("#loginInput").val(),
-			password : $("#passwordInput").val()
+			password : $("#passwordInput").val(),
+			rememberMe : $("#rememberMe").attr("checked") ? 1 : 0
 		};
 
 		$.post("do_login.php", myform, function(data) {

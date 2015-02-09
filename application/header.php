@@ -23,6 +23,7 @@ include_once("engine/utils/bootstrap_forms.php");
 require_once("engine/utils/SessionUtils.php");
 require_once("engine/bo/AccountBo.php");
 require_once("engine/bo/TweetBo.php");
+require_once("engine/bo/UserBo.php");
 
 $page = $_SERVER["SCRIPT_NAME"];
 if (strrpos($page, "/") !== false) {
@@ -30,11 +31,18 @@ if (strrpos($page, "/") !== false) {
 }
 $page = str_replace(".php", "", $page);
 
-$accountBo = AccountBo::newInstance(openConnection());
-$tweetBo = TweetBo::newInstance(openConnection());
+$connection = openConnection();
+
+$accountBo = AccountBo::newInstance($connection);
+$tweetBo = TweetBo::newInstance($connection);
 $user = SessionUtils::getUser($_SESSION);
 $userId = SessionUtils::getUserId($_SESSION);
 $language = SessionUtils::getLanguage($_SESSION);
+
+if (!SessionUtils::getUserId($_SESSION)) {
+	$userBo = UserBo::newInstance($connection);
+	$userBo->autologin($_COOKIE, $_SESSION);
+}
 
 $accounts = $accountBo->getAccessibleAccounts($userId);
 $anonymousAccounts = $accountBo->getAnonymouslyAccessibleAccounts($accounts);
@@ -136,6 +144,10 @@ if (count($accounts)) {
 			<label for="inputLogin" class="sr-only"><?php echo lang("login_loginInput"); ?></label> <input type="text" id="loginInput" class="form-control" placeholder="<?php echo lang("login_loginInput"); ?>" required
 				autofocus> <label for="inputPassword" class="sr-only"><?php echo lang("login_passwordInput"); ?></label> <input type="password" id="passwordInput" class="form-control"
 				placeholder="<?php echo lang("login_passwordInput"); ?>" required>
+
+			<input type="checkbox" name="rememberMe" id="rememberMe" value="1">
+			<label for="rememberMe"><?php echo lang("login_rememberMe"); ?></label>
+
 			<br />
 			<button id="loginButton" class="btn btn-lg btn-primary btn-block" type="submit">
 				<?php echo lang("login_button"); ?> <span class="glyphicon glyphicon-log-in"></span>
