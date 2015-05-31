@@ -180,8 +180,7 @@ else {
 										placeholder="" class="form-control input-md">
 									<span id="mediaStatus"
 										class="glyphicon glyphicon-ok form-control-feedback otbHidden" aria-hidden="true"></span>
-									<p id="madiaHelp" class="help-block otbHidden"></p>
-									<img id="mediaImage" src="" class="otbHidden" style="max-width: 100%;" />
+									<p id="mediaHelp" class="help-block otbHidden"></p>
 								</div>
 							</div>
 

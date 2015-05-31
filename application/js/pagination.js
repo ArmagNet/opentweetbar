@@ -1,5 +1,5 @@
- /*
-    Copyright 2014 Cédric Levieux, Jérémy Collot, ArmagNet
+/*
+    Copyright 2014-2015 Cédric Levieux, Jérémy Collot, ArmagNet
 
     This file is part of OpenTweetBar.
 

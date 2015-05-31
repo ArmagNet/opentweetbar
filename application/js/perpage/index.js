@@ -1,3 +1,22 @@
+/*
+    Copyright 2014-2015 Cédric Levieux, Jérémy Collot, ArmagNet
+
+    This file is part of OpenTweetBar.
+
+    OpenTweetBar is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    OpenTweetBar is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with OpenTweetBar.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 function changeStatus(data, field) {
 	if (data.ok && !data.exist) {
 		$("#" + field).addClass("glyphicon-ok");
@@ -88,7 +107,6 @@ function computeTweetLenght(text) {
 function progressHandlingFunction(e) {
     if (e.lengthComputable){
         $('progress').attr({value:e.loaded, max:e.total});
-        console.log(e.loaded / e.total);
     }
 }
 
@@ -110,10 +128,18 @@ $(function() {
         		data = JSON.parse(data);
 
         		if (data.ok) {
-        			$("#mediaImage").attr("src", "do_loadMedia.php?med_id=" + data.media.med_id + "&med_hash=" + data.media.med_hash);
-        			$("#mediaInput").hide();
-        			$("#mediaImage").show();
+        			var imageElement = "<img id=\"medId_" + data.media.med_id + "\" class=\"mediaImage\" src=\"";
+        			imageElement += "do_loadMedia.php?med_id=" + data.media.med_id + "&med_hash=" + data.media.med_hash;
+        			imageElement += "\" style=\"max-width: 100px; max-height: 100px; margin-right: 5px; margin-top: 5px; \"/>";
+
+        			$("#mediaInput").parent().append(imageElement);
+        			$("#mediaInput").val("");
+
         			$("#mediaIds").val($("#mediaIds").val() + "," + data.media.med_id);
+
+        			if ($(".mediaImage").length >= 4) {
+            			$("#mediaInput").hide();
+        			}
         		}
 	        },
 	        data: formData,
@@ -122,7 +148,6 @@ $(function() {
 	        processData: false
 	    });
 	});
-
 
 	$("#cgvInput").click(function(event) {
 		if ($("#cgvInput").attr("checked")) {
@@ -195,6 +220,11 @@ $(function() {
 				$("#validationDurationButtons button[value=0]").click();
 				$("#tweet").keyup();
 				$("#validationMenuItem .badge").text($("#validationMenuItem .badge").text() - (-1)).show();
+
+				// We clean medias
+    			$(".mediaImage").remove();
+        		$("#mediaIds").val("-1");
+        		$("#mediaInput").show();
 			}
 			else {
 				$("#koTweetAlert").show().delay(2000).fadeOut(1000);
