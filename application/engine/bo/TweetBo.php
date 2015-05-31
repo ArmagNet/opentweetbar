@@ -100,7 +100,7 @@ class TweetBo {
 		$parameters = array('status' => $tweet["twe_content"]);
 
 		if (count($twitterMediaIds)) {
-			$parameters["media_ids"] = $twitterMediaIds;
+			$parameters["media_ids"] = implode(",", $twitterMediaIds);
 		}
 
 		$status = $connection->post('statuses/update', $parameters);
