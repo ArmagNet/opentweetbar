@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2014 Cédric Levieux, Jérémy Collot, ArmagNet
+	Copyright 2014-2015 Cédric Levieux, Jérémy Collot, ArmagNet
 
 	This file is part of OpenTweetBar.
 
@@ -66,6 +66,7 @@ par d'autres utilisateurs avant d'être publiés.";
 $lang["index_accounts"] = "Comptes";
 $lang["index_tweetPlaceholder"] = "tweet...";
 $lang["index_tweetButton"] = "Tweeter";
+$lang["index_options_mediaInput"] = "Media";
 $lang["index_options_cronDateInput"] = "Départ différé";
 $lang["index_options_cronDatePlaceholder"] = "aaaa-mm-jj hh:mm";
 $lang["index_options_cronDateGuide"] = "Laisser vide si départ juste après validation";

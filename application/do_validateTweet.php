@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2014 Cédric Levieux, Jérémy Collot, ArmagNet
+	Copyright 2014-2015 Cédric Levieux, Jérémy Collot, ArmagNet
 
 	This file is part of OpenTweetBar.
 
@@ -19,13 +19,16 @@
 include_once("config/database.php");
 require_once("engine/utils/SessionUtils.php");
 require_once("engine/bo/AccountBo.php");
+require_once("engine/bo/MediaBo.php");
 require_once("engine/bo/TweetBo.php");
 require_once("engine/bo/UserBo.php");
 include_once("language/language.php");
 
-$accountBo = AccountBo::newInstance(openConnection());
-$tweetBo = TweetBo::newInstance(openConnection());
-$userBo = UserBo::newInstance(openConnection());
+$connection = openConnection();
+
+$accountBo = AccountBo::newInstance($connection);
+$tweetBo = TweetBo::newInstance($connection);
+$userBo = UserBo::newInstance($connection);
 
 $userId = $_REQUEST["userId"];
 

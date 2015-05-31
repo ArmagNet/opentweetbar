@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2014 Cédric Levieux, Jérémy Collot, ArmagNet
+	Copyright 2014-2015 Cédric Levieux, Jérémy Collot, ArmagNet
 
 	This file is part of OpenTweetBar.
 
@@ -17,6 +17,9 @@
     along with OpenTweetBar.  If not, see <http://www.gnu.org/licenses/>.
 */
 include_once("header.php");
+require_once("engine/bo/MediaBo.php");
+
+$mediaBo = MediaBo::newInstance($connection);
 
 $tweets = $tweetBo->getTweets($accounts, array('validated','expired','croned','rejected'));
 $tweets = TweetBo::indexValidations($tweets, $user);
@@ -53,7 +56,11 @@ $tweetsByAccount = TweetBo::accounted($tweets);
 				</tr>
 			</thead>
 			<tbody>
-				<?php 	foreach($tweets as $tweet) {?>
+				<?php 	foreach($tweets as $tweet) {
+
+					$medias = $mediaBo->getMedias(array("tme_tweet_id" => $tweet["twe_id"]));
+
+				?>
 				<tr id="row_<?php echo $tweet["twe_id"]; ?>" <?php
 
 							switch($tweet["twe_status"]) {
@@ -69,6 +76,18 @@ $tweetsByAccount = TweetBo::accounted($tweets);
 							}
 					?>>
 					<td class="vertical-middle"><?php echo $tweet["twe_content"]; ?>
+
+						<?php 	if (count($medias)) {?>
+							<br />
+							<?php foreach($medias as $media) {
+								$hash = UserBo::computePassword($media["med_id"]);
+								$mediaUrl = "do_loadMedia.php?med_id=" . $media["med_id"];
+								$mediaUrl .= "&med_hash=" . $hash;
+							 ?>
+								<img src="<?php echo $mediaUrl; ?>" style="max-width: 32px; max-height: 32px; " />
+							<?php }?>
+						<?php 	}?>
+
 						<?php 	if ($tweet["twe_cron_datetime"] && $tweet["twe_status"] == "croned") {?>
 							<br/><span class="text-muted"><span class="glyphicon glyphicon-calendar"></span>
 						<?php		$date = new DateTime($tweet["twe_cron_datetime"]);

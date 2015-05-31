@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2014 Cédric Levieux, Jérémy Collot, ArmagNet
+	Copyright 2014-2015 Cédric Levieux, Jérémy Collot, ArmagNet
 
 	This file is part of OpenTweetBar.
 
@@ -168,8 +168,22 @@ else {
 			<div id="options" class="panel-collapse collapse">
 				<div class="panel-body">
 
-					<form class="form-horizontal">
+					<form class="form-horizontal" id="optionForm">
+						<input type="hidden" id="account2" name="account" value="<?php echo $account; ?>" />
 						<fieldset>
+
+							<div class="form-group has-feedback">
+								<label class="col-md-4 control-label" for="nicknameInput"><?php echo lang("index_options_mediaInput"); ?></label>
+								<div class="col-md-6 padding-left-0">
+									<input id="mediaIds" name="mediaIds" value="-1" type="hidden" />
+									<input id="mediaInput" name="mediaInput" value="" type="file"
+										placeholder="" class="form-control input-md">
+									<span id="mediaStatus"
+										class="glyphicon glyphicon-ok form-control-feedback otbHidden" aria-hidden="true"></span>
+									<p id="madiaHelp" class="help-block otbHidden"></p>
+									<img id="mediaImage" src="" class="otbHidden" style="max-width: 100%;" />
+								</div>
+							</div>
 
 							<!-- Button (Double) -->
 							<div class="form-group">

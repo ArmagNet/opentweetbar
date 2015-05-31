@@ -16,27 +16,28 @@
     You should have received a copy of the GNU General Public License
     along with OpenTweetBar.  If not, see <http://www.gnu.org/licenses/>.
 */
-/*
- * Don't forget to include a cron line in the crontab like this one :
-
-* * * * * cd /my/installed/opentweetbar/path/ && php do_cron.php
-
- */
 include_once("config/database.php");
+require_once("engine/utils/SessionUtils.php");
 require_once("engine/bo/MediaBo.php");
-require_once("engine/bo/TweetBo.php");
+require_once("engine/bo/UserBo.php");
+include_once("language/language.php");
 
 $connection = openConnection();
 
-$tweetBo = TweetBo::newInstance($connection);
-$now = date("Y-m-d H:i:s");
+$mediaBo = MediaBo::newInstance($connection);
 
-$tweets = $tweetBo->getCronedTweets($now);
+$media = array();
+$media["med_id"] = $_REQUEST["med_id"];
+$media["med_hash"] = UserBo::computePassword($media["med_id"]);
 
-foreach($tweets as $tweet) {
-	$tweetBo->sendTweet($tweet);
-	$tweetBo->updateStatus($tweet, "validated");
+if ($media["med_hash"] != $_REQUEST["med_hash"]) {
+	exit();
 }
 
-exit("done\n");
+$media = $mediaBo->getMedia($_REQUEST["med_id"]);
+
+header('Content-Type: ' . $media["med_mimetype"]);
+
+echo $media["med_content"];
+
 ?>

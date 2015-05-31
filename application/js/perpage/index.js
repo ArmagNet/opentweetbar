@@ -85,7 +85,45 @@ function computeTweetLenght(text) {
 	return 140 - text.length;
 }
 
+function progressHandlingFunction(e) {
+    if (e.lengthComputable){
+        $('progress').attr({value:e.loaded, max:e.total});
+        console.log(e.loaded / e.total);
+    }
+}
+
 $(function() {
+	$("#mediaInput").change(function() {
+	    var formData = new FormData($('#optionForm')[0]);
+	    $.ajax({
+	        url: 'do_uploadMedia.php',  //Server script to process data
+	        type: 'POST',
+	        xhr: function() {  // Custom XMLHttpRequest
+	            var myXhr = $.ajaxSettings.xhr();
+	            if(myXhr.upload){ // Check if upload property exists
+	                myXhr.upload.addEventListener('progress', progressHandlingFunction, false); // For handling the progress of the upload
+	            }
+	            return myXhr;
+	        },
+	        //Ajax events
+	        success: function(data) {
+        		data = JSON.parse(data);
+
+        		if (data.ok) {
+        			$("#mediaImage").attr("src", "do_loadMedia.php?med_id=" + data.media.med_id + "&med_hash=" + data.media.med_hash);
+        			$("#mediaInput").hide();
+        			$("#mediaImage").show();
+        			$("#mediaIds").val($("#mediaIds").val() + "," + data.media.med_id);
+        		}
+	        },
+	        data: formData,
+	        cache: false,
+	        contentType: false,
+	        processData: false
+	    });
+	});
+
+
 	$("#cgvInput").click(function(event) {
 		if ($("#cgvInput").attr("checked")) {
 			$("#cgvInput").removeAttr("checked");
@@ -132,6 +170,7 @@ $(function() {
 		var myform = 	{
 							account: $("#account").val(),
 							tweet: $("#tweet").val(),
+							mediaIds: $("#mediaIds").val(),
 							mail: $("#mail").val(),
 							cgv: $("#cgvInput").attr("checked") ? "badboy" : "okgirls",
 							validationDuration: $("#validationDurationInput").val(),
@@ -172,6 +211,7 @@ $(function() {
 		var accountText = $(this).text().trim();
 
 		$("#account").val(accountText);
+		$("#account2").val(accountText);
 		$("#accountButton #text").text(accountText);
 	});
 

@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2014 Cédric Levieux, Jérémy Collot, ArmagNet
+	Copyright 2014-2015 Cédric Levieux, Jérémy Collot, ArmagNet
 
 	This file is part of OpenTweetBar.
 
@@ -66,6 +66,7 @@ class TweetBo {
 
 	function sendTweet($tweet) {
 		include_once "engine/twitter/twitteroauth.php";
+		include_once "engine/bo/MediaBo.php";
 
 		$account = $this->getAccount($tweet["twe_destination_id"]);
 
@@ -78,7 +79,30 @@ class TweetBo {
 
 		$connection = new TwitterOAuth($key, $secret, $token, $token_secret);
 
+		$mediaBo = MediaBo::newInstance($this->pdo);
+
+		$twitterMediaIds = array();
+		$medias = $mediaBo->getMedias(array("tme_tweet_id" => $tweet["twe_id"]));
+
+		// We change the url for media sending
+		$connection->host = "https://upload.twitter.com/1.1/";
+
+		foreach($medias as $media) {
+			$parameters = array('media_data' => base64_encode($media["med_content"]));
+			$status = $connection->post('media/upload', $parameters);
+
+			$twitterMediaIds[] = $status->media_id;
+		}
+
+		// We change back the url for tweet sending
+		$connection->host = "https://api.twitter.com/1.1/";
+
 		$parameters = array('status' => $tweet["twe_content"]);
+
+		if (count($twitterMediaIds)) {
+			$parameters["media_ids"] = $twitterMediaIds;
+		}
+
 		$status = $connection->post('statuses/update', $parameters);
 
 //		print_r($status);
@@ -105,6 +129,14 @@ class TweetBo {
 	}
 
 	function addTweet(&$tweet) {
+
+		$mediaIds = array();
+
+		if (isset($tweet["twe_media_ids"])) {
+			$mediaIds = $tweet["twe_media_ids"];
+			unset($tweet["twe_media_ids"]);
+		}
+
 		$query = "	INSERT INTO tweets
 						(twe_author, twe_anonymous_nickname, twe_anonymous_mail, twe_destination,
 							twe_content, twe_validation_score, twe_validation_duration,
@@ -118,6 +150,20 @@ class TweetBo {
 		try {
 			$statement->execute($tweet);
 			$tweet["twe_id"] = $this->pdo->lastInsertId();
+
+			$mediaQuery = "	INSERT tweet_medias
+								(tme_tweet_id, tme_media_id)
+							VALUES
+								(:tme_tweet_id, :tme_media_id)";
+
+			$mediaStatement = $this->pdo->prepare($mediaQuery);
+			foreach($mediaIds as $mediaId) {
+				$tweetMedia = array("tme_tweet_id" => $tweet["twe_id"],
+									"tme_media_id" => $mediaId);
+				$mediaStatement->execute($tweetMedia);
+			}
+
+			$tweet["twe_media_ids"] = $mediaIds;
 
 			return true;
 		}

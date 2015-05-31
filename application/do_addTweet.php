@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2014 Cédric Levieux, Jérémy Collot, ArmagNet
+	Copyright 2014-2015 Cédric Levieux, Jérémy Collot, ArmagNet
 
 	This file is part of OpenTweetBar.
 
@@ -27,9 +27,11 @@ include_once("language/language.php");
 
 $data = array();
 
-$accountBo = AccountBo::newInstance(openConnection());
-$tweetBo = TweetBo::newInstance(openConnection());
-$logActionBo = LogActionBo::newInstance(openConnection());
+$connection = openConnection();
+
+$accountBo = AccountBo::newInstance($connection);
+$tweetBo = TweetBo::newInstance($connection);
+$logActionBo = LogActionBo::newInstance($connection);
 
 $remoteIp = (isset($_SERVER["HTTP_X_REAL_IP"]) && $_SERVER["HTTP_X_REAL_IP"]) ? $_SERVER["HTTP_X_REAL_IP"] : $_SERVER["REMOTE_ADDR"];
 
@@ -90,6 +92,15 @@ $tweet["twe_cron_datetime"] = $_REQUEST["cronDate"];
 $tweet["twe_creation_datetime"] = date("Y-m-d H:i:s");
 $tweet["twe_content"] = $_REQUEST["tweet"];
 
+$mediaIds = explode(",", $_REQUEST["mediaIds"]);
+
+$tweet["twe_media_ids"] = array();
+foreach($mediaIds as $mediaId) {
+	if ($mediaId != -1) {
+		$tweet["twe_media_ids"][] = $mediaId;
+	}
+}
+
 //print_r($tweet);
 
 if ($tweetBo->addTweet($tweet)) {
@@ -114,7 +125,13 @@ if ($tweetBo->addTweet($tweet)) {
 		$validation["tva_score"] = $validatorGroup["vgr_score"];
 		$validation["tva_ip"] = $remoteIp;
 		$validation["tva_referer"] = $_SERVER["HTTP_REFERER"] ? $_SERVER["HTTP_REFERER"] : '';
-		$validation["tva_datetime"] = $tweet["twe_creation_date"];
+
+		if (isset($tweet["twe_creation_date"])) {
+			$validation["tva_datetime"] = $tweet["twe_creation_date"];
+		}
+		else {
+			$validation["tva_datetime"] = null;
+		}
 
 		$tweetBo->addValidation($validation);
 	}

@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2014 Cédric Levieux, Jérémy Collot, ArmagNet
+	Copyright 2014-2015 Cédric Levieux, Jérémy Collot, ArmagNet
 
 	This file is part of OpenTweetBar.
 
@@ -43,27 +43,55 @@ function getLanguage() {
     return "fr";
 }
 
+function isLanguageKey($key, $language = null) {
+	global $lang;
+
+	if (!$language) {
+		$language = getLanguage();
+	}
+
+	if (!count($lang)) {
+		$directoryHandler = dir("language/" . $language);
+		while(($fileEntry = $directoryHandler->read()) !== false) {
+			if($fileEntry != '.' && $fileEntry != '..' && strpos($fileEntry, ".php")) {
+				include_once("language/" . $language . "/" . $fileEntry);
+			}
+		}
+		$directoryHandler->close();
+
+		// Uncomment if you're not in UTF-8
+		// $lang = changeCharset($lang);
+	}
+
+	if (array_key_exists($key, $lang)) {
+		return true;
+	}
+
+	return false;
+}
+
 function lang($key, $htmlencode = true, $language = null) {
     global $lang;
 
-    if (!$language) {
-	    $language = getLanguage();
-    }
+//     if (!$language) {
+// 	    $language = getLanguage();
+//     }
 
-    if (!count($lang)) {
-        $directoryHandler = dir("language/" . $language);
-        while(($fileEntry = $directoryHandler->read()) !== false) {
-            if($fileEntry != '.' && $fileEntry != '..' && strpos($fileEntry, ".php")) {
-                include_once("language/" . $language . "/" . $fileEntry);
-            }
-        }
-        $directoryHandler->close();
+//     if (!count($lang)) {
+//         $directoryHandler = dir("language/" . $language);
+//         while(($fileEntry = $directoryHandler->read()) !== false) {
+//             if($fileEntry != '.' && $fileEntry != '..' && strpos($fileEntry, ".php")) {
+//                 include_once("language/" . $language . "/" . $fileEntry);
+//             }
+//         }
+//         $directoryHandler->close();
 
-        // Uncomment if you're not in UTF-8
-		// $lang = changeCharset($lang);
-    }
+//         // Uncomment if you're not in UTF-8
+// 		// $lang = changeCharset($lang);
+//     }
 
-    if (array_key_exists($key, $lang)) {
+//    if (array_key_exists($key, $lang)) {
+    if (isLanguageKey($key, $language)) {
     	$text = $lang[$key];
 
     	if ($htmlencode) {

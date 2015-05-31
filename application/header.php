@@ -74,7 +74,7 @@ if (count($accounts)) {
 <link href="css/opentweetbar.css" rel="stylesheet" />
 <link href="css/flags.css" rel="stylesheet" />
 <link href="css/social.css" rel="stylesheet" />
-<link href="css/fileinput.min.css" rel="stylesheet" />
+<!--link href="css/fileinput.min.css" rel="stylesheet" /-->
 
 <link rel="shortcut icon" type="image/png" href="favicon.png" />
 </head>
