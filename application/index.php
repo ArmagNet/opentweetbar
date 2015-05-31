@@ -175,6 +175,13 @@ else {
 							<div class="form-group has-feedback">
 								<label class="col-md-4 control-label" for="nicknameInput"><?php echo lang("index_options_mediaInput"); ?></label>
 								<div class="col-md-6 padding-left-0">
+
+									<div class="progress otbHidden" id="mediaProgress">
+										<div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+									    	<span class="sr-only"></span>
+									  	</div>
+									</div>
+
 									<input id="mediaIds" name="mediaIds" value="-1" type="hidden" />
 									<input id="mediaInput" name="mediaInput" value="" type="file"
 										placeholder="" class="form-control input-md">

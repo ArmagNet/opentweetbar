@@ -104,22 +104,31 @@ function computeTweetLenght(text) {
 	return 140 - text.length;
 }
 
-function progressHandlingFunction(e) {
+function mediaProgressHandlingFunction(e) {
     if (e.lengthComputable){
-        $('progress').attr({value:e.loaded, max:e.total});
+        var percent = Math.floor(e.loaded / e.total * 100);
+
+        $("#mediaProgress .progress-bar").attr("aria-valuenow", percent);
+        $("#mediaProgress .progress-bar").css({width: percent + "%"});
     }
 }
 
 $(function() {
 	$("#mediaInput").change(function() {
 	    var formData = new FormData($('#optionForm')[0]);
+
+        $("#mediaProgress .progress-bar").attr("aria-valuenow", 0);
+        $("#mediaProgress .progress-bar").css({width: "0"});
+		$("#mediaProgress").show();
+		$("#mediaInput").hide();
+
 	    $.ajax({
 	        url: 'do_uploadMedia.php',  //Server script to process data
 	        type: 'POST',
 	        xhr: function() {  // Custom XMLHttpRequest
 	            var myXhr = $.ajaxSettings.xhr();
 	            if(myXhr.upload){ // Check if upload property exists
-	                myXhr.upload.addEventListener('progress', progressHandlingFunction, false); // For handling the progress of the upload
+	                myXhr.upload.addEventListener('progress', mediaProgressHandlingFunction, false); // For handling the progress of the upload
 	            }
 	            return myXhr;
 	        },
@@ -134,6 +143,8 @@ $(function() {
 
         			$("#mediaInput").parent().append(imageElement);
         			$("#mediaInput").val("");
+        			$("#mediaProgress").hide();
+        			$("#mediaInput").show();
 
         			$("#mediaIds").val($("#mediaIds").val() + "," + data.media.med_id);
 
