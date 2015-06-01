@@ -79,10 +79,9 @@ class TweetBo {
 
 		$connection = new TwitterOAuth($key, $secret, $token, $token_secret);
 
-		$mediaBo = MediaBo::newInstance($this->pdo);
-
 		$twitterMediaIds = array();
 		if (isset($tweet["twe_id"])) {
+			$mediaBo = MediaBo::newInstance($this->pdo);
 			$medias = $mediaBo->getMedias(array("tme_tweet_id" => $tweet["twe_id"]));
 		}
 
