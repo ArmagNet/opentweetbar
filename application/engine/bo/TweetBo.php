@@ -82,7 +82,9 @@ class TweetBo {
 		$mediaBo = MediaBo::newInstance($this->pdo);
 
 		$twitterMediaIds = array();
-		$medias = $mediaBo->getMedias(array("tme_tweet_id" => $tweet["twe_id"]));
+		if (isset($tweet["twe_id"])) {
+			$medias = $mediaBo->getMedias(array("tme_tweet_id" => $tweet["twe_id"]));
+		}
 
 		// We change the url for media sending
 		$connection->host = "https://upload.twitter.com/1.1/";
