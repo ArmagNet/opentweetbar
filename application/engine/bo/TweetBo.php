@@ -108,7 +108,7 @@ class TweetBo {
 
 		$status = $connection->post('statuses/update', $parameters);
 
-		print_r($status);
+//		print_r($status);
 	}
 
 	function updateStatus($tweet, $status) {
