@@ -16,30 +16,22 @@
     You should have received a copy of the GNU General Public License
     along with OpenTweetBar.  If not, see <http://www.gnu.org/licenses/>.
 */
-/*
- * Don't forget to include a cron line in the crontab like this one :
 
-* * * * * cd /my/installed/opentweetbar/path/ && php do_cron.php
+class NotifierFactory {
 
- */
-include_once("config/database.php");
-require_once("engine/bo/MediaBo.php");
-require_once("engine/bo/TweetBo.php");
+	static function getInstance($typeNotification) {
 
-$connection = openConnection();
+		switch($typeNotification) {
+			case "mail":
+				return new MailNotifier();
+			case "simpledm":
+				return new SimpleDmNotifier();
+			case "dm":
+				return new DmNotifier();
+		}
 
-$tweetBo = TweetBo::newInstance($connection);
-$now = date("Y-m-d H:i:s");
+		return null;
+	}
 
-$tweets = $tweetBo->getCronedTweets($now);
-
-foreach($tweets as $tweet) {
-	echo "Tweet : " . $tweet["twe_id"] . "\n";
-
-	$tweetBo->sendTweet($tweet);
-	$tweetBo->updateStatus($tweet, "validated");
-	echo "=> sent \n";
 }
-
-exit("done\n");
 ?>

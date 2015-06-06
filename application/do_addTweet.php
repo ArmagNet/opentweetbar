@@ -25,6 +25,11 @@ require_once("engine/bo/LogActionBo.php");
 require_once("engine/bo/TweetBo.php");
 include_once("language/language.php");
 
+require_once("engine/notification/NotifierFactory.php");
+require_once("engine/notification/MailNotifier.php");
+require_once("engine/notification/SimpleDmNotifier.php");
+require_once("engine/notification/DmNotifier.php");
+
 $data = array();
 
 $connection = openConnection();
@@ -136,64 +141,28 @@ if ($tweetBo->addTweet($tweet)) {
 		$tweetBo->addValidation($validation);
 	}
 
-	$validators = $accountBo->getAccountValidators($accountId);
+	if (isset($config["cron_enabled"]) && $config["cron_enabled"]) {
+		error_log("php do_cron_notifier.php $accountId $userId " . $tweet["twe_id"] . " > /dev/null 2>/dev/null &");
+		exec("php do_cron_notifier.php $accountId $userId " . $tweet["twe_id"] . " > /dev/null 2>/dev/null &");
+	}
+	else {
+		$validators = $accountBo->getAccountValidators($accountId);
 
-//	print_r($validators);
+	//	print_r($validators);
 
-	foreach($validators as $validator) {
-		if ($validator["use_id"] != $userId) {
-//			$data["validators"][] = $validator["use_login"];
+		foreach($validators as $validator) {
+			if ($validator["use_id"] != $userId) {
+				$hash = TweetBo::hash($tweet, $validator["use_id"]);
 
-			$hash = TweetBo::hash($tweet, $validator["use_id"]);
+				$validationLink = $config["base_url"] . "dvt.php?";
+				$validationLink .= "u=" . $validator["use_id"];
+				$validationLink .= "&h=$hash";
+				$validationLink .= "&t=" . $tweet["twe_id"];
 
-			$validationLink = $config["base_url"] . "dvt.php?";
-			$validationLink .= "u=" . $validator["use_id"];
-			$validationLink .= "&h=$hash";
-			$validationLink .= "&t=" . $tweet["twe_id"];
-
-			if ($validator["use_notification"] == "mail") {
-				$mail = getMailInstance();
-
-				$mail->setFrom($config["smtp"]["from.address"], $config["smtp"]["from.name"]);
-				$mail->addReplyTo($config["smtp"]["from.address"], $config["smtp"]["from.name"]);
-				$mail->addAddress($validator["use_mail"]);
-
-				$mailMessage = lang("add_tweet_mail_content", false, $validator["use_language"]);
-				$mailMessage = str_replace("{validationLink}", $validationLink, $mailMessage);
-				$mailMessage = str_replace("{login}", $validator["use_login"], $mailMessage);
-				$mailMessage = str_replace("{tweet}", $tweet["twe_content"], $mailMessage);
-				$mailMessage = str_replace("{account}", $account["sna_name"], $mailMessage);
-				$mailSubject = lang("add_tweet_mail_subject", false, $validator["use_language"]);
-
-				$mail->Subject = mb_encode_mimeheader(utf8_decode($mailSubject), "ISO-8859-1");
-				$mail->msgHTML(str_replace("\n", "<br>\n", utf8_decode($mailMessage)));
-				$mail->AltBody = utf8_decode($mailMessage);
-
-				$mail->send();
-			}
-			else if ($validator["use_notification"] == "simpledm") {
-				$noticeTweet = array();
-				$noticeTweet["twe_destination"] = $account["sna_name"];
-				$noticeTweet["twe_destination_id"] = $account["sna_id"];
-
-				$noticeTweet["twe_content"] = "D ". $validator["use_login"] . " un message en attente de validation vous attend sur " . $config["base_url"];
-				$tweetBo->sendTweet($noticeTweet);
-			}
-			else if ($validator["use_notification"] == "dm") {
-				$noticeTweet = array();
-				$noticeTweet["twe_destination"] = $account["sna_name"];
-				$noticeTweet["twe_destination_id"] = $account["sna_id"];
-
-				$noticeTweet["twe_content"] = "D ". $validator["use_login"] . " un message en attente de validation vous attend : ";
-				$tweetBo->sendTweet($noticeTweet);
-				time_nanosleep(0, 200000000);
-
-				$noticeTweet["twe_content"] = "D ". $validator["use_login"] . " " . $tweet["twe_content"];
-				$tweetBo->sendTweet($noticeTweet);
-				time_nanosleep(0, 200000000);
-
-				$noticeTweet["twe_content"] = "D ". $validator["use_login"] . " Pour valider : " . $validationLink;
-				$tweetBo->sendTweet($noticeTweet);
+				$notifier = NotifierFactory::getInstance($validator["use_notification"]);
+				if ($notifier) {
+					$notifier->notifyValidationLink($account, $validator, $tweet, $validationLink);
+				}
 			}
 		}
 	}

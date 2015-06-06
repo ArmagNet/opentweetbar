@@ -16,30 +16,28 @@
     You should have received a copy of the GNU General Public License
     along with OpenTweetBar.  If not, see <http://www.gnu.org/licenses/>.
 */
-/*
- * Don't forget to include a cron line in the crontab like this one :
 
-* * * * * cd /my/installed/opentweetbar/path/ && php do_cron.php
+class DmNotifier {
 
- */
-include_once("config/database.php");
-require_once("engine/bo/MediaBo.php");
-require_once("engine/bo/TweetBo.php");
+	function notifyValidationLink($account, $validator, $tweet, $validationLink) {
+		global $tweetBo;
+		global $config;
 
-$connection = openConnection();
+		$noticeTweet = array();
+		$noticeTweet["twe_destination"] = $account["sna_name"];
+		$noticeTweet["twe_destination_id"] = $account["sna_id"];
 
-$tweetBo = TweetBo::newInstance($connection);
-$now = date("Y-m-d H:i:s");
+		$noticeTweet["twe_content"] = "D ". $validator["use_login"] . " un message en attente de validation vous attend : ";
+		$tweetBo->sendTweet($noticeTweet);
+		time_nanosleep(0, 200000000);
 
-$tweets = $tweetBo->getCronedTweets($now);
+		$noticeTweet["twe_content"] = "D ". $validator["use_login"] . " " . $tweet["twe_content"];
+		$tweetBo->sendTweet($noticeTweet);
+		time_nanosleep(0, 200000000);
 
-foreach($tweets as $tweet) {
-	echo "Tweet : " . $tweet["twe_id"] . "\n";
+		$noticeTweet["twe_content"] = "D ". $validator["use_login"] . " Pour valider : " . $validationLink;
+		$tweetBo->sendTweet($noticeTweet);
+	}
 
-	$tweetBo->sendTweet($tweet);
-	$tweetBo->updateStatus($tweet, "validated");
-	echo "=> sent \n";
 }
-
-exit("done\n");
 ?>

@@ -53,7 +53,6 @@ $tweet = $tweetBo->getTweet($tweetId);
 // The tweet can't be null
 if (!$tweet) {
 	if (!isset($_SERVER["HTTP_REFERER"]) || strpos($_SERVER["HTTP_REFERER"], "t.co") !== false) {
-//		echo "Votre validation a &eacute;chou&eacute; (d&eacute;j&agrave; effectu&eacute;e, tweet d&eacute;j&agrave; envoy&eacute; ou effac&eacute;)";
 		echo lang("do_validation_error", true, $user["use_language"]);
 	}
 	exit();
@@ -65,7 +64,6 @@ $trueHash = TweetBo::hash($tweet, $userId);
 if ($trueHash != $hash) {
 	if (!isset($_SERVER["HTTP_REFERER"]) || strpos($_SERVER["HTTP_REFERER"], "t.co") !== false) {
 		echo lang("do_validation_error", true, $user["use_language"]);
-//		echo "Votre validation a &eacute;chou&eacute; (d&eacute;j&agrave; effectu&eacute;e, tweet d&eacute;j&agrave; envoy&eacute; ou effac&eacute;)";
 	}
 	exit();
 }
@@ -75,7 +73,6 @@ foreach($tweet["validatorIds"] as $validator) {
 	if ($validator == $userId) {
 		if (!isset($_SERVER["HTTP_REFERER"]) || strpos($_SERVER["HTTP_REFERER"], "t.co") !== false) {
 			echo lang("do_validation_error", true, $user["use_language"]);
-//			echo "Votre validation a &eacute;chou&eacute; (d&eacute;j&agrave; effectu&eacute;e, tweet d&eacute;j&agrave; envoy&eacute; ou effac&eacute;)";
 		}
 		else {
 			echo json_encode(array("ko" => "ko", "message" => "has_already_validated"));
@@ -90,7 +87,6 @@ $validatorGroup = $accountBo->getValidator($tweet["twe_destination"], $userId);
 if (!$validatorGroup) {
 	if (!isset($_SERVER["HTTP_REFERER"]) || strpos($_SERVER["HTTP_REFERER"], "t.co") !== false) {
 		echo lang("do_validation_error", true, $user["use_language"]);
-//		echo "Votre validation a &eacute;chou&eacute; (d&eacute;j&agrave; effectu&eacute;e, tweet d&eacute;j&agrave; envoy&eacute; ou effac&eacute;)";
 	}
 	else {
 		echo json_encode(array("ko" => "ko", "message" => "not_allowed"));
@@ -148,13 +144,9 @@ else {
 
 		header('Location: ' . $validationLink);
 		exit();
-
-//		echo lang("do_validation_ok", true, $user["use_language"]);
-//		echo "Votre validation a bien &eacute;t&eacute; prise en compte";
 	}
 	else {
 		echo lang("do_validation_error", true, $user["use_language"]);
-//		echo "Votre validation a &eacute;chou&eacute; (d&eacute;j&agrave; effectu&eacute;e, tweet d&eacute;j&agrave; envoy&eacute; ou effac&eacute;)";
 	}
 }
 ?>

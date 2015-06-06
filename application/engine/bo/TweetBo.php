@@ -80,6 +80,8 @@ class TweetBo {
 		$connection = new TwitterOAuth($key, $secret, $token, $token_secret);
 
 		$twitterMediaIds = array();
+		$medias = array();
+
 		if (isset($tweet["twe_id"])) {
 			$mediaBo = MediaBo::newInstance($this->pdo);
 			$medias = $mediaBo->getMedias(array("tme_tweet_id" => $tweet["twe_id"]));
@@ -106,7 +108,7 @@ class TweetBo {
 
 		$status = $connection->post('statuses/update', $parameters);
 
-//		print_r($status);
+		print_r($status);
 	}
 
 	function updateStatus($tweet, $status) {
@@ -211,7 +213,7 @@ class TweetBo {
 
 		$statement = $this->pdo->prepare($query);
 
-//		echo showQuery($query, array());
+//		echo showQuery($query, $args);
 
 		try {
 			$statement->execute($args);
