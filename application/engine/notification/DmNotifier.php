@@ -29,11 +29,11 @@ class DmNotifier {
 
 		$noticeTweet["twe_content"] = "D ". $validator["use_login"] . " un message en attente de validation vous attend : ";
 		$tweetBo->sendTweet($noticeTweet);
-		time_nanosleep(0, 200000000);
+		time_nanosleep(0, 300000000);
 
 		$noticeTweet["twe_content"] = "D ". $validator["use_login"] . " " . $tweet["twe_content"];
 		$tweetBo->sendTweet($noticeTweet);
-		time_nanosleep(0, 200000000);
+		time_nanosleep(0, 300000000);
 
 		$noticeTweet["twe_content"] = "D ". $validator["use_login"] . " Pour valider : " . $validationLink;
 		$tweetBo->sendTweet($noticeTweet);

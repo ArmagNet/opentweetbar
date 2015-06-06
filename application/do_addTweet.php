@@ -142,8 +142,8 @@ if ($tweetBo->addTweet($tweet)) {
 	}
 
 	if (isset($config["cron_enabled"]) && $config["cron_enabled"]) {
-		error_log("php do_cron_notifier.php $accountId $userId " . $tweet["twe_id"] . " > /dev/null 2>/dev/null &");
-		exec("php do_cron_notifier.php $accountId $userId " . $tweet["twe_id"] . " > /dev/null 2>/dev/null &");
+//		error_log("php do_cron_notifier.php $accountId $userId " . $tweet["twe_id"] . " > /dev/null 2> /dev/null &");
+		exec("php do_cron_notifier.php $accountId $userId " . $tweet["twe_id"] . " > /dev/null 2> /dev/null &");
 	}
 	else {
 		$validators = $accountBo->getAccountValidators($accountId);
