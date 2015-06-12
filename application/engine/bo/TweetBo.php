@@ -230,7 +230,9 @@ class TweetBo {
 
 		$accountIds = array();
 		foreach ($accounts as $account) {
-			$accountIds[] = $account["sna_id"];
+			if (isset($account["sna_id"])) {
+				$accountIds[] = $account["sna_id"];
+			}
 		}
 
 		if (!is_array($status)) {
