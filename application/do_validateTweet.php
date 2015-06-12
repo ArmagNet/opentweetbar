@@ -38,7 +38,9 @@ $hash = $_REQUEST["hash"];
 $tweetId = $_REQUEST["tweetId"];
 $remoteIp = (isset($_SERVER["HTTP_X_REAL_IP"]) && $_SERVER["HTTP_X_REAL_IP"]) ? $_SERVER["HTTP_X_REAL_IP"] : $_SERVER["REMOTE_ADDR"];
 
-if (strpos($remoteIp, "199.59.148.") !== false) {
+if (strpos($remoteIp, "199.59.148.") !== false ||
+	strpos($remoteIp, "199.16.156.") !== false ||
+	) {
 	// We exit cause it's a twitter validation
 	exit();
 }
@@ -55,6 +57,11 @@ if (!$tweet) {
 	if (!isset($_SERVER["HTTP_REFERER"]) || strpos($_SERVER["HTTP_REFERER"], "t.co") !== false) {
 		echo lang("do_validation_error", true, $user["use_language"]);
 	}
+	exit();
+}
+
+if (!isset($_SERVER["HTTP_REFERER"])) {
+	echo lang("do_validation_error", true, $user["use_language"]);
 	exit();
 }
 
