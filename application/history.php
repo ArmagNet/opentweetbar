@@ -84,7 +84,13 @@ $tweetsByAccount = TweetBo::accounted($tweets);
 								$mediaUrl = "do_loadMedia.php?med_id=" . $media["med_id"];
 								$mediaUrl .= "&med_hash=" . $hash;
 							 ?>
-								<img src="<?php echo $mediaUrl; ?>" style="max-width: 32px; max-height: 32px; " />
+							 	<a href="<?php echo $mediaUrl; ?>"
+							 		data-type="image"
+							 		data-toggle="lightbox"
+							 		data-footer="<?php echo htmlentities($tweet["twe_content"]); ?>"
+							 		data-gallery="<?php echo $account?>">
+									<img src="<?php echo $mediaUrl; ?>" style="max-width: 32px; max-height: 32px; " />
+								</a>
 							<?php }?>
 						<?php 	}?>
 

@@ -31,6 +31,15 @@
 <script src="js/bootstrap.min.js"></script>
 <script src="js/moment-with-locales.js"></script>
 <script src="js/bootstrap-datetimepicker.js"></script>
+<script src="js/ekko-lightbox.min.js"></script>
+<script type="text/javascript">
+$(function() {
+	$(document).delegate('*[data-toggle="lightbox"]', 'click', function(event) {
+	    event.preventDefault();
+	    $(this).ekkoLightbox();
+	});
+});
+</script>
 <script src="js/user.js"></script>
 <script src="js/window.js"></script>
 <script src="js/pagination.js"></script>
