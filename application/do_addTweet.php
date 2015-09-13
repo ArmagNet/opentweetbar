@@ -60,114 +60,135 @@ else {
 		exit();
 	}
 }
-$account = $_REQUEST["account"];
 
-$accountId = $accountBo->getAccountId($account);
-$account = $accountBo->getAccount($accountId);
+$accounts = array();
+$accounts[] = $_REQUEST["account"];
 
-$validatorGroup = $accountBo->getValidator($accountId, $userId);
-
-// We must be in a validator group or the account permits anonymous tweet proposition
-if (	(
-			($account["sco_anonymous_permitted"] == 0) ||
-			($account["sco_anonymous_permitted"] == 1 && $account["sco_anonymous_password"] && $account["sco_anonymous_password"] != $password)
-		)
-		&& !$validatorGroup) {
-	echo json_encode(array("ko" => "ko", "message" => "not_allowed"));
-	exit();
-}
-
-$tweet = array();
-
-if ($user) {
-	$tweet["twe_author"] = $userId;
-	$tweet["twe_anonymous_nickname"] = "";
-	$tweet["twe_anonymous_mail"] = "";
-}
-else {
-	$tweet["twe_author"] = 0;
-	$tweet["twe_anonymous_nickname"] = $nickname;
-	$tweet["twe_anonymous_mail"] = $mail;
-}
-$tweet["twe_destination"] = $accountId;
-$tweet["twe_content"] = $_REQUEST["tweet"];
-$tweet["twe_validation_score"] = $account["sco_validation_score"];
-$tweet["twe_validation_duration"] = $_REQUEST["validationDuration"];
-$tweet["twe_cron_datetime"] = $_REQUEST["cronDate"];
-$tweet["twe_creation_datetime"] = date("Y-m-d H:i:s");
-$tweet["twe_content"] = $_REQUEST["tweet"];
-
-$mediaIds = explode(",", $_REQUEST["mediaIds"]);
-
-$tweet["twe_media_ids"] = array();
-foreach($mediaIds as $mediaId) {
-	if ($mediaId != -1) {
-		$tweet["twe_media_ids"][] = $mediaId;
+if (isset($_REQUEST["secondaryAccounts"])) {
+	foreach($_REQUEST["secondaryAccounts"] as $secondaryAccount) {
+		$accounts[] = $secondaryAccount;
 	}
 }
 
-//print_r($tweet);
+foreach($accounts as $account) {
+	$accountId = $accountBo->getAccountId($account);
+	$account = $accountBo->getAccount($accountId);
 
-if ($tweetBo->addTweet($tweet)) {
+	$validatorGroup = $accountBo->getValidator($accountId, $userId);
 
-	$logAction = array();
-	$logAction["lac_status"] = 1;
-	$logAction["lac_label"] = "addTweet";
-	$logAction["lac_login"] = $login;
-	$logAction["lac_ip"] = $remoteIp;
-
-	$logActionBo->addLogAction($logAction);
-
-	$data["ok"] = "ok";
-//	$data["validators"] = array();
-
-	// If the user is connected and in a validator group then autovalidation
-	if ($validatorGroup) {
-		$validation = array();
-		$validation["tva_tweet_id"] = $tweet["twe_id"];
-		$validation["tva_validator"] = $tweet["twe_author"];
-		$validation["tva_status"] = "validation";
-		$validation["tva_score"] = $validatorGroup["vgr_score"];
-		$validation["tva_ip"] = $remoteIp;
-		$validation["tva_referer"] = $_SERVER["HTTP_REFERER"] ? $_SERVER["HTTP_REFERER"] : '';
-
-		if (isset($tweet["twe_creation_date"])) {
-			$validation["tva_datetime"] = $tweet["twe_creation_date"];
-		}
-		else {
-			$validation["tva_datetime"] = null;
-		}
-
-		$tweetBo->addValidation($validation);
+	// We must be in a validator group or the account permits anonymous tweet proposition
+	if (	(
+				($account["sco_anonymous_permitted"] == 0) ||
+				($account["sco_anonymous_permitted"] == 1 && $account["sco_anonymous_password"] && $account["sco_anonymous_password"] != $password)
+			)
+			&& !$validatorGroup) {
+		echo json_encode(array("ko" => "ko", "message" => "not_allowed"));
+		exit();
 	}
+}
 
-	if (isset($config["cron_enabled"]) && $config["cron_enabled"]) {
-//		error_log("php do_cron_notifier.php $accountId $userId " . $tweet["twe_id"] . " > /dev/null 2> /dev/null &");
-		exec("php do_cron_notifier.php $accountId $userId " . $tweet["twe_id"] . " > /dev/null 2> /dev/null &");
+foreach($accounts as $account) {
+	$accountId = $accountBo->getAccountId($account);
+	$account = $accountBo->getAccount($accountId);
+
+	$validatorGroup = $accountBo->getValidator($accountId, $userId);
+
+	$tweet = array();
+
+	if ($user) {
+		$tweet["twe_author"] = $userId;
+		$tweet["twe_anonymous_nickname"] = "";
+		$tweet["twe_anonymous_mail"] = "";
 	}
 	else {
-		$validators = $accountBo->getAccountValidators($accountId);
+		$tweet["twe_author"] = 0;
+		$tweet["twe_anonymous_nickname"] = $nickname;
+		$tweet["twe_anonymous_mail"] = $mail;
+	}
+	$tweet["twe_destination"] = $accountId;
+	$tweet["twe_content"] = $_REQUEST["tweet"];
+	$tweet["twe_validation_score"] = $account["sco_validation_score"];
+	$tweet["twe_validation_duration"] = $_REQUEST["validationDuration"];
+	$tweet["twe_cron_datetime"] = $_REQUEST["cronDate"];
+	$tweet["twe_creation_datetime"] = date("Y-m-d H:i:s");
+	$tweet["twe_content"] = $_REQUEST["tweet"];
 
-	//	print_r($validators);
+	$mediaIds = explode(",", $_REQUEST["mediaIds"]);
 
-		foreach($validators as $validator) {
-			if ($validator["use_id"] != $userId) {
-				$hash = TweetBo::hash($tweet, $validator["use_id"]);
+	$tweet["twe_media_ids"] = array();
+	foreach($mediaIds as $mediaId) {
+		if ($mediaId != -1) {
+			$tweet["twe_media_ids"][] = $mediaId;
+		}
+	}
 
-				$validationLink = $config["base_url"] . "dvt.php?";
-				$validationLink .= "u=" . $validator["use_id"];
-				$validationLink .= "&h=$hash";
-				$validationLink .= "&t=" . $tweet["twe_id"];
+	//print_r($tweet);
 
-				$notifier = NotifierFactory::getInstance($validator["use_notification"]);
-				if ($notifier) {
-					$notifier->notifyValidationLink($account, $validator, $tweet, $validationLink);
+	if ($tweetBo->addTweet($tweet)) {
+
+		$logAction = array();
+		$logAction["lac_status"] = 1;
+		$logAction["lac_label"] = "addTweet";
+		$logAction["lac_login"] = $login;
+		$logAction["lac_ip"] = $remoteIp;
+
+		$logActionBo->addLogAction($logAction);
+
+		$data["ok"] = "ok";
+	//	$data["validators"] = array();
+
+		// If the user is connected and in a validator group then autovalidation
+		if ($validatorGroup) {
+			$validation = array();
+			$validation["tva_tweet_id"] = $tweet["twe_id"];
+			$validation["tva_validator"] = $tweet["twe_author"];
+			$validation["tva_status"] = "validation";
+			$validation["tva_score"] = $validatorGroup["vgr_score"];
+			$validation["tva_ip"] = $remoteIp;
+			$validation["tva_referer"] = $_SERVER["HTTP_REFERER"] ? $_SERVER["HTTP_REFERER"] : '';
+
+			if (isset($tweet["twe_creation_date"])) {
+				$validation["tva_datetime"] = $tweet["twe_creation_date"];
+			}
+			else {
+				$validation["tva_datetime"] = null;
+			}
+
+			$tweetBo->addValidation($validation);
+		}
+
+		if (isset($config["cron_enabled"]) && $config["cron_enabled"]) {
+	//		error_log("php do_cron_notifier.php $accountId $userId " . $tweet["twe_id"] . " > /dev/null 2> /dev/null &");
+			exec("php do_cron_notifier.php $accountId $userId " . $tweet["twe_id"] . " > /dev/null 2> /dev/null &");
+		}
+		else {
+			$validators = $accountBo->getAccountValidators($accountId);
+
+		//	print_r($validators);
+
+			foreach($validators as $validator) {
+				if ($validator["use_id"] != $userId) {
+					$hash = TweetBo::hash($tweet, $validator["use_id"]);
+
+					$validationLink = $config["base_url"] . "dvt.php?";
+					$validationLink .= "u=" . $validator["use_id"];
+					$validationLink .= "&h=$hash";
+					$validationLink .= "&t=" . $tweet["twe_id"];
+
+					$notifier = NotifierFactory::getInstance($validator["use_notification"]);
+					if ($notifier) {
+						$notifier->notifyValidationLink($account, $validator, $tweet, $validationLink);
+					}
 				}
 			}
 		}
 	}
+	else {
+//		$data["ko"] = "ko";
+	}
 }
-else {
+
+if (isset($data["ok"])) {
 	$data["ko"] = "ko";
 }
 

@@ -214,6 +214,14 @@ $(function() {
 							password: ""
 						};
 
+		myform["secondaryAccounts[]"] = [];
+
+		$(".secondaryAccounts:checked").each(function() {
+			if (!$(this).attr("disabled")) {
+				myform["secondaryAccounts[]"][myform["secondaryAccounts[]"].length] = $(this).val();
+			}
+		});
+
 		if ($("#nicknameInput").val()) {
 			myform.nickname = $("#nicknameInput").val().trim();
 			myform.xxx = $("#xxxInput").val().trim();
@@ -230,7 +238,7 @@ $(function() {
 				$("#cronDateInput").val("");
 				$("#validationDurationButtons button[value=0]").click();
 				$("#tweet").keyup();
-				$("#validationMenuItem .badge").text($("#validationMenuItem .badge").text() - (-1)).show();
+				$("#validationMenuItem .badge").text($("#validationMenuItem .badge").text() - (-1 - myform["secondaryAccounts[]"].length)).show();
 
 				// We clean medias
     			$(".mediaImage").remove();
@@ -248,12 +256,21 @@ $(function() {
 	});
 
 	$(".changeAccountLink").click(function(event) {
-		event.preventDefault();
+		if (event) event.preventDefault();
 		var accountText = $(this).text().trim();
 
 		$("#account").val(accountText);
 		$("#account2").val(accountText);
 		$("#accountButton #text").text(accountText);
+
+		$(".secondaryAccounts").each(function() {
+			if ($(this).val() == accountText) {
+				$(this).attr("disabled", "disabled");
+			}
+			else {
+				$(this).removeAttr("disabled");
+			}
+		});
 	});
 
 	$("#validationDurationButtons button").click(function(e) {
@@ -263,4 +280,5 @@ $(function() {
 	});
 
 	$("#tweet").keyup();
+	$(".changeAccountLink").click();
 });

@@ -71,6 +71,7 @@ $lang["index_options_cronDateInput"] = "Delayed departure";
 $lang["index_options_cronDatePlaceholder"] = "yyyy-mm-dd hh:mm";
 $lang["index_options_cronDateGuide"] = "Keep it blank if departure just after validation";
 $lang["index_options_validationDurationInput"] = "Maximal validation duration";
+$lang["index_options_secondaryAccounts"] = "Also send to";
 // $lang["index_options_validationDurationPlaceholder"] = "yyyy-mm-dd hh:mm";
 // $lang["index_options_validationDurationGuide"] = "Laisser vide si départ juste après validation";
 $lang["anonymous_form_nicknameInput"] = "Nickname";

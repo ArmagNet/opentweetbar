@@ -71,6 +71,7 @@ $lang["index_options_cronDateInput"] = "Départ différé";
 $lang["index_options_cronDatePlaceholder"] = "aaaa-mm-jj hh:mm";
 $lang["index_options_cronDateGuide"] = "Laisser vide si départ juste après validation";
 $lang["index_options_validationDurationInput"] = "Durée de validation maximale";
+$lang["index_options_secondaryAccounts"] = "Envoyer aussi pour";
 // $lang["index_options_validationDurationPlaceholder"] = "yyyy-mm-dd hh:mm";
 // $lang["index_options_validationDurationGuide"] = "Laisser vide si départ juste après validation";
 $lang["anonymous_form_nicknameInput"] = "Surnom";

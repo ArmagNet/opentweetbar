@@ -172,6 +172,18 @@ else {
 						<input type="hidden" id="account2" name="account" value="<?php echo $account; ?>" />
 						<fieldset>
 
+<?php if (count($accounts)) {?>
+							<div class="form-group has-feedback">
+								<label class="col-md-4 control-label" for="nicknameInput"><?php echo lang("index_options_secondaryAccounts"); ?></label>
+								<div class="col-md-6 padding-left-0">
+
+<?php	foreach($accounts as $gaccount) {?>
+			<label class="control-label"><input type="checkbox" value="<?php echo $gaccount["sna_name"]; ?>" class="secondaryAccounts" /><?php echo $gaccount["sna_name"]; ?></label>
+<?php 	}?>
+								</div>
+							</div>
+<?php }?>
+
 							<div class="form-group has-feedback">
 								<label class="col-md-4 control-label" for="nicknameInput"><?php echo lang("index_options_mediaInput"); ?></label>
 								<div class="col-md-6 padding-left-0">

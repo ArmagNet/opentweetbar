@@ -31,7 +31,10 @@ class UserBo {
 	static function computePassword($password) {
 		global $config;
 
-		return hash("sha256", $config["salt"] . $password . $config["salt"], false);
+		$computed = hash("sha256", $config["salt"] . $password . $config["salt"], false);
+//		error_log("Computed password : " . $computed);
+
+		return $computed;
 	}
 
 	function update($user) {
