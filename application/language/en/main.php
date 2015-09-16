@@ -18,7 +18,7 @@
 */
 
 $lang["date_format"] = "m/d/Y";
-$lang["time_format"] = "H:i";
+$lang["time_format"] = "H:iA";
 $lang["datetime_format"] = "the {date} at {time}";
 
 $lang["common_validate"] = "Validate";
@@ -34,6 +34,7 @@ $lang["menu_language"] = "Language : {language}";
 $lang["menu_tweet"] = "Tweet";
 $lang["menu_history"] = "History";
 $lang["menu_validation"] = "Validation";
+$lang["menu_timelines"] = "Timelines";
 $lang["menu_mytweets"] = "My tweets";
 $lang["menu_myrights"] = "My rights";
 $lang["menu_mypreferences"] = "My preferences";
@@ -52,6 +53,7 @@ $lang["breadcrumb_index"] = "Home";
 $lang["breadcrumb_validation"] = "Validation";
 $lang["breadcrumb_seeTweetValidation"] = "Current validation";
 $lang["breadcrumb_history"] = "History";
+$lang["breadcrumb_timelines"] = "Timelines";
 $lang["breadcrumb_mypreferences"] = "My preferences";
 $lang["breadcrumb_myaccounts"] = "My accounts";
 $lang["breadcrumb_myrights"] = "My rights";
@@ -108,6 +110,12 @@ $lang["validation_duration_remaining"] = "Remaining time before expiration : {du
 
 $lang["do_validation_error"] = "Your validation failed (already done, tweet already sent or erased)";
 $lang["do_validation_ok"] = "Your tweet validation has been taken into account";
+
+$lang["timelines_guide"] = "Your different timelines";
+$lang["timelines_account_title"] = "Tweets for <strong><em>{account}</em></strong>";
+$lang["timelines_search_header"] = "Tweet search";
+$lang["timelines_search_label"] = "Tweet";
+$lang["timelines_search_placeholder"] = "tweet id or its url";
 
 $lang["mypreferences_guide"] = "Change my preferences.";
 $lang["mypreferences_form_legend"] = "Configuration of your access";

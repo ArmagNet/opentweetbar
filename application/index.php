@@ -149,7 +149,8 @@ else {
 				<?php 	}?>
 			</ul>
 		</div>
-		<input type="text" id="tweet" name="tweet" class="form-control" placeholder="<?php echo lang("index_tweetPlaceholder"); ?>" /> <span class="input-group-btn">
+		<input type="text" id="tweet" name="tweet" class="form-control" placeholder="<?php echo lang("index_tweetPlaceholder"); ?>" />
+		<span class="input-group-btn">
 			<button class="btn btn-default" type="button" id="tweetButton"><?php echo lang("index_tweetButton"); ?></button>
 		</span>
 	</div>

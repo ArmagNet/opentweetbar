@@ -64,6 +64,50 @@ class TweetBo {
 		return $status;
 	}
 
+	static function getOembed($account, $tweetId) {
+		include_once "engine/twitter/twitteroauth.php";
+
+		$key = $account["stc_api_key"];
+		$secret = $account["stc_api_secret"];
+		$token = $account["stc_access_token"];
+		$token_secret = $account["stc_access_token_secret"];
+
+		//		print_r($account);
+
+		$connection = new TwitterOAuth($key, $secret, $token, $token_secret);
+
+		$parameters = array("id" => $tweetId, "omit_script" => 0);
+
+		$result = $connection->get('statuses/oembed', $parameters);
+
+		return $result->html;
+	}
+
+	static function getTimeline($account, $sinceId = null, $numberOfTweets = 20) {
+		include_once "engine/twitter/twitteroauth.php";
+
+		$key = $account["stc_api_key"];
+		$secret = $account["stc_api_secret"];
+		$token = $account["stc_access_token"];
+		$token_secret = $account["stc_access_token_secret"];
+
+		//		print_r($account);
+
+		$connection = new TwitterOAuth($key, $secret, $token, $token_secret);
+
+		$parameters = array();
+			if ($sinceId) {
+			$parameters["since_id"] = $sinceId;
+		}
+		if ($numberOfTweets) {
+			$parameters["count"] = $numberOfTweets;
+		}
+
+		$timeline = $connection->get('statuses/home_timeline', $parameters);
+
+		return $timeline;
+	}
+
 	function sendTweet($tweet) {
 		include_once "engine/twitter/twitteroauth.php";
 		include_once "engine/bo/MediaBo.php";
