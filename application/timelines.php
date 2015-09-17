@@ -31,33 +31,31 @@ include_once("header.php");
 
 	<?php 	if ($user) {?>
 
-	<div class="col-md-12">
-		<div class="panel panel-default">
-			<!-- Default panel contents -->
-			<div class="panel-heading">
-				<?php echo lang("timelines_search_header"); ?>
-			</div>
-			<div class="panel-body">
+	<div class="panel panel-default">
+		<!-- Default panel contents -->
+		<div class="panel-heading">
+			<?php echo lang("timelines_search_header"); ?>
+		</div>
+		<div class="panel-body">
 
-				<form id="searchTweetForm" class="form-horizontal">
-					<fieldset>
+			<form id="searchTweetForm" class="form-horizontal">
+				<fieldset>
 
-						<div class="form-group">
-							<label class="col-md-4 control-label" for="searchInput"><?php echo lang("timelines_search_label"); ?></label>
-							<div class="col-md-6">
-								<div class="input-group">
-									<input id="searchInput" name="searchInput" class="form-control"
-										placeholder="<?php echo str_replace("\"", "&quot;", lang("timelines_search_placeholder")); ?>" type="text">
-									<span id="searchButton" type="button" class="btn btn-default input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
-								</div>
+					<div class="form-group">
+						<label class="col-md-4 control-label" for="searchInput"><?php echo lang("timelines_search_label"); ?></label>
+						<div class="col-md-6">
+							<div class="input-group">
+								<input id="searchInput" name="searchInput" class="form-control"
+									placeholder="<?php echo str_replace("\"", "&quot;", lang("timelines_search_placeholder")); ?>" type="text">
+								<span id="searchButton" type="button" class="btn btn-default input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
 							</div>
 						</div>
+					</div>
 
-					</fieldset>
-				</form>
+				</fieldset>
+			</form>
 
-				<div id="found-tweet-div">
-				</div>
+			<div id="found-tweet-div">
 			</div>
 		</div>
 	</div>

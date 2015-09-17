@@ -37,7 +37,6 @@ function getHtmlTweet(tweet) {
 
 	// TODO handle medias
 
-
 	var data = {
 			"tweet_user_screen_name" : tweet.user.screen_name,
 			"tweet_user_name" : tweet.user.name,

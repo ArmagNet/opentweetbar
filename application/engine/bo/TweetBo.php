@@ -83,7 +83,56 @@ class TweetBo {
 		return $result->html;
 	}
 
+	static function getCachedTimeline($account, $sinceId, $numberOfTweets = 20) {
+		if (!file_exists("cache/" . $account["sna_id"])) return null;
+
+		$tweetFiles = scandir("cache/" . $account["sna_id"], SCANDIR_SORT_DESCENDING);
+		$finalTweetFiles = array();
+
+		foreach($tweetFiles as $tweetFile) {
+			$tweetId = str_replace(".tweet", "", $tweetFile);
+
+			if (strlen($tweetId) > strlen($sinceId) ||									// We change the range
+					(strlen($tweetId) == strlen($sinceId) && $tweetId > $sinceId)) {	// We are in the same range
+				$finalTweetFiles[] = $tweetFile;
+				if ($numberOfTweets && $numberOfTweets == count($finalTweetFiles)) {
+					break;
+				}
+			}
+		}
+
+		$timeline = array();
+		foreach($finalTweetFiles as $tweetFile) {
+			$timeline[] = json_decode(file_get_contents("cache/" . $account["sna_id"] . "/". $tweetFile));
+		}
+
+		if (count($timeline)) {
+			return $timeline;
+		}
+
+		return null;
+	}
+
+	static function cacheTimeline($account, $timeline) {
+		if (!file_exists("cache/" . $account["sna_id"])) {
+			mkdir("cache/" . $account["sna_id"], 0770);
+			file_put_contents("cache/" . $account["sna_id"] . "/index.html", "");
+		}
+
+		foreach($timeline as $tweet) {
+			$filepath = "cache/" . $account["sna_id"] . "/" . $tweet->id_str . ".tweet";
+			file_put_contents($filepath, json_encode($tweet));
+		}
+	}
+
 	static function getTimeline($account, $sinceId = null, $numberOfTweets = 20) {
+		// We check the cache of sinceId is given
+		if ($sinceId) {
+			$timeline = TweetBo::getCachedTimeline($account, $sinceId, $numberOfTweets = 20);
+
+			if ($timeline) return $timeline;
+		}
+
 		include_once "engine/twitter/twitteroauth.php";
 
 		$key = $account["stc_api_key"];
@@ -104,6 +153,10 @@ class TweetBo {
 		}
 
 		$timeline = $connection->get('statuses/home_timeline', $parameters);
+
+		if ($timeline) {
+			TweetBo::cacheTimeline($account, $timeline);
+		}
 
 		return $timeline;
 	}
