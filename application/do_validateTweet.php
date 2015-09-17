@@ -122,7 +122,9 @@ if ($tweetBo->addValidation($validation)) {
 	if ($currentScore >= $tweet["twe_validation_score"]) {
 		$data["validated"] = true;
 
-		if (isset($tweet["twe_cron_datetime"]) && $tweet["twe_cron_datetime"] != "0000-00-00 00:00:00") {
+		if ($tweet["twe_status"] == "validated" || $tweet["twe_status"] == "croned") {
+		}
+		else if (isset($tweet["twe_cron_datetime"]) && $tweet["twe_cron_datetime"] != "0000-00-00 00:00:00") {
 			$tweetBo->updateStatus($tweet, "croned");
 		}
 		else {
