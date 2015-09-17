@@ -116,6 +116,9 @@ $lang["timelines_account_title"] = "Tweets de <strong><em>{account}</em></strong
 $lang["timelines_search_header"] = "Recherche de tweet";
 $lang["timelines_search_label"] = "Tweet";
 $lang["timelines_search_placeholder"] = "Identifiant du tweet ou son url";
+$lang["timelines_waiting_tweets"] = "Voir \${numberOfTweets} nouveaux Tweets";
+$lang["timelines_waiting_tweet"] = "Voir 1 nouveau Tweet";
+$lang["timelines_retweet_by"] = "RT par \${tweet_user_name} @\${tweet_user_screen_name}";
 
 $lang["mypreferences_guide"] = "Changer mes préférences.";
 $lang["mypreferences_form_legend"] = "Configuration de vos accès";
