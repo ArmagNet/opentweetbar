@@ -11,8 +11,32 @@ function getHtmlTweet(tweet) {
 	var text = source.text;
 	text = text.replace(/\n/g, "<br>");
 
-	// TODO handle hashtags
-	// TODO handle mentions
+	// handle hashtags
+	for(var index = 0; index < source.entities.hashtags.length; ++index) {
+		var hashtag = source.entities.hashtags[index];
+		var re = new RegExp("#" + hashtag.text, "g");
+		var url = "https://twitter.com/hashtag/"+hashtag.text+"?src=hash";
+		text = text.replace(re, "<a href=\""+url+"\" target=\"_blank\">#"+hashtag.text+"</a>");
+	}
+
+	// handle urls
+	for(var index = 0; index < source.entities.urls.length; ++index) {
+		var turl = source.entities.urls[index];
+		var re = new RegExp(turl.url, "g");
+		var url = turl.expanded_url;
+		text = text.replace(re, "<a href=\""+url+"\" target=\"_blank\">"+turl.display_url+"</a>");
+	}
+
+	// handle mentions
+	for(var index = 0; index < source.entities.user_mentions.length; ++index) {
+		var userMention = source.entities.user_mentions[index];
+		var re = new RegExp("@" + userMention.screen_name, "g");
+		var url = "https://twitter.com/"+userMention.screen_name;
+		text = text.replace(re, "<a href=\""+url+"\" target=\"_blank\">@"+userMention.screen_name+"</a>");
+	}
+
+	// TODO handle medias
+
 
 	var data = {
 			"tweet_user_screen_name" : tweet.user.screen_name,
