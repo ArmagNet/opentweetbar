@@ -39,8 +39,8 @@ class DmNotifier {
 
 			}
 			else {
-				$tweetContent = "Retweet de : ";
-				$tweetContent .= " https://twitter.com/" . $retweet["user"]["screen_name"] . "/" . $retweet["id_str"];
+				$tweetContent = "Proposition de retweet";
+				$tweetContent .= " https://twitter.com/" . $retweet["user"]["screen_name"] . "/status/" . $retweet["id_str"];
 				$tweetContent .= "\n";
 				$wteetContent .= $retweet["text"];
 			}
