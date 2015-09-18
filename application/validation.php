@@ -75,7 +75,23 @@ function isAdministrator($accountId) {
 
 				?>
 				<tr id="row_<?php echo $tweet["twe_id"]; ?>">
-					<td class="vertical-middle"><?php echo $tweet["twe_content"]; ?>
+					<td class="vertical-middle">
+						<?php if ($tweet["twe_to_retweet"]) {?>
+							<?php echo lang("validation_retweet_proposition"); ?>
+
+							<div id="retweetDiv-<?php echo $tweet["twe_id"];?>">
+<script type="text/javascript">
+
+$(function() {
+	var tweetHtml = getHtmlTweet(<?php echo $tweet["twe_to_retweet"]; ?>);
+	$("#retweetDiv-<?php echo $tweet["twe_id"];?>").html(tweetHtml);
+});
+
+</script>
+							</div>
+
+						<?php }?>
+						<?php echo $tweet["twe_content"]; ?>
 
 						<?php 	if (count($medias)) {?>
 							<br />
@@ -177,6 +193,32 @@ function isAdministrator($accountId) {
 	}?>
 
 </div>
+
+<templates>
+	<blockquote aria-template-id="template-tweet" class="template" data-tweet-id="${source_id_str}">
+		<a href="https://twitter.com/${source_user_screen_name}">${source_user_name}
+			<small>@${source_user_screen_name}</small>
+		</a>
+		<a href="https://twitter.com/${source_user_screen_name}/status/${source_id_str}">
+			<small>${source_created_at}</small>
+		</a>
+		<p>${source_text}</p>
+	</blockquote>
+	<blockquote aria-template-id="template-retweet" class="template" data-tweet-id="${source_id_str}">
+		<a href="https://twitter.com/${source_user_screen_name}">${source_user_name}
+			<small>@${source_user_screen_name}</small>
+		</a>
+		<a href="https://twitter.com/${source_user_screen_name}/status/${source_id_str}">
+			<small>${source_created_at}</small>
+		</a>
+		<p>${source_text}</p>
+		<small>
+			<a href="https://twitter.com/${tweet_user_screen_name">
+				<?php echo lang("property_retweet_by"); ?>
+			</a>
+		</small>
+	</blockquote>
+<templates>
 
 <?php include("footer.php");?>
 <script>

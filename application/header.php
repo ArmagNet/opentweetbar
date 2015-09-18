@@ -62,6 +62,9 @@ if (count($accounts)) {
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title><?php echo lang("opentweetbar_title"); ?></title>
 
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="js/jquery-1.11.1.min.js"></script>
+
 <!-- Bootstrap -->
 <link href="css/bootstrap.min.css" rel="stylesheet">
 <link href="css/bootstrap-datetimepicker.min.css" rel="stylesheet" />

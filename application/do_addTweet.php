@@ -111,7 +111,12 @@ foreach($accounts as $account) {
 	$tweet["twe_validation_duration"] = $_REQUEST["validationDuration"];
 	$tweet["twe_cron_datetime"] = $_REQUEST["cronDate"];
 	$tweet["twe_creation_datetime"] = date("Y-m-d H:i:s");
-	$tweet["twe_content"] = $_REQUEST["tweet"];
+	if (isset($_REQUEST["toRetweet"])) {
+		$tweet["twe_to_retweet"] = $_REQUEST["toRetweet"];
+	}
+	else {
+		$tweet["twe_to_retweet"] = null;
+	}
 
 	$mediaIds = explode(",", $_REQUEST["mediaIds"]);
 

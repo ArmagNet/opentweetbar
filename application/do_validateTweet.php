@@ -118,16 +118,24 @@ if ($tweetBo->addValidation($validation)) {
 	$tweet = $tweetBo->getTweet($validation["tva_tweet_id"]);
 	$currentScore = $tweet["validation"][0] + $tweet["validation"][1] + $tweet["validation"][2];
 
+	error_log(print_r($tweet, true));
+
 	$data["validated"] = false;
 	if ($currentScore >= $tweet["twe_validation_score"]) {
 		$data["validated"] = true;
 
+// 		error_log("Will do something");
+// 		error_log("tweet[twe_cron_datetime] " . $tweet["twe_cron_datetime"]);
+
 		if ($tweet["twe_status"] == "validated" || $tweet["twe_status"] == "croned") {
+//			error_log("in fact no");
 		}
-		else if (isset($tweet["twe_cron_datetime"]) && $tweet["twe_cron_datetime"] != "0000-00-00 00:00:00") {
+		else if (isset($tweet["twe_cron_datetime"]) && $tweet["twe_cron_datetime"] && $tweet["twe_cron_datetime"] != "0000-00-00 00:00:00") {
+//			error_log("Will do cron");
 			$tweetBo->updateStatus($tweet, "croned");
 		}
 		else {
+//			error_log("Will do sending");
 			$tweetBo->sendTweet($tweet);
 			$tweetBo->updateStatus($tweet, "validated");
 		}

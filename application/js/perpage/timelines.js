@@ -31,6 +31,7 @@ function unstackTweets(accountId) {
 	while(stacks[accountId].length) {
 		var tweet = stacks[accountId].shift();
 		var html = getHtmlTweet(tweet);
+		addTweetHandlers(html);
 
 		$("#account-panel-"+accountId+" .panel-body").prepend(html);
 		$("#account-panel-"+accountId+" .panel-body .number-of-tweets").remove();
@@ -56,6 +57,7 @@ function getNewTweets(accountId, sinceId, numberOfTweets, showDirectly) {
 
 				if (showDirectly) {
 					var html = getHtmlTweet(data.timeline[index]);
+					addTweetHandlers(html);
 
 					$("#account-panel-"+data.accountId+" .panel-body").prepend(html);
 				}

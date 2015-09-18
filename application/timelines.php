@@ -18,6 +18,10 @@
 */
 include_once("header.php");
 
+$accountIdLabels = array();
+foreach ($accounts as $account) {
+	$accountIdLabels[$account["sna_id"]] = $account["sna_name"];
+}
 ?>
 <div class="container theme-showcase" role="main">
 	<ol class="breadcrumb">
@@ -75,7 +79,7 @@ include_once("header.php");
 	<?php 	}?>
 
 	<templates>
-		<blockquote aria-template-id="template-tweet" class="template">
+		<blockquote aria-template-id="template-tweet" class="template" data-tweet-id="${source_id_str}">
 			<a href="https://twitter.com/${source_user_screen_name}">${source_user_name}
 				<small>@${source_user_screen_name}</small>
 			</a>
@@ -83,8 +87,9 @@ include_once("header.php");
 				<small>${source_created_at}</small>
 			</a>
 			<p>${source_text}</p>
+			<div class="tweet-bar text-center"><a href="#" class="retweet-button"><span class="glyphicon glyphicon-retweet"></span></a></div>
 		</blockquote>
-		<blockquote aria-template-id="template-retweet" class="template">
+		<blockquote aria-template-id="template-retweet" class="template" data-tweet-id="${source_id_str}">
 			<a href="https://twitter.com/${source_user_screen_name}">${source_user_name}
 				<small>@${source_user_screen_name}</small>
 			</a>
@@ -94,9 +99,10 @@ include_once("header.php");
 			<p>${source_text}</p>
 			<small>
 				<a href="https://twitter.com/${tweet_user_screen_name">
-					<?php echo lang("timelines_retweet_by"); ?>
+					<?php echo lang("property_retweet_by"); ?>
 				</a>
 			</small>
+			<div class="tweet-bar text-center"><a href="#" class="retweet-button"><span class="glyphicon glyphicon-retweet"></span></a></div>
 		</blockquote>
 		<div aria-template-id="template-waiting" class="template text-center wait"><span class="glyphicon glyphicon-refresh spin"></span></div>
 		<blockquote aria-template-id="template-waiting-tweets" class="template number-of-tweets">
@@ -107,6 +113,10 @@ include_once("header.php");
 		</blockquote>
 	</templates>
 
+	<script>
+		var accountIdLabels = <?php echo json_encode($accountIdLabels) ?>;
+	</script>
+
 	<?php 	} else {
 		include("connectButton.php");
 	}?>
@@ -114,6 +124,7 @@ include_once("header.php");
 </div>
 
 <div class="lastDiv"></div>
+
 
 <?php include("footer.php");?>
 </body>

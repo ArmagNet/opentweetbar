@@ -76,7 +76,7 @@ class TweetBo {
 
 		$connection = new TwitterOAuth($key, $secret, $token, $token_secret);
 
-		$parameters = array("id" => $tweetId, "omit_script" => 0);
+		$parameters = array("id" => $tweetId, "omit_script" => 1);
 
 		$result = $connection->get('statuses/oembed', $parameters);
 
@@ -162,6 +162,8 @@ class TweetBo {
 	}
 
 	function sendTweet($tweet) {
+		error_log("send tweet");
+
 		include_once "engine/twitter/twitteroauth.php";
 		include_once "engine/bo/MediaBo.php";
 
@@ -197,13 +199,34 @@ class TweetBo {
 		// We change back the url for tweet sending
 		$connection->host = "https://api.twitter.com/1.1/";
 
-		$parameters = array('status' => $tweet["twe_content"]);
+		if ($tweet["twe_to_retweet"]) {
+			$retweet = json_decode($tweet["twe_to_retweet"], true);
+			$retweetId = $retweet["id_str"];
 
-		if (count($twitterMediaIds)) {
-			$parameters["media_ids"] = implode(",", $twitterMediaIds);
+//			error_log("Will retweet $retweetId");
+
+			if ($tweet["twe_content"]) {
+//				error_log("with content");
+			}
+			else {
+//				error_log("without content");
+				$parameters = array('id' => $retweetId);
+
+				$status = $connection->post('statuses/retweet/' . $retweetId, $parameters);
+			}
+		}
+		else {
+//			error_log("Will send a tweet");
+
+			$parameters = array('status' => $tweet["twe_content"]);
+
+			if (count($twitterMediaIds)) {
+				$parameters["media_ids"] = implode(",", $twitterMediaIds);
+			}
+
+			$status = $connection->post('statuses/update', $parameters);
 		}
 
-		$status = $connection->post('statuses/update', $parameters);
 
 //		print_r($status);
 	}
@@ -240,11 +263,11 @@ class TweetBo {
 		$query = "	INSERT INTO tweets
 						(twe_author, twe_anonymous_nickname, twe_anonymous_mail, twe_destination,
 							twe_content, twe_validation_score, twe_validation_duration,
-							twe_cron_datetime, twe_creation_datetime)
+							twe_cron_datetime, twe_creation_datetime, twe_to_retweet)
 					VALUES
 						(:twe_author, :twe_anonymous_nickname, :twe_anonymous_mail, :twe_destination,
 							:twe_content, :twe_validation_score, :twe_validation_duration,
-							:twe_cron_datetime, :twe_creation_datetime) ";
+							:twe_cron_datetime, :twe_creation_datetime, :twe_to_retweet) ";
 
 		$statement = $this->pdo->prepare($query);
 		try {
@@ -296,7 +319,7 @@ class TweetBo {
 
 	function getCronedTweets($limitDate) {
 		$args = array("twe_cron_datetime" => $limitDate);
-		$query = "	SELECT twe_id, twe_content, twe_validation_score, twe_status,
+		$query = "	SELECT twe_id, twe_content, twe_to_retweet, twe_validation_score, twe_status,
 						twe_anonymous_mail, twe_anonymous_nickname,
 						twe_creation_datetime,
 						twe_cron_datetime,
@@ -336,7 +359,7 @@ class TweetBo {
 			$status = array($status);
 		}
 
-		$query = "	SELECT twe_id, twe_content, twe_validation_score, twe_status,
+		$query = "	SELECT twe_id, twe_content, twe_to_retweet, twe_validation_score, twe_status,
 						twe_anonymous_mail, twe_anonymous_nickname,
 						twe_creation_datetime,
 						twe_cron_datetime,
@@ -489,6 +512,7 @@ class TweetBo {
 		foreach($tweets as $tweet) {
 			$indexedTweets[$tweet["twe_id"]]["twe_id"] = $tweet["twe_id"];
 			$indexedTweets[$tweet["twe_id"]]["twe_content"] = $tweet["twe_content"];
+			$indexedTweets[$tweet["twe_id"]]["twe_to_retweet"] = $tweet["twe_to_retweet"];
 			$indexedTweets[$tweet["twe_id"]]["twe_author"] = $tweet["twe_author"];
 			$indexedTweets[$tweet["twe_id"]]["twe_author_id"] = $tweet["twe_author_id"];
 			$indexedTweets[$tweet["twe_id"]]["twe_anonymous_mail"] = $tweet["twe_anonymous_mail"];

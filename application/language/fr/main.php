@@ -98,6 +98,7 @@ $lang["history_guide"] = "Liste des tweets qui ont été validés.";
 $lang["history_button_validators"] = "Validateurs";
 $lang["history_account_title"] = "Historique des Tweets <strong><em>{account}</em></strong>";
 $lang["history_cron_datetime_format"] = "Ne sera pas émis avant le {date} à {time}";
+$lang["history_retweet_proposition"] = "Ceci est une proposition de retweet de :";
 
 $lang["validation_guide"] = "Liste des tweets en attente de validation.";
 $lang["validation_account_title"] = "Tweets <strong><em>{account}</em></strong> en attente";
@@ -107,6 +108,7 @@ $lang["validation_tooltip_mine_validation"] = "Ma validation";
 $lang["validation_tooltip_other_validation"] = "Validation des autres utilisateurs";
 $lang["validation_cron_datetime_format"] = "Ne sera pas émis avant le {date} à {time}";
 $lang["validation_duration_remaining"] = "Temps restant avant expiration : {duration}";
+$lang["validation_retweet_proposition"] = "Ceci est une proposition de retweet de :";
 
 $lang["do_validation_error"] = "Votre validation a échoué (déjà effectuée, tweet déjà envoyé ou effacé)";
 $lang["do_validation_ok"] = "Votre validation a bien été prise en compte";
@@ -118,7 +120,7 @@ $lang["timelines_search_label"] = "Tweet";
 $lang["timelines_search_placeholder"] = "Identifiant du tweet ou son url";
 $lang["timelines_waiting_tweets"] = "Voir \${numberOfTweets} nouveaux Tweets";
 $lang["timelines_waiting_tweet"] = "Voir 1 nouveau Tweet";
-$lang["timelines_retweet_by"] = "RT par \${tweet_user_name} @\${tweet_user_screen_name}";
+$lang["property_retweet_by"] = "RT par \${tweet_user_name} @\${tweet_user_screen_name}";
 
 $lang["mypreferences_guide"] = "Changer mes préférences.";
 $lang["mypreferences_form_legend"] = "Configuration de vos accès";
