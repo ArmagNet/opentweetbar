@@ -93,6 +93,7 @@ Vous pouvez directement valider ce tweet en cliquant sur le lien ci-dessous :
 {validationLink}
 
 L'équipe #OpenTweetBar";
+$lang["add_tweet_mail_only_a_retweet"] = "Proposition d'un retweet de :";
 
 $lang["history_guide"] = "Liste des tweets qui ont été validés.";
 $lang["history_button_validators"] = "Validateurs";

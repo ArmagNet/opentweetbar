@@ -31,7 +31,26 @@ class MailNotifier {
 		$mailMessage = lang("add_tweet_mail_content", false, $validator["use_language"]);
 		$mailMessage = str_replace("{validationLink}", $validationLink, $mailMessage);
 		$mailMessage = str_replace("{login}", $validator["use_login"], $mailMessage);
-		$mailMessage = str_replace("{tweet}", $tweet["twe_content"], $mailMessage);
+
+		$tweetContent = "";
+		if ($tweet["twe_to_retweet"]) {
+			$retweet = json_decode($tweet["twe_to_retweet"], true);
+
+			if ($tweet["twe_content"]) {
+
+			}
+			else {
+				$tweetContent = lang("add_tweet_mail_only_a_retweet");
+				$tweetContent .= " https://twitter.com/" . $retweet["user"]["screen_name"] . "/" . $retweet["id_str"];
+				$tweetContent .= "\n";
+				$wteetContent .= $retweet["text"];
+			}
+		}
+		else {
+			$tweetContent = $tweet["twe_content"];
+		}
+		$mailMessage = str_replace("{tweet}", $tweetContent, $mailMessage);
+
 		$mailMessage = str_replace("{account}", $account["sna_name"], $mailMessage);
 		$mailSubject = lang("add_tweet_mail_subject", false, $validator["use_language"]);
 

@@ -31,7 +31,25 @@ class DmNotifier {
 		$tweetBo->sendTweet($noticeTweet);
 		time_nanosleep(0, 300000000);
 
-		$noticeTweet["twe_content"] = "D ". $validator["use_login"] . " " . $tweet["twe_content"];
+		$tweetContent = "";
+		if ($tweet["twe_to_retweet"]) {
+			$retweet = json_decode($tweet["twe_to_retweet"], true);
+
+			if ($tweet["twe_content"]) {
+
+			}
+			else {
+				$tweetContent = "Retweet de : ";
+				$tweetContent .= " https://twitter.com/" . $retweet["user"]["screen_name"] . "/" . $retweet["id_str"];
+				$tweetContent .= "\n";
+				$wteetContent .= $retweet["text"];
+			}
+		}
+		else {
+			$tweetContent = $tweet["twe_content"];
+		}
+
+		$noticeTweet["twe_content"] = "D ". $validator["use_login"] . " " . $tweetContent;
 		$tweetBo->sendTweet($noticeTweet);
 		time_nanosleep(0, 300000000);
 
