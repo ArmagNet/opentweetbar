@@ -125,6 +125,10 @@ html,body {
 	text-shadow: 0 1px 1px rgba(255, 255, 255, .75);
 }
 
+.number-of-tweets {
+	cursor: pointer;
+}
+
 /* Spin animation */
 .spin {
      -webkit-transform-origin: 50% 50%;
