@@ -183,7 +183,7 @@ $(function() {
 		</a>
 		<p>${source_text}</p>
 		<small>
-			<a href="https://twitter.com/${tweet_user_screen_name">
+			<a href="https://twitter.com/${tweet_user_screen_name}">
 				<?php echo lang("property_retweet_by"); ?>
 			</a>
 		</small>
