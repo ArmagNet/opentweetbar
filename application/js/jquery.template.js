@@ -23,7 +23,7 @@
 	use = function(selector, options) {
 		var templated = [];
 		$(selector).each(function() {
-			var templateInstance = $(this).clone().removeClass("template").removeAttr("aria-template-id");
+			var templateInstance = $(this).clone().removeClass("template").removeAttr("data-template-id");
 
 			var html = templateInstance.prop("outerHTML");
 
@@ -58,7 +58,7 @@
 		else {
 			// Init
 			return this.each(function() {
-				$.templates[$(this).attr("aria-template-id")] = $(this).clone().removeClass("template").removeAttr("aria-template-id");
+				$.templates[$(this).attr("data-template-id")] = $(this).clone().removeClass("template").removeAttr("data-template-id");
 			});
 		}
 	};

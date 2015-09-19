@@ -195,7 +195,7 @@ $(function() {
 </div>
 
 <templates>
-	<blockquote aria-template-id="template-tweet" class="template" data-tweet-id="${source_id_str}">
+	<blockquote data-template-id="template-tweet" class="template" data-tweet-id="${source_id_str}">
 		<a href="https://twitter.com/${source_user_screen_name}">${source_user_name}
 			<small>@${source_user_screen_name}</small>
 		</a>
@@ -204,7 +204,7 @@ $(function() {
 		</a>
 		<p>${source_text}</p>
 	</blockquote>
-	<blockquote aria-template-id="template-retweet" class="template" data-tweet-id="${source_id_str}">
+	<blockquote data-template-id="template-retweet" class="template" data-tweet-id="${source_id_str}">
 		<a href="https://twitter.com/${source_user_screen_name}">${source_user_name}
 			<small>@${source_user_screen_name}</small>
 		</a>

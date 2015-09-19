@@ -48,10 +48,10 @@ function getHtmlTweet(tweet) {
 	};
 
 	if (tweet.retweeted_status) {
-		html = $("*[aria-template-id=template-retweet]").template("use", { "data": data });
+		html = $("*[data-template-id=template-retweet]").template("use", { "data": data });
 	}
 	else {
-		html = $("*[aria-template-id=template-tweet]").template("use", { "data": data });
+		html = $("*[data-template-id=template-tweet]").template("use", { "data": data });
 	}
 
 	html.attr("data-tweet", JSON.stringify(tweet));

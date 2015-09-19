@@ -67,10 +67,10 @@ function getNewTweets(accountId, sinceId, numberOfTweets, showDirectly) {
 					var numberOfTweetsDiv = null;
 
 					if (stacks[accountId].length > 1) {
-						numberOfTweetsDiv = $("*[aria-template-id=template-waiting-tweets]").template("use", { "data": {"numberOfTweets" : stacks[accountId].length} });
+						numberOfTweetsDiv = $("*[data-template-id=template-waiting-tweets]").template("use", { "data": {"numberOfTweets" : stacks[accountId].length} });
 					}
 					else {
-						numberOfTweetsDiv = $("*[aria-template-id=template-one-waiting-tweet]").template("use", { "data": {"numberOfTweets" : stacks[accountId].length} });
+						numberOfTweetsDiv = $("*[data-template-id=template-one-waiting-tweet]").template("use", { "data": {"numberOfTweets" : stacks[accountId].length} });
 					}
 
 					numberOfTweetsDiv.click(function() {
@@ -104,7 +104,7 @@ $(function() {
 		var accountId = $(this).data("account-id");
 		var sinceId = $(this).data("since-id");
 
-		var wait = $("*[aria-template-id=template-waiting]").template("use");
+		var wait = $("*[data-template-id=template-waiting]").template("use");
 
 		$("#account-panel-"+accountId+" .panel-body").prepend(wait);
 

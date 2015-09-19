@@ -79,7 +79,7 @@ foreach ($accounts as $account) {
 	<?php 	}?>
 
 	<templates>
-		<blockquote aria-template-id="template-tweet" class="template" data-tweet-id="${source_id_str}">
+		<blockquote data-template-id="template-tweet" class="template" data-tweet-id="${source_id_str}">
 			<a href="https://twitter.com/${source_user_screen_name}">${source_user_name}
 				<small>@${source_user_screen_name}</small>
 			</a>
@@ -89,7 +89,7 @@ foreach ($accounts as $account) {
 			<p>${source_text}</p>
 			<div class="tweet-bar text-center"><a href="#" class="retweet-button"><span class="glyphicon glyphicon-retweet"></span></a></div>
 		</blockquote>
-		<blockquote aria-template-id="template-retweet" class="template" data-tweet-id="${source_id_str}">
+		<blockquote data-template-id="template-retweet" class="template" data-tweet-id="${source_id_str}">
 			<a href="https://twitter.com/${source_user_screen_name}">${source_user_name}
 				<small>@${source_user_screen_name}</small>
 			</a>
@@ -104,11 +104,11 @@ foreach ($accounts as $account) {
 			</small>
 			<div class="tweet-bar text-center"><a href="#" class="retweet-button"><span class="glyphicon glyphicon-retweet"></span></a></div>
 		</blockquote>
-		<div aria-template-id="template-waiting" class="template text-center wait"><span class="glyphicon glyphicon-refresh spin"></span></div>
-		<blockquote aria-template-id="template-waiting-tweets" class="template number-of-tweets">
+		<div data-template-id="template-waiting" class="template text-center wait"><span class="glyphicon glyphicon-refresh spin"></span></div>
+		<blockquote data-template-id="template-waiting-tweets" class="template number-of-tweets">
 			<p class="text-center"><?php echo lang("timelines_waiting_tweets"); ?></p>
 		</blockquote>
-		<blockquote aria-template-id="template-one-waiting-tweet" class="template number-of-tweets">
+		<blockquote data-template-id="template-one-waiting-tweet" class="template number-of-tweets">
 			<p class="text-center"><?php echo lang("timelines_waiting_tweet"); ?></p>
 		</blockquote>
 	</templates>
