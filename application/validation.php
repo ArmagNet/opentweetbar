@@ -111,7 +111,7 @@ $(function() {
 						<?php 	}?>
 
 						<?php 	if ($tweet["twe_ask_modification"]) {?>
-							<br/><span class="text-muted"><span class="glyphicon glyphicon-warning-sign"></span>
+							<br/><span class="text-muted ask-for-modification"><span class="glyphicon glyphicon-warning-sign"></span>
 						<?php		echo lang("validation_ask_modification");?>
 								</span>
 						<?php	}?>
@@ -215,7 +215,7 @@ $(function() {
 
 <templates>
 	<div data-template-id="template-ask-for-modification" class="template">
-		<br/><span class="text-muted"><span class="glyphicon glyphicon-warning-sign"></span>
+		<br/><span class="text-muted ask-for-modification"><span class="glyphicon glyphicon-warning-sign"></span>
 						<?php		echo lang("validation_ask_modification");?>
 		</span>
 	</div>
@@ -292,9 +292,13 @@ $(function() {
 				if (data.ok) {
 					$("#okAskForModificationAlert").show().delay(2000).fadeOut(1000);
 
-					tr.find("td").eq(0).append(
-						$("*[data-template-id=template-ask-for-modification]").template("use", {data: {}}).children()
-					);
+					var td = tr.find("td").eq(0);
+
+					if (!td.find(".ask-for-modification").length) {
+						td.append(
+							$("*[data-template-id=template-ask-for-modification]").template("use", {data: {}}).children()
+						);
+					}
 
 //					deleteTweetUI(id);
 				}
