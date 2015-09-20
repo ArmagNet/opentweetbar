@@ -19,6 +19,12 @@
 
 class DmNotifier {
 
+	function notifyAskForModification($account, $author, $tweet) {
+		global $tweetBo;
+		global $config;
+
+	}
+
 	function notifyValidationLink($account, $validator, $tweet, $validationLink) {
 		global $tweetBo;
 		global $config;

@@ -110,6 +110,12 @@ $(function() {
 							<?php }?>
 						<?php 	}?>
 
+						<?php 	if ($tweet["twe_ask_modification"]) {?>
+							<br/><span class="text-muted"><span class="glyphicon glyphicon-warning-sign"></span>
+						<?php		echo lang("validation_ask_modification");?>
+								</span>
+						<?php	}?>
+
 						<?php 	if ($tweet["twe_cron_datetime"]) {?>
 							<br/><span class="text-muted"><span class="glyphicon glyphicon-calendar"></span>
 						<?php		$date = new DateTime($tweet["twe_cron_datetime"]);
@@ -163,14 +169,26 @@ $(function() {
 							</div>
 						</div>
 					</td>
-					<td class="vertical-middle"><?php 				if ($tweet["twe_author_id"] == $userId || isAdministrator($tweet["twe_destination_id"])) {?>
-						<button id="delete_<?php echo $tweet["twe_id"]; ?>" class="btn btn-danger" type="button">
-							<?php echo lang("common_delete"); ?> <span class="glyphicon glyphicon-remove"></span>
-						</button> <?php 	}
-											if ($tweet["validation"][1] == 0 && $tweet["twe_author_id"] != $userId) {?>
-						<button id="validate_<?php echo $tweet["twe_id"]; ?>" class="btn btn-success" type="button">
+					<td class="vertical-middle">
+
+						<?php 	if ($tweet["validation"][1] == 0 && $tweet["twe_author_id"] != $userId) {?>
+						<button id="validate_<?php echo $tweet["twe_id"]; ?>" class="btn btn-success validate-button" type="button">
 							<?php echo lang("common_validate"); ?> <span class="glyphicon glyphicon-ok"></span>
-						</button> <?php 	}?>
+						</button>
+						<?php 	}?>
+
+						<?php	if ($tweet["twe_author_id"] != $userId) {?>
+						<button id="askForModification_<?php echo $tweet["twe_id"]; ?>" class="btn btn-warning ask-for-modification-button" type="button">
+							<?php echo lang("common_ask_for_modification"); ?> <span class="glyphicon glyphicon-warning-sign"></span>
+						</button>
+						<?php 	}?>
+
+						<?php	if ($tweet["twe_author_id"] == $userId || isAdministrator($tweet["twe_destination_id"])) {?>
+						<button id="delete_<?php echo $tweet["twe_id"]; ?>" class="btn btn-danger delete-button" type="button">
+							<?php echo lang("common_delete"); ?> <span class="glyphicon glyphicon-remove"></span>
+						</button>
+						<?php 	}?>
+
 					</td>
 				</tr>
 				<?php 	}?>
@@ -184,6 +202,7 @@ $(function() {
 
 	<?php 	}?>
 
+	<?php echo addAlertDialog("okAskForModificationAlert", lang("okAskForModificationTweet"), "success"); ?>
 	<?php echo addAlertDialog("okDeleteTweetAlert", lang("okDeleteTweet"), "success"); ?>
 	<?php echo addAlertDialog("okValidateTweetAlert", lang("okValidateTweet"), "info"); ?>
 	<?php echo addAlertDialog("okFinalValidateTweetAlert", lang("okFinalValidateTweet"), "success"); ?>
@@ -195,6 +214,11 @@ $(function() {
 </div>
 
 <templates>
+	<div data-template-id="template-ask-for-modification" class="template">
+		<br/><span class="text-muted"><span class="glyphicon glyphicon-warning-sign"></span>
+						<?php		echo lang("validation_ask_modification");?>
+		</span>
+	</div>
 	<blockquote data-template-id="template-tweet" class="template" data-tweet-id="${source_id_str}">
 		<a href="https://twitter.com/${source_user_screen_name}">${source_user_name}
 			<small>@${source_user_screen_name}</small>
@@ -255,7 +279,30 @@ $(function() {
 	}
 
 	$(function() {
-		$(".btn-danger").click(function() {
+		$(".ask-for-modification-button").click(function() {
+			var tr = $(this).parents("tr");
+
+			var id = getElementId($(this));
+
+			var myform = {	"tweetId" : id,
+							"userId" : '<?php echo $userId; ?>',
+							"hash" : $("#hash_" + id).val()};
+
+			$.post("do_askForModification.php", myform, function(data) {
+				if (data.ok) {
+					$("#okAskForModificationAlert").show().delay(2000).fadeOut(1000);
+
+					tr.find("td").eq(0).append(
+						$("*[data-template-id=template-ask-for-modification]").template("use", {data: {}}).children()
+					);
+
+//					deleteTweetUI(id);
+				}
+			}, "json");
+		});
+
+
+		$(".delete-button").click(function() {
 			var id = getElementId($(this));
 
 			var myform = {	"tweetId" : id,
@@ -270,7 +317,7 @@ $(function() {
 			}, "json");
 		});
 
-		$(".btn-success").click(function() {
+		$(".validate-button").click(function() {
 			var id = getElementId($(this));
 
 			var myform = {	"tweetId" : id,

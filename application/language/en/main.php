@@ -23,6 +23,7 @@ $lang["datetime_format"] = "the {date} at {time}";
 
 $lang["common_validate"] = "Validate";
 $lang["common_delete"] = "Delete";
+$lang["common_ask_for_modification"] = "Ask modification";
 
 $lang["language_fr"] = "French";
 $lang["language_en"] = "English";
@@ -109,6 +110,7 @@ $lang["validation_tooltip_mine_validation"] = "My validation";
 $lang["validation_tooltip_other_validation"] = "Validation from other users";
 $lang["validation_cron_datetime_format"] = "Won't be emitted before the {date} at {time}";
 $lang["validation_duration_remaining"] = "Remaining time before expiration : {duration}";
+$lang["validation_ask_modification"] = "Modification requested";
 $lang["validation_retweet_proposition"] = "This a retweet proposition of :";
 
 $lang["do_validation_error"] = "Your validation failed (already done, tweet already sent or erased)";
@@ -244,6 +246,7 @@ The #OpenTweetBar Team";
 $lang["okTweet"] = "Your tweet is gone in validation";
 $lang["koTweet"] = "Problem in the handling of your tweet";
 $lang["okDeleteTweet"] = "Your tweet has been deleted";
+$lang["okAskForModificationTweet"] = "A modification has been asked for this tweet";
 $lang["okValidateTweet"] = "Your tweet validation has been taken into account";
 $lang["okFinalValidateTweet"] = "Your tweet validation has been taken into account, and the tweet has been completly validated";
 $lang["error_cant_change_password"] = "The password change failed";

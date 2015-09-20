@@ -48,30 +48,30 @@ if ($trueHash != $hash) {
 	exit();
 }
 
-$administratedAccounts = $accountBo->getAdministratedAccounts($userId);
+$validatorGroup = $accountBo->getValidator($tweet["twe_destination"], $userId);
 
-$isAdmin = false;
-foreach($administratedAccounts as $administratedAccount) {
-	if ($administratedAccount["sna_id"] == $tweet["twe_destination_id"]) {
-		$isAdmin = true;
-		break;
+// We must be in a validator group
+if (!$validatorGroup) {
+	if (!isset($_SERVER["HTTP_REFERER"]) || strpos($_SERVER["HTTP_REFERER"], "t.co") !== false) {
+		echo lang("do_ask_for_modification_error", true, $user["use_language"]);
 	}
-}
-
-// Only the author can delete a tweet or an admin
-if ($tweet["twe_author_id"] != $userId && !$isAdmin) {
-	echo json_encode(array("ko" => "ko", "message" => "not_allowed"));
+	else {
+		echo json_encode(array("ko" => "ko", "message" => "not_allowed"));
+	}
 	exit();
 }
 
 $data = array();
 
-if ($tweetBo->updateStatus($tweet, "deleted")) {
-	$data["ok"] = "ok";
-}
-else {
-	$data["ko"] = "ko";
-}
+// tag it
+
+$tweetToUpdate = array("twe_id" => $tweet["twe_id"]);
+$tweetToUpdate["twe_ask_modification"] = 1;
+$tweetBo->update($tweetToUpdate);
+
+// TODO notify it
+
+$data["ok"] = "ok";
 
 echo json_encode($data);
 ?>

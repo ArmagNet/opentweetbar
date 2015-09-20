@@ -19,6 +19,11 @@
 
 class MailNotifier {
 
+	function notifyAskForModification($account, $author, $tweet) {
+		global $config;
+
+	}
+
 	function notifyValidationLink($account, $validator, $tweet, $validationLink) {
 		global $config;
 
