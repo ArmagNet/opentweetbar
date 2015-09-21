@@ -18,12 +18,23 @@
 */
 session_start();
 include_once("config/database.php");
+include_once("config/mail.php");
 require_once("engine/utils/SessionUtils.php");
 require_once("engine/bo/AccountBo.php");
 require_once("engine/bo/TweetBo.php");
+require_once("engine/bo/UserBo.php");
+include_once("language/language.php");
 
-$accountBo = AccountBo::newInstance(openConnection());
-$tweetBo = TweetBo::newInstance(openConnection());
+require_once("engine/notification/NotifierFactory.php");
+require_once("engine/notification/MailNotifier.php");
+require_once("engine/notification/SimpleDmNotifier.php");
+require_once("engine/notification/DmNotifier.php");
+
+$connection = openConnection();
+
+$accountBo = AccountBo::newInstance($connection);
+$tweetBo = TweetBo::newInstance($connection);
+$userBo = UserBo::newInstance($connection);
 
 $userId = $_REQUEST["userId"];
 $hash = $_REQUEST["hash"];
@@ -69,7 +80,18 @@ $tweetToUpdate = array("twe_id" => $tweet["twe_id"]);
 $tweetToUpdate["twe_ask_modification"] = 1;
 $tweetBo->update($tweetToUpdate);
 
-// TODO notify it
+// notify it
+
+if ($tweet["twe_author_id"]) {
+	$author = $userBo->get($tweet["twe_author_id"]);
+	$account = $accountBo->getAccount($tweet["twe_destination_id"]);
+
+	$notifier = NotifierFactory::getInstance($author["use_notification"]);
+	if ($notifier) {
+		$notifier->notifyAskForModification($account, $author, $tweet);
+	}
+}
+
 
 $data["ok"] = "ok";
 

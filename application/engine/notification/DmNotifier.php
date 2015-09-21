@@ -23,6 +23,12 @@ class DmNotifier {
 		global $tweetBo;
 		global $config;
 
+		$noticeTweet = array();
+		$noticeTweet["twe_destination"] = $account["sna_name"];
+		$noticeTweet["twe_destination_id"] = $account["sna_id"];
+
+		$noticeTweet["twe_content"] = "D ". $author["use_login"] . " un message demande à être relu pour modification " . $config["base_url"] . "validation.php";
+		$tweetBo->sendTweet($noticeTweet);
 	}
 
 	function notifyValidationLink($account, $validator, $tweet, $validationLink) {
@@ -62,6 +68,5 @@ class DmNotifier {
 		$noticeTweet["twe_content"] = "D ". $validator["use_login"] . " Pour valider : " . $validationLink;
 		$tweetBo->sendTweet($noticeTweet);
 	}
-
 }
 ?>

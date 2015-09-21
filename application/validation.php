@@ -242,7 +242,7 @@ $(function() {
 			</a>
 		</small>
 	</blockquote>
-<templates>
+</templates>
 
 <?php include("footer.php");?>
 <script>

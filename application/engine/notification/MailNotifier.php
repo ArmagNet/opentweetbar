@@ -22,6 +22,25 @@ class MailNotifier {
 	function notifyAskForModification($account, $author, $tweet) {
 		global $config;
 
+
+		$mail = getMailInstance();
+
+		$mail->setFrom($config["smtp"]["from.address"], $config["smtp"]["from.name"]);
+		$mail->addReplyTo($config["smtp"]["from.address"], $config["smtp"]["from.name"]);
+		$mail->addAddress($author["use_mail"]);
+
+		$mailMessage = lang("ask_for_modification_mail_content", false, $author["use_language"]);
+		$mailMessage = str_replace("{login}", $author["use_login"], $mailMessage);
+		$mailMessage = str_replace("{account}", $account["sna_name"], $mailMessage);
+		$mailMessage = str_replace("{validationUrl}", $config["base_url"] . "validation.php", $mailMessage);
+
+		$mailSubject = lang("ask_for_modification_mail_subject", false, $author["use_language"]);
+
+		$mail->Subject = mb_encode_mimeheader(utf8_decode($mailSubject), "ISO-8859-1");
+		$mail->msgHTML(str_replace("\n", "<br>\n", utf8_decode($mailMessage)));
+		$mail->AltBody = utf8_decode($mailMessage);
+
+		$mail->send();
 	}
 
 	function notifyValidationLink($account, $validator, $tweet, $validationLink) {
@@ -45,7 +64,7 @@ class MailNotifier {
 
 			}
 			else {
-				$tweetContent = lang("add_tweet_mail_only_a_retweet");
+				$tweetContent = lang("add_tweet_mail_only_a_retweet", false, $validator["use_language"]);
 				$tweetContent .= " https://twitter.com/" . $retweet["user"]["screen_name"] . "/status/" . $retweet["id_str"];
 				$tweetContent .= "\n";
 				$wteetContent .= $retweet["text"];
@@ -65,6 +84,5 @@ class MailNotifier {
 
 		$mail->send();
 	}
-
 }
 ?>

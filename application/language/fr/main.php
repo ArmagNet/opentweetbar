@@ -93,8 +93,18 @@ Vous êtes dans une liste de validateurs du compte {account}, et, un tweet vous 
 Vous pouvez directement valider ce tweet en cliquant sur le lien ci-dessous :
 {validationLink}
 
-L'équipe #OpenTweetBar";
+L'équipe @OpenTweetBar";
 $lang["add_tweet_mail_only_a_retweet"] = "Proposition d'un retweet de :";
+
+$lang["ask_for_modification_mail_subject"] = "[OTB] Modification d'un tweet demandé";
+$lang["ask_for_modification_mail_content"] = "Bonjour {login},
+
+Vous êtes l'auteur d'un tweet sur le compte {account}, et, un validateur vous demande de la modifier.
+
+Vous pouvez modificer ce tweet en cliquant sur le lien ci-dessous :
+{validationUrl}
+
+L'équipe @OpenTweetBar";
 
 $lang["history_guide"] = "Liste des tweets qui ont été validés.";
 $lang["history_button_validators"] = "Validateurs";
@@ -215,7 +225,7 @@ $lang["register_mail_content"] = "Bonjour {login},
 Il semblerait que vous vous soyez enregistré sur OpenTweetBar. Pour confirmer votre enregistrement, veuillez cliquer sur le lien ci-dessous :
 {activationUrl}
 
-L'équipe #OpenTweetBar";
+L'équipe @OpenTweetBar";
 $lang["register_save"] = "S'enregistrer";
 $lang["register_validation_user_empty"] = "Le champ utilisateur ne peut être vide";
 $lang["register_validation_user_already_taken"] = "Cet utilisateur est déjà pris";
@@ -241,7 +251,7 @@ $lang["forgotten_mail_content"] = "Bonjour,
 Il semblerait que vous ayez oublié votre mot de passe sur OpenTweetBar. Votre nouveau mot de passe est {password} .
 Veuillez le changer aussitôt que vous serez connecté.
 
-L'équipe #OpenTweetBar";
+L'équipe @OpenTweetBar";
 
 $lang["okTweet"] = "Votre tweet est parti en validation";
 $lang["koTweet"] = "Problème de traitement dans votre tweet";

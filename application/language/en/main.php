@@ -93,8 +93,18 @@ You're in a list of validators of the account {account}, and, a tweet is waiting
 You can directly validate this tweet by clicking on this link below :
 {validationLink}
 
-The #OpenTweetBar Team";
+The @OpenTweetBar Team";
 $lang["add_tweet_mail_only_a_retweet"] = "Retweet proposition of :";
+
+$lang["ask_for_modification_mail_subject"] = "[OTB] Tweet modification request";
+$lang["ask_for_modification_mail_content"] = "Hello {login},
+
+You're the author of a tweet on the account {account}, and, a validator request you to modify it.
+
+You can modify this tweet by clicking on this link below :
+{validationUrl}
+
+The @OpenTweetBar Team";
 
 $lang["history_guide"] = "List of tweets that have been validated.";
 $lang["history_button_validators"] = "Validators";
@@ -215,7 +225,7 @@ $lang["register_mail_content"] = "Hello {login},
 It seems that you registered yourself on OpenTweetBar. To confirm your registration, please click the link below :
 {activationUrl}
 
-The #OpenTweetBar Team";
+The @OpenTweetBar Team";
 $lang["register_save"] = "Sign in";
 $lang["register_validation_user_empty"] = "The user field can't be empty";
 $lang["register_validation_user_already_taken"] = "This username is already taken";
@@ -241,7 +251,7 @@ $lang["forgotten_mail_content"] = "Hello,
 It seems that you forgot your password on OpenTweetBar. Your new password is {password} .
 Please change it as soon as you are connected.
 
-The #OpenTweetBar Team";
+The @OpenTweetBar Team";
 
 $lang["okTweet"] = "Your tweet is gone in validation";
 $lang["koTweet"] = "Problem in the handling of your tweet";
