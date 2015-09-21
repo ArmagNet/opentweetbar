@@ -64,6 +64,25 @@ class TweetBo {
 		return $status;
 	}
 
+	static function getTweetFromTwitter($account, $tweetId) {
+		include_once "engine/twitter/twitteroauth.php";
+
+		$key = $account["stc_api_key"];
+		$secret = $account["stc_api_secret"];
+		$token = $account["stc_access_token"];
+		$token_secret = $account["stc_access_token_secret"];
+
+		//		print_r($account);
+
+		$connection = new TwitterOAuth($key, $secret, $token, $token_secret);
+
+		$parameters = array("id" => $tweetId);
+
+		$result = $connection->get('statuses/show', $parameters);
+
+		return $result;
+	}
+
 	static function getOembed($account, $tweetId) {
 		include_once "engine/twitter/twitteroauth.php";
 

@@ -33,6 +33,10 @@ $accountBo = AccountBo::newInstance($connection);
 $accounts = $accountBo->getAccessibleAccounts($userId);
 $account = $accountBo->getAccount($accounts[0]["sna_id"]);
 
-$tweetId = intval($_REQUEST["tweetId"]);
-echo TweetBo::getOembed($account, $tweetId)
+//$tweetId = intval($_REQUEST["tweetId"]);
+$tweetId = $_REQUEST["tweetId"];
+//echo TweetBo::getOembed($account, $tweetId)
+$tweet = TweetBo::getTweetFromTwitter($account, $tweetId);
+
+echo json_encode(array("ok" => "ok", "accountId" => -1, "tweetId" => $tweetId, "tweet" => $tweet));
 ?>

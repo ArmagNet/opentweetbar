@@ -118,9 +118,18 @@ $(function() {
 			tweetId = tweetId.substring(tweetId.lastIndexOf("/") + 1);
 		}
 
+		$("#found-tweet-div").children().remove();
+
 		$.post("do_searchTweet.php", {"tweetId": tweetId}, function(data) {
-			$("#found-tweet-div").html(data);
-		}, "html");
+			if (data.ok && data.tweet) {
+				var tweet = data.tweet;
+				var tweetHtml = getHtmlTweet(tweet);
+				addTweetHandlers(tweetHtml);
+
+				$("#found-tweet-div").append(tweetHtml);
+			}
+//			$("#found-tweet-div").html(data);
+		}, "json");
 	});
 
 	setTimeout(updateTweets, 120000);
