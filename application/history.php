@@ -166,24 +166,24 @@ $(function() {
 
 <templates>
 	<blockquote data-template-id="template-tweet" class="template" data-tweet-id="${source_id_str}">
-		<a href="https://twitter.com/${source_user_screen_name}">${source_user_name}
+		<a href="https://twitter.com/${source_user_screen_name}" target="_blank">${source_user_name}
 			<small>@${source_user_screen_name}</small>
 		</a>
-		<a href="https://twitter.com/${source_user_screen_name}/status/${source_id_str}">
+		<a href="https://twitter.com/${source_user_screen_name}/status/${source_id_str}" target="_blank">
 			<small>${source_created_at}</small>
 		</a>
 		<p>${source_text}</p>
 	</blockquote>
 	<blockquote data-template-id="template-retweet" class="template" data-tweet-id="${source_id_str}">
-		<a href="https://twitter.com/${source_user_screen_name}">${source_user_name}
+		<a href="https://twitter.com/${source_user_screen_name}" target="_blank">${source_user_name}
 			<small>@${source_user_screen_name}</small>
 		</a>
-		<a href="https://twitter.com/${source_user_screen_name}/status/${source_id_str}">
+		<a href="https://twitter.com/${source_user_screen_name}/status/${source_id_str}" target="_blank">
 			<small>${source_created_at}</small>
 		</a>
 		<p>${source_text}</p>
 		<small>
-			<a href="https://twitter.com/${tweet_user_screen_name}">
+			<a href="https://twitter.com/${tweet_user_screen_name}" target="_blank">
 				<?php echo lang("property_retweet_by"); ?>
 			</a>
 		</small>
