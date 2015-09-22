@@ -66,7 +66,7 @@ function addTweetHandlers(tweetElement) {
 
 		var blockquote = $(this).parents("blockquote");
 
-		var tweetId = blockquote.data("tweet-id");
+//		var tweetId = blockquote.data("tweet-id");
 		var tweet = blockquote.data("tweet");
 		var tweetAccountId = blockquote.parents(".account-panel").data("account-id");
 
@@ -103,11 +103,6 @@ function addTweetHandlers(tweetElement) {
                     label: "Retweet",
                     className: "btn-primary",
                     callback: function () {
-//        				console.log("Retweet : " + tweetId + " => " + tweetAccountId);
-//        				console.log(tweet);
-//        				console.log($("input[name=retweet_account_ids]"));
-//        				console.log($("input"));
-
         				var retweetForm = {toRetweet: JSON.stringify(tweet), "secondaryAccounts[]": []};
 
         				retweetForm["account"] = null;

@@ -123,7 +123,7 @@ foreach($accounts as $account) {
 	$tweet["twe_media_ids"] = array();
 	foreach($mediaIds as $mediaId) {
 		if ($mediaId != -1) {
-			$tweet["twe_media_ids"][] = $mediaId;
+			$tweet["twe_media_ids"][] = trim($mediaId);
 		}
 	}
 

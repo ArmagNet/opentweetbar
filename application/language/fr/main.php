@@ -23,6 +23,7 @@ $lang["datetime_format"] = "le {date} à {time}";
 
 $lang["common_validate"] = "Valider";
 $lang["common_delete"] = "Supprimer";
+$lang["common_fork"] = "Copier";
 $lang["common_ask_for_modification"] = "Demander modification";
 
 $lang["language_fr"] = "Français";

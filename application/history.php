@@ -19,6 +19,11 @@
 include_once("header.php");
 require_once("engine/bo/MediaBo.php");
 
+$accountIdLabels = array();
+foreach ($accounts as $account) {
+	$accountIdLabels[$account["sna_id"]] = $account["sna_name"];
+}
+
 $mediaBo = MediaBo::newInstance($connection);
 
 $tweets = $tweetBo->getTweets($accounts, array('validated','expired','croned','rejected'));
@@ -53,6 +58,7 @@ $tweetsByAccount = TweetBo::accounted($tweets);
 					<th class="authorColumn"><?php echo lang("property_author"); ?></th>
 					<th class="dateColumn"><?php echo lang("property_date"); ?></th>
 					<th class="validationColumn"><?php echo lang("property_validators"); ?></th>
+					<th class="actionColumn"><?php echo lang("property_actions"); ?></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -146,6 +152,16 @@ $(function() {
 							</ul>
 						</div>
 					</td>
+					<td class="vertical-middle">
+
+						<?php 	if ($tweet["twe_author_id"]) {?>
+						<button id="fork_<?php echo $tweet["twe_id"]; ?>"
+							data-account="<?php echo $account; ?>"
+							data-tweet-id="<?php echo $tweet["twe_id"]; ?>" class="btn btn-primary fork-button" type="button">
+							<?php echo lang("common_fork"); ?> <span class="glyphicon glyphicon-copy"></span>
+						</button>
+						<?php 	}?>
+					</td>
 				</tr>
 				<?php 	}?>
 			</tbody>
@@ -157,6 +173,10 @@ $(function() {
 	<br>
 
 	<?php 	}?>
+
+	<script>
+		var accountIdLabels = <?php echo json_encode($accountIdLabels) ?>;
+	</script>
 
 	<?php 	} else {
 		include("connectButton.php");

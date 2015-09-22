@@ -19,6 +19,11 @@
 include_once("header.php");
 require_once("engine/bo/MediaBo.php");
 
+$accountIdLabels = array();
+foreach ($accounts as $account) {
+	$accountIdLabels[$account["sna_id"]] = $account["sna_name"];
+}
+
 $mediaBo = MediaBo::newInstance($connection);
 
 $tweets = $tweetBo->expurgeExpired($tweets);
@@ -177,6 +182,14 @@ $(function() {
 						</button>
 						<?php 	}?>
 
+						<?php 	if ($tweet["twe_author_id"]) {?>
+						<button id="fork_<?php echo $tweet["twe_id"]; ?>"
+							data-account="<?php echo $account; ?>"
+							data-tweet-id="<?php echo $tweet["twe_id"]; ?>" class="btn btn-primary fork-button" type="button">
+							<?php echo lang("common_fork"); ?> <span class="glyphicon glyphicon-copy"></span>
+						</button>
+						<?php 	}?>
+
 						<?php	if ($tweet["twe_author_id"] != $userId) {?>
 						<button id="askForModification_<?php echo $tweet["twe_id"]; ?>" class="btn btn-warning ask-for-modification-button" type="button">
 							<?php echo lang("common_ask_for_modification"); ?> <span class="glyphicon glyphicon-warning-sign"></span>
@@ -206,6 +219,10 @@ $(function() {
 	<?php echo addAlertDialog("okDeleteTweetAlert", lang("okDeleteTweet"), "success"); ?>
 	<?php echo addAlertDialog("okValidateTweetAlert", lang("okValidateTweet"), "info"); ?>
 	<?php echo addAlertDialog("okFinalValidateTweetAlert", lang("okFinalValidateTweet"), "success"); ?>
+
+	<script>
+		var accountIdLabels = <?php echo json_encode($accountIdLabels) ?>;
+	</script>
 
 	<?php 	} else {
 		include("connectButton.php");
