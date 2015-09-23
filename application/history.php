@@ -144,9 +144,12 @@ $(function() {
 								<?php echo lang("history_button_validators"); ?> <span class="caret"></span>
 							</button>
 							<ul class="dropdown-menu" role="menu" aria-labelledby="validators_5">
-								<?php 	foreach($tweet["validators"] as $validator) {?>
-								<li role="presentation">
-									<a href="https://twitter.com/<?php echo $validator; ?>" target="_blank"><?php echo $validator; ?></a>
+								<?php 	foreach($tweet["validations"] as $validation) {?>
+								<li role="presentation"
+									title="<?php echo $validation["tva_motivation"]; ?>"
+									data-toggle="tooltip" data-placement="left"
+									class="<?php if ($validation["tva_status"] == "rejection") { echo "text-danger"; } ?>">
+									<a href="https://twitter.com/<?php echo $validation["tva_validator"]; ?>" target="_blank" style="color: inherit;"><?php echo $validation["tva_validator"]; ?></a>
 								</li>
 								<?php 	}?>
 							</ul>

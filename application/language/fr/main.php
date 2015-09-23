@@ -24,6 +24,7 @@ $lang["datetime_format"] = "le {date} à {time}";
 $lang["common_validate"] = "Valider";
 $lang["common_delete"] = "Supprimer";
 $lang["common_fork"] = "Copier";
+$lang["common_reject"] = "Rejeter";
 $lang["common_ask_for_modification"] = "Demander modification";
 
 $lang["language_fr"] = "Français";
@@ -259,6 +260,7 @@ $lang["koTweet"] = "Problème de traitement dans votre tweet";
 $lang["okDeleteTweet"] = "Votre tweet a été supprimé";
 $lang["okAskForModificationTweet"] = "Une modification a été demandé pour ce tweet";
 $lang["okValidateTweet"] = "Votre validation du tweet a été prise en compte";
+$lang["okRejectTweet"] = "Votre rejet du tweet a été prise en compte";
 $lang["okFinalValidateTweet"] = "Votre validation du tweet a été prise en compte, et le tweet a été complètement validé";
 $lang["error_cant_change_password"] = "Le changement de mot de passe a échoué";
 $lang["ok_operation_success"] = "Opération réussie";

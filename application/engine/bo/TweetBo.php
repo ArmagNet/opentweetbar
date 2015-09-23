@@ -336,9 +336,9 @@ class TweetBo {
 
 	function addValidation(&$validation) {
 		$query = "	INSERT INTO tweet_validations
-						(tva_validator, tva_tweet_id, tva_status, tva_score, tva_ip, tva_referer, tva_datetime)
+						(tva_validator, tva_tweet_id, tva_status, tva_score, tva_ip, tva_referer, tva_datetime, tva_motivation)
 					VALUES
-						(:tva_validator, :tva_tweet_id, :tva_status, :tva_score, :tva_ip, :tva_referer, :tva_datetime) ";
+						(:tva_validator, :tva_tweet_id, :tva_status, :tva_score, :tva_ip, :tva_referer, :tva_datetime, :tva_motivation) ";
 
 		$statement = $this->pdo->prepare($query);
 		try {
@@ -408,6 +408,7 @@ class TweetBo {
 						authors.*,
 						tva_datetime,
 						tva_score,
+						tva_status, tva_motivation,
 						validators.use_login as tva_validator,
 						validators.use_id as tva_validator_id
 					FROM tweets";
@@ -595,21 +596,23 @@ class TweetBo {
 			}
 
 			if (!isset($indexedTweets[$tweet["twe_id"]]["validators"])) {
+				$indexedTweets[$tweet["twe_id"]]["validations"] = array();
 				$indexedTweets[$tweet["twe_id"]]["validators"] = array();
 				$indexedTweets[$tweet["twe_id"]]["validatorIds"] = array();
 			}
 
 			$indexedTweets[$tweet["twe_id"]]["validators"][] = $tweet["tva_validator"];
 			$indexedTweets[$tweet["twe_id"]]["validatorIds"][] = $tweet["tva_validator_id"];
+			$indexedTweets[$tweet["twe_id"]]["validations"][] = $tweet;
 
 			if ($tweet["tva_validator_id"] == $tweet["twe_author_id"]) {
-				$indexedTweets[$tweet["twe_id"]]["validation"][0] += $tweet["tva_score"];
+				$indexedTweets[$tweet["twe_id"]]["validation"][0] += ($tweet["tva_score"] * ($tweet["tva_status"] == "validation" ? 1: -1));
 			}
 			else if ($tweet["tva_validator_id"] == $userId) {
-				$indexedTweets[$tweet["twe_id"]]["validation"][1] += $tweet["tva_score"];
+				$indexedTweets[$tweet["twe_id"]]["validation"][1] += ($tweet["tva_score"] * ($tweet["tva_status"] == "validation" ? 1: -1));
 			}
 			else {
-				$indexedTweets[$tweet["twe_id"]]["validation"][2] += $tweet["tva_score"];
+				$indexedTweets[$tweet["twe_id"]]["validation"][2] += ($tweet["tva_score"] * ($tweet["tva_status"] == "validation" ? 1: -1));
 			}
 		}
 

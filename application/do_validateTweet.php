@@ -105,7 +105,14 @@ $validation = array();
 $validation["tva_validator"] = $userId;
 $validation["tva_tweet_id"] = $tweetId;
 $validation["tva_score"] = $validatorGroup["vgr_score"];
-$validation["tva_status"] = "validation";
+if (isset($_REQUEST["rejection"])) {
+	$validation["tva_status"] = "rejection";
+	$validation["tva_motivation"] = $_REQUEST["motivation"]; // TODO
+}
+else {
+	$validation["tva_status"] = "validation";
+	$validation["tva_motivation"] = "";
+}
 $validation["tva_ip"] = $remoteIp;
 $validation["tva_referer"] = $_SERVER["HTTP_REFERER"] ? $_SERVER["HTTP_REFERER"] : '';
 $validation["tva_datetime"] = date("Y-m-d H:i:s");
@@ -118,31 +125,36 @@ if ($tweetBo->addValidation($validation)) {
 	$tweet = $tweetBo->getTweet($validation["tva_tweet_id"]);
 	$currentScore = $tweet["validation"][0] + $tweet["validation"][1] + $tweet["validation"][2];
 
-	error_log(print_r($tweet, true));
+	if ($validation["tva_status"] == "validation") {
 
-	$data["validated"] = false;
-	if ($currentScore >= $tweet["twe_validation_score"]) {
-		$data["validated"] = true;
+	//	error_log(print_r($tweet, true));
 
-// 		error_log("Will do something");
-// 		error_log("tweet[twe_cron_datetime] " . $tweet["twe_cron_datetime"]);
+		$data["validated"] = false;
+		if ($currentScore >= $tweet["twe_validation_score"]) {
+			$data["validated"] = true;
 
-		if ($tweet["twe_status"] == "validated" || $tweet["twe_status"] == "croned") {
-//			error_log("in fact no");
-		}
-		else if (isset($tweet["twe_cron_datetime"]) && $tweet["twe_cron_datetime"] && $tweet["twe_cron_datetime"] != "0000-00-00 00:00:00") {
-//			error_log("Will do cron");
-			$tweetBo->updateStatus($tweet, "croned");
-		}
-		else {
-//			error_log("Will do sending");
-			$tweetBo->sendTweet($tweet);
-			$tweetBo->updateStatus($tweet, "validated");
+	// 		error_log("Will do something");
+	// 		error_log("tweet[twe_cron_datetime] " . $tweet["twe_cron_datetime"]);
+
+			if ($tweet["twe_status"] == "validated" || $tweet["twe_status"] == "croned") {
+	//			error_log("in fact no");
+			}
+			else if (isset($tweet["twe_cron_datetime"]) && $tweet["twe_cron_datetime"] && $tweet["twe_cron_datetime"] != "0000-00-00 00:00:00") {
+	//			error_log("Will do cron");
+				$tweetBo->updateStatus($tweet, "croned");
+			}
+			else {
+	//			error_log("Will do sending");
+				$tweetBo->sendTweet($tweet);
+				$tweetBo->updateStatus($tweet, "validated");
+			}
 		}
 	}
 
 	$data["validatorGroup"] = $validatorGroup["vgr_name"];
-	$data["score"] = 100 * $validation["tva_score"] / $tweet["twe_validation_score"];
+	$data["score"] = ($validation["tva_status"] == "validation" ? 100 : - 100) * $validation["tva_score"] / $tweet["twe_validation_score"];
+	$data["total_score"] = $currentScore;
+	$data["validation_score"] = $tweet["twe_validation_score"];
 }
 else {
 	$data["ko"] = "ko";

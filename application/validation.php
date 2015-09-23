@@ -135,6 +135,17 @@ $(function() {
 							</span>
 						<?php	}?>
 
+						<?php
+							foreach($tweet["validations"] as $validation) {
+								if ($validation["tva_status"] == "validation") continue;
+						?>
+							<br/><span class="text-muted"><span class="glyphicon glyphicon-ban-circle"></span>
+						<?php		echo $validation["tva_validator"]; ?> : <?php		echo $validation["tva_motivation"]; ?>
+							</span>
+						<?php
+							}
+						?>
+
 						<input id="hash_<?php echo $tweet["twe_id"]; ?>" type="hidden"
 						value="<?php echo TweetBo::hash($tweet, $userId); ?>" />
 					</td>
@@ -153,7 +164,10 @@ $(function() {
 						}
 					?></td>
 					<td class="vertical-middle">
-						<div class="progress margin-bottom-0">
+						<?php 	$totalScore = $tweet["validation"][0] + $tweet["validation"][1] + $tweet["validation"][2]; ?>
+						<div class="progress margin-bottom-0"
+							data-toggle="tooltip" data-placement="top"
+							title="<?php echo $totalScore; ?> / <?php echo $tweet["twe_validation_score"]; ?>">
 							<div class="progress-bar progress-bar-primary"
 								data-toggle="tooltip" data-placement="bottom"
 								title="<?php echo lang("validation_tooltip_author_validation"); ?>"
@@ -179,6 +193,12 @@ $(function() {
 						<?php 	if ($tweet["validation"][1] == 0 && $tweet["twe_author_id"] != $userId) {?>
 						<button id="validate_<?php echo $tweet["twe_id"]; ?>" class="btn btn-success validate-button" type="button">
 							<?php echo lang("common_validate"); ?> <span class="glyphicon glyphicon-ok"></span>
+						</button>
+						<?php 	}?>
+
+						<?php 	if ($tweet["validation"][1] == 0 && $tweet["twe_author_id"] != $userId) {?>
+						<button id="reject_<?php echo $tweet["twe_id"]; ?>" class="btn btn-danger reject-button" type="button">
+							<?php echo lang("common_reject"); ?> <span class="glyphicon glyphicon-ban-circle"></span>
 						</button>
 						<?php 	}?>
 
@@ -218,6 +238,7 @@ $(function() {
 	<?php echo addAlertDialog("okAskForModificationAlert", lang("okAskForModificationTweet"), "success"); ?>
 	<?php echo addAlertDialog("okDeleteTweetAlert", lang("okDeleteTweet"), "success"); ?>
 	<?php echo addAlertDialog("okValidateTweetAlert", lang("okValidateTweet"), "info"); ?>
+	<?php echo addAlertDialog("okRejectTweetAlert", lang("okRejectTweet"), "info"); ?>
 	<?php echo addAlertDialog("okFinalValidateTweetAlert", lang("okFinalValidateTweet"), "success"); ?>
 
 	<script>
@@ -231,9 +252,14 @@ $(function() {
 </div>
 
 <templates>
+	<div data-template-id="template-reject-tweet" class="template">
+		<br/><span class="text-muted"><span class="glyphicon glyphicon-ban-circle"></span>
+			${validator} : ${motivation}
+		</span>
+	</div>
 	<div data-template-id="template-ask-for-modification" class="template">
 		<br/><span class="text-muted ask-for-modification"><span class="glyphicon glyphicon-warning-sign"></span>
-						<?php		echo lang("validation_ask_modification");?>
+			<?php		echo lang("validation_ask_modification");?>
 		</span>
 	</div>
 	<blockquote data-template-id="template-tweet" class="template" data-tweet-id="${source_id_str}">
@@ -322,7 +348,6 @@ $(function() {
 			}, "json");
 		});
 
-
 		$(".delete-button").click(function() {
 			var id = getElementId($(this));
 
@@ -338,6 +363,42 @@ $(function() {
 			}, "json");
 		});
 
+		$(".reject-button").click(function() {
+			var id = getElementId($(this));
+
+			bootbox.prompt("Motivation du rejet :", function(result) {
+				if (result === null) {
+				}
+				else {
+					var myform = {	"tweetId" : id,
+							"userId" : '<?php echo $userId; ?>',
+							"hash" : $("#hash_" + id).val(),
+							"rejection" : true,
+							"motivation" : result};
+
+					$.post("do_validateTweet.php", myform, function(data) {
+						if (data.ok) {
+							$("#row_" + id + " .progress-bar-success").css("width", data.score + "%");
+							$("#row_" + id + " .progress").attr("title", data.total_score + " / " + data.validation_score);
+
+							var td = $("#row_" + id + " td").eq(0);
+
+							td.append(
+								$("*[data-template-id=template-reject-tweet]").template("use", {data: {
+											"validator" : "<?php echo $user; ?>",
+											"motivation" : myform["motivation"]
+										}}).children()
+							);
+
+							$("#okRejectTweetAlert").show().delay(2000).fadeOut(1000);
+							$("#validate_" + id).fadeOut().remove();
+							$("#reject_" + id).fadeOut().remove();
+						}
+					}, "json");
+				}
+			});
+		});
+
 		$(".validate-button").click(function() {
 			var id = getElementId($(this));
 
@@ -347,6 +408,7 @@ $(function() {
 			$.post("do_validateTweet.php", myform, function(data) {
 				if (data.ok) {
 					$("#row_" + id + " .progress-bar-success").css("width", data.score + "%");
+					$("#row_" + id + " .progress").attr("title", data.total_score + " / " + data.validation_score);
 
 					if (data.validated) {
 						$("#okFinalValidateTweetAlert").show().delay(2000).fadeOut(1000);
@@ -355,6 +417,7 @@ $(function() {
 					else {
 						$("#okValidateTweetAlert").show().delay(2000).fadeOut(1000);
 						$("#validate_" + id).fadeOut().remove();
+						$("#reject_" + id).fadeOut().remove();
 					}
 				}
 			}, "json");

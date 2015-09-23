@@ -99,12 +99,12 @@ if (count($accounts)) {
 			<!-- Collect the nav links, forms, and other content for toggling -->
 			<div class="collapse navbar-collapse" id="otb-navbar-collapse">
 				<ul class="nav navbar-nav">
-					<li <?php if ($page == "index") echo 'class="active"'; ?>><a href="index.php"><?php echo lang("menu_tweet"); ?><?php if ($page == "index") echo ' <span class="sr-only">(current)</span>'; ?></a></li>
-					<li <?php if ($page == "history") echo 'class="active"'; ?>><a href="history.php"><?php echo lang("menu_history"); ?><?php if ($page == "history") echo ' <span class="sr-only">(current)</span>'; ?></a></li>
 					<li <?php if ($page == "timelines") echo 'class="active"'; ?>><a href="timelines.php"><?php echo lang("menu_timelines"); ?><?php if ($page == "timelines") echo ' <span class="sr-only">(current)</span>'; ?></a></li>
+					<li <?php if ($page == "index") echo 'class="active"'; ?>><a href="index.php"><?php echo lang("menu_tweet"); ?><?php if ($page == "index") echo ' <span class="sr-only">(current)</span>'; ?></a></li>
 					<li id="validationMenuItem" <?php if ($page == "validation") echo 'class="active"'; ?>><a href="validation.php"><?php echo lang("menu_validation"); ?><?php if ($page == "validation") echo ' <span class="sr-only">(current)</span>'; ?>
 							<span class="badge <?php if (!count($tweets)) { echo "otbHidden"; } ?>"><?php echo count($tweets); ?> </span>
 					</a></li>
+					<li <?php if ($page == "history") echo 'class="active"'; ?>><a href="history.php"><?php echo lang("menu_history"); ?><?php if ($page == "history") echo ' <span class="sr-only">(current)</span>'; ?></a></li>
 				</ul>
 				<!--
 				<form class="navbar-form navbar-left" role="search">

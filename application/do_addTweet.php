@@ -148,6 +148,7 @@ foreach($accounts as $account) {
 			$validation["tva_tweet_id"] = $tweet["twe_id"];
 			$validation["tva_validator"] = $tweet["twe_author"];
 			$validation["tva_status"] = "validation";
+			$validation["tva_motivation"] = "";
 			$validation["tva_score"] = $validatorGroup["vgr_score"];
 			$validation["tva_ip"] = $remoteIp;
 			$validation["tva_referer"] = $_SERVER["HTTP_REFERER"] ? $_SERVER["HTTP_REFERER"] : '';
