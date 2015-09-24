@@ -259,7 +259,7 @@ $(function() {
 <templates>
 	<div data-template-id="template-reject-tweet" class="template">
 		<br/><span class="text-muted reject-information"><span class="glyphicon glyphicon-ban-circle"></span>
-			${validator} : ${motivation}
+			<?php echo $user; ?> : ${motivation}
 		</span>
 	</div>
 	<div data-template-id="template-ask-for-modification" class="template">
@@ -293,142 +293,7 @@ $(function() {
 </templates>
 
 <?php include("footer.php");?>
-<script>
-
-	function getElementId(element) {
-		var id = element.attr("id");
-
-		if (id.lastIndexOf("_") != -1) {
-			id = id.substring(id.lastIndexOf("_") + 1);
-		}
-
-		return id;
-	}
-
-	function deleteTweetUI(id) {
-		$("#row_" + id).fadeOut(400, function() {
-			var table = $("#row_" + id).parents("table");
-			var nav = table.siblings("nav");
-			var currentPage = nav.find("li.active").text();
-
-			$("#row_" + id).remove();
-			var badge = $("#validationMenuItem .badge");
-			var value = badge.text() - 1;
-			badge.text(value);
-			if (value == 0) {
-				badge.hide();
-			}
-
-			// TODO count last trs and remove the last page if needed
-			if (currentPage) {
-				showPage(table, currentPage);
-			}
-		});
-	}
-
-	$(function() {
-		$(".ask-for-modification-button").click(function() {
-			var tr = $(this).parents("tr");
-
-			var id = getElementId($(this));
-
-			var myform = {	"tweetId" : id,
-							"userId" : '<?php echo $userId; ?>',
-							"hash" : $("#hash_" + id).val()};
-
-			$.post("do_askForModification.php", myform, function(data) {
-				if (data.ok) {
-					$("#okAskForModificationAlert").show().delay(2000).fadeOut(1000);
-
-					var td = tr.find("td").eq(0);
-
-					if (!td.find(".ask-for-modification").length) {
-						td.append(
-							$("*[data-template-id=template-ask-for-modification]").template("use", {data: {}}).children()
-						);
-					}
-
-//					deleteTweetUI(id);
-				}
-			}, "json");
-		});
-
-		$(".delete-button").click(function() {
-			var id = getElementId($(this));
-
-			var myform = {	"tweetId" : id,
-							"userId" : '<?php echo $userId; ?>',
-							"hash" : $("#hash_" + id).val()};
-
-			$.post("do_deleteTweet.php", myform, function(data) {
-				if (data.ok) {
-					$("#okDeleteTweetAlert").show().delay(2000).fadeOut(1000);
-					deleteTweetUI(id);
-				}
-			}, "json");
-		});
-
-		$(".reject-button").click(function() {
-			var id = getElementId($(this));
-
-			bootbox.prompt("Motivation du rejet :", function(result) {
-				if (result === null) {
-				}
-				else {
-					var myform = {	"tweetId" : id,
-							"userId" : '<?php echo $userId; ?>',
-							"hash" : $("#hash_" + id).val(),
-							"rejection" : true,
-							"motivation" : result};
-
-					$.post("do_validateTweet.php", myform, function(data) {
-						if (data.ok) {
-							$("#row_" + id + " .progress-bar-success").css("width", data.score + "%");
-							$("#row_" + id + " .progress").attr("title", data.total_score + " / " + data.validation_score);
-
-							var td = $("#row_" + id + " td").eq(0);
-
-							td.append(
-								$("*[data-template-id=template-reject-tweet]").template("use", {data: {
-											"validator" : "<?php echo $user; ?>",
-											"motivation" : myform["motivation"]
-										}}).children()
-							);
-
-							$("#okRejectTweetAlert").show().delay(2000).fadeOut(1000);
-							$("#validate_" + id).fadeOut().remove();
-							$("#reject_" + id).fadeOut().remove();
-						}
-					}, "json");
-				}
-			});
-		});
-
-		$(".validate-button").click(function() {
-			var id = getElementId($(this));
-
-			var myform = {	"tweetId" : id,
-							"userId" : '<?php echo $userId; ?>',
-							"hash" : $("#hash_" + id).val()};
-			$.post("do_validateTweet.php", myform, function(data) {
-				if (data.ok) {
-					$("#row_" + id + " .progress-bar-success").css("width", data.score + "%");
-					$("#row_" + id + " .progress").attr("title", data.total_score + " / " + data.validation_score);
-
-					if (data.validated) {
-						$("#okFinalValidateTweetAlert").show().delay(2000).fadeOut(1000);
-						deleteTweetUI(id);
-					}
-					else {
-						$("#okValidateTweetAlert").show().delay(2000).fadeOut(1000);
-						$("#validate_" + id).fadeOut().remove();
-						$("#reject_" + id).fadeOut().remove();
-					}
-				}
-			}, "json");
-		});
-	});
-
-	</script>
+<script type="text/javascript">
+</script>
 </body>
 </html>
