@@ -354,6 +354,22 @@ class TweetBo {
 		return false;
 	}
 
+	function removeValidation($validation) {
+		$query = "	DELETE FROM tweet_validations
+					WHERE
+						tva_id = :tva_id ";
+
+		$args = array();
+		$args["tva_id"] = $validation["tva_id"];
+
+//		echo showQuery($query, $args);
+
+		$statement = $this->pdo->prepare($query);
+		$statement->execute($args);
+
+		return true;
+	}
+
 	function getCronedTweets($limitDate) {
 		$args = array("twe_cron_datetime" => $limitDate);
 		$query = "	SELECT twe_id, twe_content, twe_to_retweet, twe_validation_score, twe_status, twe_ask_modification

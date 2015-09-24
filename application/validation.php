@@ -79,7 +79,7 @@ function isAdministrator($accountId) {
 					$medias = $mediaBo->getMedias(array("tme_tweet_id" => $tweet["twe_id"]));
 
 				?>
-				<tr id="row_<?php echo $tweet["twe_id"]; ?>">
+				<tr id="row_<?php echo $tweet["twe_id"]; ?>" class="tweet-row">
 					<td class="vertical-middle">
 						<?php if ($tweet["twe_to_retweet"]) {?>
 							<?php echo lang("validation_retweet_proposition"); ?>
@@ -96,7 +96,10 @@ $(function() {
 							</div>
 
 						<?php }?>
+						<span class="tweet-content">
 						<?php echo $tweet["twe_content"]; ?>
+						</span>
+						<sup><span class="glyphicon glyphicon-pencil"></span></sup>
 
 						<?php 	if (count($medias)) {?>
 							<br />
@@ -137,9 +140,9 @@ $(function() {
 
 						<?php
 							foreach($tweet["validations"] as $validation) {
-								if ($validation["tva_status"] == "validation") continue;
+								if (!$validation["tva_status"] || $validation["tva_status"] == "validation") continue;
 						?>
-							<br/><span class="text-muted"><span class="glyphicon glyphicon-ban-circle"></span>
+							<br/><span class="text-muted reject-information"><span class="glyphicon glyphicon-ban-circle"></span>
 						<?php		echo $validation["tva_validator"]; ?> : <?php		echo $validation["tva_motivation"]; ?>
 							</span>
 						<?php
@@ -148,6 +151,8 @@ $(function() {
 
 						<input id="hash_<?php echo $tweet["twe_id"]; ?>" type="hidden"
 						value="<?php echo TweetBo::hash($tweet, $userId); ?>" />
+						<input id="user_<?php echo $tweet["twe_id"]; ?>" type="hidden"
+						value="<?php echo $userId; ?>" />
 					</td>
 					<td class="vertical-middle">
 						<?php 	if ($tweet["twe_author_id"]) {?>
@@ -253,7 +258,7 @@ $(function() {
 
 <templates>
 	<div data-template-id="template-reject-tweet" class="template">
-		<br/><span class="text-muted"><span class="glyphicon glyphicon-ban-circle"></span>
+		<br/><span class="text-muted reject-information"><span class="glyphicon glyphicon-ban-circle"></span>
 			${validator} : ${motivation}
 		</span>
 	</div>

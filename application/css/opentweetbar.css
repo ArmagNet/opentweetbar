@@ -129,6 +129,18 @@ html,body {
 	cursor: pointer;
 }
 
+.tweet-content + sup {
+    display: none;
+}
+
+.tweet-content:hover + sup {
+    display: initial;
+}
+
+.tweet-row td textarea {
+    width: 100%;
+}
+
 /* Spin animation */
 .spin {
      -webkit-transform-origin: 50% 50%;

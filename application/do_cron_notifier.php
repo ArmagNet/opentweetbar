@@ -42,6 +42,11 @@ $accountBo = AccountBo::newInstance($connection);
 $accountId = $argv[1];
 $userId = $argv[2];
 $tweetId = $argv[3];
+$method = "notifyValidationLink";
+
+if (isset($argv[4])) {
+	$method = $argv[4];
+}
 
 $tweet = $tweetBo->getTweet($tweetId);
 $account = $accountBo->getAccount($accountId);
@@ -62,6 +67,7 @@ foreach($validators as $validator) {
 
 	$notifier = NotifierFactory::getInstance($validator["use_notification"]);
 	if ($notifier) {
+		// TODO use $method
 		$notifier->notifyValidationLink($account, $validator, $tweet, $validationLink);
 	}
 

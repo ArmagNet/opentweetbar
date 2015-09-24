@@ -173,18 +173,18 @@ foreach($accounts as $account) {
 		//	print_r($validators);
 
 			foreach($validators as $validator) {
-				if ($validator["use_id"] != $userId) {
-					$hash = TweetBo::hash($tweet, $validator["use_id"]);
+				if ($validator["use_id"] == $userId) continue;
 
-					$validationLink = $config["base_url"] . "dvt.php?";
-					$validationLink .= "u=" . $validator["use_id"];
-					$validationLink .= "&h=$hash";
-					$validationLink .= "&t=" . $tweet["twe_id"];
+				$hash = TweetBo::hash($tweet, $validator["use_id"]);
 
-					$notifier = NotifierFactory::getInstance($validator["use_notification"]);
-					if ($notifier) {
-						$notifier->notifyValidationLink($account, $validator, $tweet, $validationLink);
-					}
+				$validationLink = $config["base_url"] . "dvt.php?";
+				$validationLink .= "u=" . $validator["use_id"];
+				$validationLink .= "&h=$hash";
+				$validationLink .= "&t=" . $tweet["twe_id"];
+
+				$notifier = NotifierFactory::getInstance($validator["use_notification"]);
+				if ($notifier) {
+					$notifier->notifyValidationLink($account, $validator, $tweet, $validationLink);
 				}
 			}
 		}
