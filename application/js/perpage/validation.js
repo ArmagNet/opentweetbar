@@ -29,8 +29,26 @@ function deleteTweetUI(id) {
 	});
 }
 
+function updateTweetRow(tweetId) {
+	$.get("validation.php", {}, function(data) {
+		var newRow = $(data).find("#row_" + tweetId);
+
+		var oldRow = $("#row_" + tweetId);
+		oldRow.children().remove();
+		oldRow.append(newRow.children());
+		oldRow.find('[data-toggle="tooltip"]').tooltip();
+		addListeners(oldRow);
+	}, "html");
+}
+
 function addListeners(tweets) {
 	tweets.each(function() {
+		$(this).find(".test-button").click(function() {
+			var tweetId = $(this).data("tweet-id");
+
+			updateTweetRow(tweetId);
+		});
+
 		$(this).find(".fork-button").click(function() {
 			var tweetId = $(this).data("tweet-id");
 			var tweetAccount = $(this).data("account");
@@ -151,6 +169,8 @@ function addListeners(tweets) {
 						tweetContentSpan.show();
 						input.remove();
 						buttons.remove();
+
+						updateTweetRow(id);
 					}, "json");
 				}
 				else {
@@ -227,8 +247,6 @@ function addListeners(tweets) {
 							$("*[data-template-id=template-ask-for-modification]").template("use", {data: {}}).children()
 						);
 					}
-
-//					deleteTweetUI(id);
 				}
 			}, "json");
 		});
@@ -262,6 +280,7 @@ function addListeners(tweets) {
 							$("#okRejectTweetAlert").show().delay(2000).fadeOut(1000);
 							$("#validate_" + id).fadeOut().remove();
 							$("#reject_" + id).fadeOut().remove();
+							updateTweetRow(id);
 						}
 					}, "json");
 				}
