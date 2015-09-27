@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2014 Cédric Levieux, Jérémy Collot, ArmagNet
+	Copyright 2014-2015 Cédric Levieux, Jérémy Collot, ArmagNet
 
 	This file is part of OpenTweetBar.
 
@@ -30,13 +30,32 @@
 <script src="js/bootbox.min.js"></script>
 <script src="js/moment-with-locales.js"></script>
 <script src="js/bootstrap-datetimepicker.js"></script>
+<script src="js/jquery.timer.js"></script>
 <script src="js/ekko-lightbox.min.js"></script>
 <script type="text/javascript">
+
+function updateCountValidations() {
+	$.post("do_getCountValidations.php", {}, function(data) {
+		$("#validationMenuItem .badge").text(data.numberOfValidations);
+		if (data.numberOfValidations) {
+			$("#validationMenuItem .badge").show();
+		}
+		else {
+			$("#validationMenuItem .badge").hide();
+		}
+	}, "json");
+}
+
 $(function() {
 	$(document).delegate('*[data-toggle="lightbox"]', 'click', function(event) {
 	    event.preventDefault();
 	    $(this).ekkoLightbox();
 	});
+
+<?php	if ($userId) { ?>
+	var validationTimer = $.timer(updateCountValidations);
+	validationTimer.set({ time : 60000, autostart : true });
+<?php 	} ?>
 });
 </script>
 <script src="js/jquery.template.js"></script>
