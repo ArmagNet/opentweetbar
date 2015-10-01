@@ -161,7 +161,7 @@ $(function() {
 						<button id="fork_<?php echo $tweet["twe_id"]; ?>"
 							data-account="<?php echo $account; ?>"
 							data-tweet-id="<?php echo $tweet["twe_id"]; ?>" class="btn btn-primary fork-button" type="button">
-							<?php echo lang("common_fork"); ?> <span class="glyphicon glyphicon-copy"></span>
+							<?php echo lang("common_fork"); ?> <span class="glyphicon glyphicon-duplicate"></span>
 						</button>
 						<?php 	}?>
 					</td>
