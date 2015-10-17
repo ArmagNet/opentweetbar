@@ -135,9 +135,11 @@ if (count($accounts)) {
 							<li><a class="logoutLink" href="do_logout.php"><?php echo lang("menu_logout"); ?></a></li>
 						</ul>
 					</li>
-					<li><a class="logoutLink" href="do_logout.php"><span class="glyphicon glyphicon-log-out"></span><span class="sr-only">Logout</span> </a></li>
+					<li><a class="logoutLink" href="do_logout.php" title="<?php echo lang("menu_logout"); ?>"
+						data-toggle="tooltip" data-placement="bottom"><span class="glyphicon glyphicon-log-out"></span><span class="sr-only">Logout</span> </a></li>
 					<?php 	} else { ?>
-					<li><a id="loginLink" href="do_login.php"><span class="glyphicon glyphicon-log-in"></span><span class="sr-only">Login</span> </a></li>
+					<li><a id="loginLink" href="#" title="<?php echo lang("menu_login"); ?>"
+						data-toggle="tooltip" data-placement="bottom"><span class="glyphicon glyphicon-log-in"></span><span class="sr-only">Login</span> </a></li>
 					<?php 	}?>
 				</ul>
 			</div>

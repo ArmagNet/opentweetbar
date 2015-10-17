@@ -43,6 +43,7 @@ $lang["menu_myrights"] = "My rights";
 $lang["menu_mypreferences"] = "My preferences";
 $lang["menu_myaccounts"] = "My accounts";
 $lang["menu_logout"] = "Log out";
+$lang["menu_login"] = "Log in";
 
 $lang["login_title"] = "Log in";
 $lang["login_loginInput"] = "Identifier";
