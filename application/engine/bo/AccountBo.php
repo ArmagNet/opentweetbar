@@ -46,6 +46,10 @@ class AccountBo {
 			$query = "INSERT INTO sna_twitter_configuration (stc_sna_id) VALUES (:sna_id) ";
 			$statement = $this->pdo->prepare($query);
 			$statement->execute($args);
+
+			$query = "INSERT INTO sna_facebook_page_configuration (sfp_sna_id) VALUES (:sna_id) ";
+			$statement = $this->pdo->prepare($query);
+			$statement->execute($args);
 		}
 
 		$administrators = $account["administrators"];
@@ -54,7 +58,7 @@ class AccountBo {
 		unset($account["validatorGroups"]);
 
 		// Update the row
-		$query = "	UPDATE social_network_accounts, sna_configuration, sna_twitter_configuration
+		$query = "	UPDATE social_network_accounts, sna_configuration, sna_twitter_configuration, sna_facebook_page_configuration
 					SET
 						sna_name = :sna_name,
 						sco_validation_score = :sco_validation_score,
@@ -63,8 +67,10 @@ class AccountBo {
 						stc_api_key = :stc_api_key,
 						stc_api_secret = :stc_api_secret,
 						stc_access_token = :stc_access_token,
-						stc_access_token_secret = :stc_access_secret
-						WHERE sna_id = :sna_id AND sco_sna_id = :sna_id AND stc_sna_id = :sna_id";
+						stc_access_token_secret = :stc_access_secret,
+						sfp_page_id = :sfp_page_id,
+						sfp_access_token = :sfp_access_token
+						WHERE sna_id = :sna_id AND sco_sna_id = :sna_id AND stc_sna_id = :sna_id AND sfp_sna_id = :sna_id";
 		$statement = $this->pdo->prepare($query);
 
 		$account["stc_access_secret"] = $account["stc_access_token_secret"];
@@ -295,8 +301,8 @@ class AccountBo {
 		$query = "";
 		$query .= "	SELECT users.*";
 		$query .= "	FROM social_network_accounts sna";
-		$query .= "	LEFT JOIN sna_configuration ON sco_sna_id = sna_id";
-		$query .= "	LEFT JOIN sna_twitter_configuration ON stc_sna_id = sna_id";
+// 		$query .= "	LEFT JOIN sna_configuration ON sco_sna_id = sna_id";
+// 		$query .= "	LEFT JOIN sna_twitter_configuration ON stc_sna_id = sna_id";
 		$query .= "	LEFT JOIN administrators ON adm_sna_id = sna_id";
 		$query .= "	LEFT JOIN users ON adm_user_id = use_id";
 		$query .= "	WHERE sna_id = :sna_id";
@@ -321,9 +327,10 @@ class AccountBo {
 		$query = "";
 		$query .= "	SELECT *";
 		$query .= "	FROM social_network_accounts sna";
-		$query .= "	LEFT JOIN sna_configuration ON sco_sna_id = sna_id";
-		$query .= "	LEFT JOIN sna_twitter_configuration ON stc_sna_id = sna_id";
-		$query .= "	LEFT JOIN administrators ON adm_sna_id = sna_id";
+ 		$query .= "	LEFT JOIN sna_configuration ON sco_sna_id = sna_id";
+ 		$query .= "	LEFT JOIN sna_twitter_configuration ON stc_sna_id = sna_id";
+ 		$query .= "	LEFT JOIN sna_facebook_page_configuration ON sfp_sna_id = sna_id";
+ 		$query .= "	LEFT JOIN administrators ON adm_sna_id = sna_id";
 		$query .= "	WHERE adm_user_id = :adm_user_id";
 
 		$args = array("adm_user_id" => $userId);
@@ -348,6 +355,7 @@ class AccountBo {
 		$query .= "	FROM social_network_accounts sna";
 		$query .= "	LEFT JOIN sna_configuration ON sco_sna_id = sna_id";
 		$query .= "	LEFT JOIN sna_twitter_configuration ON stc_sna_id = sna_id";
+		$query .= "	LEFT JOIN sna_facebook_page_configuration ON sfp_sna_id = sna_id";
 		$query .= "	WHERE sna_id = :sna_id";
 
 		$args = array("sna_id" => $accountId);

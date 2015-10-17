@@ -38,6 +38,8 @@ $account["stc_api_key"] = $_REQUEST["apiKey"];
 $account["stc_api_secret"] = $_REQUEST["apiSecret"];
 $account["stc_access_token"] = $_REQUEST["accessToken"];
 $account["stc_access_token_secret"] = $_REQUEST["accessTokenSecret"];
+$account["sfp_page_id"] = $_REQUEST["pageId"];
+$account["sfp_access_token"] = $_REQUEST["fpAccessToken"];
 
 $administratorIds = json_decode($_REQUEST["administratorIds"]);
 $validatorGroups = json_decode($_REQUEST["validatorGroups"], true);

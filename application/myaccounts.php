@@ -301,6 +301,36 @@ foreach($accounts as $key => $account) {
 						<?php echo addAlertDialog("error_twitter_cant_authenticateAlert", lang("error_twitter_cant_authenticate"), "danger"); ?>
 
 						<legend>
+							<?php echo lang("myaccounts_facebook_page_form_legend"); ?>
+						</legend>
+
+						<div class="form-group">
+							<label class="col-md-4 control-label" for="pageIdInput"><?php echo lang("myaccounts_facebook_page_form_pageIdInput"); ?></label>
+							<div class="col-md-6">
+								<input id="pageIdInput" name="pageIdInput" value="<?php echo @$account["sfp_page_id"];?>" type="text"
+									placeholder="" class="form-control input-md">
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="col-md-4 control-label" for="fpAccessTokenInput"><?php echo lang("myaccounts_facebook_page_form_fpAccessTokenInput"); ?></label>
+							<div class="col-md-6">
+								<input id="fpAccessTokenInput" name="fpAccessTokenInput" value="<?php echo @$account["sfp_access_token"];?>" type="text"
+									placeholder="" class="form-control input-md">
+							</div>
+						</div>
+<!-- TODO
+						<div class="form-group">
+							<label class="col-md-4 control-label" for="testTweeterButton"></label>
+							<div class="col-md-8">
+								<button id="testTweeterButton" name="testTweeterButton" class="testTweeterButton btn btn-primary"><?php echo lang("myaccount_button_testTwitter"); ?></button>
+							</div>
+						</div>
+-->
+						<?php echo addAlertDialog("ok_facebook_page_successAlert", lang("ok_facebook_page_success"), "success"); ?>
+						<?php echo addAlertDialog("error_facebook_page_cant_authenticateAlert", lang("error_facebook_page_cant_authenticate"), "danger"); ?>
+
+						<legend>
 							<?php echo lang("myaccounts_administrators_form_legend"); ?>
 						</legend>
 
@@ -616,6 +646,8 @@ $(function() {
 							apiSecret: formInputs.find("#apiSecretInput").val(),
 							accessToken: formInputs.find("#accessTokenInput").val(),
 							accessTokenSecret: formInputs.find("#accessTokenSecretInput").val(),
+							pageId: formInputs.find("#pageIdInput").val(),
+							fpAccessToken: formInputs.find("#fpAccessTokenInput").val(),
 							administratorIds: JSON.stringify(administratorIds),
 							validatorGroups: JSON.stringify(validatorGroups)
 						};
