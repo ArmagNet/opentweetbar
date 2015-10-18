@@ -183,6 +183,38 @@ class TweetBo {
 	function sendTweet($tweet) {
 		error_log("send tweet");
 
+		$supports = json_decode($tweet["twe_supports"]);
+
+		foreach($suppors as $support) {
+			switch($support) {
+				case "twitter":
+					$this->sendTweetOnTwitter($tweet);
+					break;
+				case "facebookPage":
+					$this->sendTweetOnFacebookPage($tweet);
+					break;
+			}
+		}
+	}
+
+	function sendTweetOnFacebookPage($tweet) {
+		error_log("send tweet on facebook");
+
+		include_once "engine/facebook/facebook.php";
+		include_once "engine/bo/MediaBo.php";
+
+		$account = $this->getAccount($tweet["twe_destination_id"]);
+
+		$pageId = $account["sfp_page_id"];
+		$accessToken = $account["sfp_access_token"];
+
+		$facebookApiClient = new FacebookApiClient($accessToken);
+		$facebookApiClient->postMessage($pageId, $tweet["twe_content"]);
+	}
+
+	function sendTweetOnTwitter($tweet) {
+		error_log("send tweet on twitter");
+
 		include_once "engine/twitter/twitteroauth.php";
 		include_once "engine/bo/MediaBo.php";
 
@@ -193,7 +225,7 @@ class TweetBo {
 		$token = $account["stc_access_token"];
 		$token_secret = $account["stc_access_token_secret"];
 
-//		print_r($account);
+		//		print_r($account);
 
 		$connection = new TwitterOAuth($key, $secret, $token, $token_secret);
 
@@ -222,20 +254,20 @@ class TweetBo {
 			$retweet = json_decode($tweet["twe_to_retweet"], true);
 			$retweetId = $retweet["id_str"];
 
-//			error_log("Will retweet $retweetId");
+			//			error_log("Will retweet $retweetId");
 
 			if ($tweet["twe_content"]) {
-//				error_log("with content");
+				//				error_log("with content");
 			}
 			else {
-//				error_log("without content");
+				//				error_log("without content");
 				$parameters = array('id' => $retweetId);
 
 				$status = $connection->post('statuses/retweet/' . $retweetId, $parameters);
 			}
 		}
 		else {
-//			error_log("Will send a tweet");
+			//			error_log("Will send a tweet");
 
 			$parameters = array('status' => $tweet["twe_content"]);
 
@@ -247,7 +279,7 @@ class TweetBo {
 		}
 
 
-//		print_r($status);
+		//		print_r($status);
 	}
 
 	function updateStatus($tweet, $status) {
