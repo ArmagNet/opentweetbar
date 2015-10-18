@@ -58,14 +58,14 @@ foreach($accounts as $key => $account) {
 
 				<form class="form-horizontal">
 					<fieldset>
-						<!-- Form Name -->
+
 						<legend>
 							<?php echo lang("myaccounts_newaccount_form_legend"); ?>
 						</legend>
 
 						<input type="hidden" name="accountIdInput" id="accountIdInput" value="0"/>
 
-						<!-- Text input-->
+
 						<div class="form-group">
 							<label class="col-md-4 control-label" for="nameInput"><?php echo lang("myaccounts_account_form_nameInput"); ?></label>
 							<div class="col-md-6">
@@ -74,7 +74,7 @@ foreach($accounts as $key => $account) {
 							</div>
 						</div>
 
-						<!-- Checkbox input-->
+
 						<div class="form-group">
 							<div class="col-md-4 control-label">
 								<input id="anonymousInput" name="anonymousInput" value="cgv" type="checkbox"
@@ -85,7 +85,7 @@ foreach($accounts as $key => $account) {
 							</div>
 						</div>
 
-						<!-- Text input-->
+
 						<div class="form-group">
 							<label class="col-md-4 control-label" for="anonymousPasswordInput"><?php echo lang("myaccounts_account_form_anonymousPasswordInput"); ?></label>
 							<div class="col-md-6">
@@ -94,7 +94,7 @@ foreach($accounts as $key => $account) {
 							</div>
 						</div>
 
-						<!-- Text input-->
+
 						<div class="form-group">
 							<label class="col-md-4 control-label" for="validationScoreInput"><?php echo lang("myaccounts_account_form_validationScoreInput"); ?></label>
 							<div class="col-md-6">
@@ -107,7 +107,7 @@ foreach($accounts as $key => $account) {
 							<?php echo lang("myaccounts_twitter_form_legend"); ?>
 						</legend>
 
-						<!-- Text input-->
+
 						<div class="form-group">
 							<label class="col-md-4 control-label" for="apiKeyInput"><?php echo lang("myaccounts_twitter_form_apiKeyInput"); ?></label>
 							<div class="col-md-6">
@@ -116,7 +116,7 @@ foreach($accounts as $key => $account) {
 							</div>
 						</div>
 
-						<!-- Text input-->
+
 						<div class="form-group">
 							<label class="col-md-4 control-label" for="apiSecretInput"><?php echo lang("myaccounts_twitter_form_apiSecretInput"); ?></label>
 							<div class="col-md-6">
@@ -125,7 +125,7 @@ foreach($accounts as $key => $account) {
 							</div>
 						</div>
 
-						<!-- Text input-->
+
 						<div class="form-group">
 							<label class="col-md-4 control-label" for="accessTokenInput"><?php echo lang("myaccounts_twitter_form_accessTokenInput"); ?></label>
 							<div class="col-md-6">
@@ -134,7 +134,7 @@ foreach($accounts as $key => $account) {
 							</div>
 						</div>
 
-						<!-- Text input-->
+
 						<div class="form-group">
 							<label class="col-md-4 control-label" for="accessTokenSecretInput"><?php echo lang("myaccounts_twitter_form_accessTokenSecretInput"); ?></label>
 							<div class="col-md-6">
@@ -152,6 +152,64 @@ foreach($accounts as $key => $account) {
 
 						<?php echo addAlertDialog("ok_twitter_successAlert", lang("ok_twitter_success"), "success"); ?>
 						<?php echo addAlertDialog("error_twitter_cant_authenticateAlert", lang("error_twitter_cant_authenticate"), "danger"); ?>
+
+						<legend>
+							<?php echo lang("myaccounts_facebook_page_form_legend"); ?>
+						</legend>
+
+						<div class="form-group">
+							<label class="col-md-4 control-label" for="pageIdInput"><?php echo lang("myaccounts_facebook_page_form_pageIdInput"); ?></label>
+							<div class="col-md-6">
+								<input id="pageIdInput" name="pageIdInput" value="" type="text"
+									placeholder="" class="form-control input-md">
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="col-md-4 control-label" for="fpAccessTokenInput"><?php echo lang("myaccounts_facebook_page_form_fpAccessTokenInput"); ?></label>
+							<div class="col-md-6">
+								<div class="input-group">
+									<input id="fpAccessTokenInput" name="fpAccessTokenInput" value="" type="text"
+										placeholder="" class="form-control input-md">
+									<span class="input-group-btn">
+										<button type="button" class="toggle-create-access-token btn btn-default">
+											<span class="glyphicon glyphicon-plus"></span>
+										</button>
+									</span>
+								</div>
+							</div>
+						</div>
+
+						<div class="form-group create-access-token">
+							<label class="col-md-4 control-label" for="applicationIdInput"><?php echo lang("myaccounts_facebook_page_form_applicationIdInput"); ?></label>
+							<div class="col-md-6">
+								<input id="applicationIdInput" name="applicationIdInput" value="" type="text"
+									placeholder="" class="form-control input-md">
+							</div>
+						</div>
+
+						<div class="form-group create-access-token">
+							<label class="col-md-4 control-label" for="applicationSecretKeyInput"><?php echo lang("myaccounts_facebook_page_form_applicationSecretKeyInput"); ?></label>
+							<div class="col-md-6">
+								<input id="applicationSecretKeyInput" name="applicationSecretKeyInput" value="" type="text"
+									placeholder="" class="form-control input-md">
+							</div>
+						</div>
+
+						<div class="form-group create-access-token">
+							<label class="col-md-4 control-label" for="shortLiveUserAccessTokenInput"><?php echo lang("myaccounts_facebook_page_form_shortLiveUserAccessTokenInput"); ?></label>
+							<div class="col-md-6">
+								<input id="shortLiveUserAccessTokenInput" name="shortLiveUserAccessTokenInput" value="" type="text"
+									placeholder="" class="form-control input-md">
+							</div>
+						</div>
+
+						<div class="form-group create-access-token">
+							<label class="col-md-4 control-label" for="createFacebookPageAccessTokenButton"></label>
+							<div class="col-md-8">
+								<button id="createFacebookPageAccessTokenButton" name="createFacebookPageAccessTokenButton" class="createFacebookPageAccessTokenButton btn btn-primary"><?php echo lang("myaccounts_facebook_page_form_createFacebookPageAccessTokenButton"); ?></button>
+							</div>
+						</div>
 
 						<legend>
 							<?php echo lang("myaccounts_administrators_form_legend"); ?>
@@ -178,7 +236,7 @@ foreach($accounts as $key => $account) {
 							<?php echo lang("myaccounts_validators_form_legend"); ?>
 						</legend>
 
-						<!-- Button (Double) -->
+
 						<div class="form-group addGroupDiv">
 							<label class="col-md-4 control-label" for="addGroupButton"></label>
 							<div class="col-md-8">
@@ -188,7 +246,7 @@ foreach($accounts as $key => $account) {
 
 						<hr />
 
-						<!-- Button (Double) -->
+
 						<div class="form-group">
 							<label class="col-md-4 control-label" for="saveAccountButton"></label>
 							<div class="col-md-8">
@@ -205,14 +263,14 @@ foreach($accounts as $key => $account) {
 
 				<form class="form-horizontal">
 					<fieldset>
-						<!-- Form Name -->
+
 						<legend>
 							<?php echo str_replace("{account}", $account["sna_name"], lang("myaccounts_existingaccount_form_legend")); ?>
 						</legend>
 
 						<input type="hidden" name="accountIdInput" id="accountIdInput" value="<?php echo $account["sna_id"]; ?>"/>
 
-						<!-- Text input-->
+
 						<div class="form-group">
 							<label class="col-md-4 control-label" for="nameInput"><?php echo lang("myaccounts_account_form_nameInput"); ?></label>
 							<div class="col-md-6">
@@ -221,7 +279,7 @@ foreach($accounts as $key => $account) {
 							</div>
 						</div>
 
-						<!-- Checkbox input-->
+
 						<div class="form-group">
 							<div class="col-md-4 control-label">
 								<input id="anonymousInput" name="anonymousInput" value="1" type="checkbox"
@@ -232,7 +290,7 @@ foreach($accounts as $key => $account) {
 							</div>
 						</div>
 
-						<!-- Text input-->
+
 						<div class="form-group">
 							<label class="col-md-4 control-label" for="anonymousPasswordInput"><?php echo lang("myaccounts_account_form_anonymousPasswordInput"); ?></label>
 							<div class="col-md-6">
@@ -241,7 +299,7 @@ foreach($accounts as $key => $account) {
 							</div>
 						</div>
 
-						<!-- Text input-->
+
 						<div class="form-group">
 							<label class="col-md-4 control-label" for="validationScoreInput"><?php echo lang("myaccounts_account_form_validationScoreInput"); ?></label>
 							<div class="col-md-6">
@@ -254,7 +312,7 @@ foreach($accounts as $key => $account) {
 							<?php echo lang("myaccounts_twitter_form_legend"); ?>
 						</legend>
 
-						<!-- Text input-->
+
 						<div class="form-group">
 							<label class="col-md-4 control-label" for="apiKeyInput"><?php echo lang("myaccounts_twitter_form_apiKeyInput"); ?></label>
 							<div class="col-md-6">
@@ -263,7 +321,7 @@ foreach($accounts as $key => $account) {
 							</div>
 						</div>
 
-						<!-- Text input-->
+
 						<div class="form-group">
 							<label class="col-md-4 control-label" for="apiSecretInput"><?php echo lang("myaccounts_twitter_form_apiSecretInput"); ?></label>
 							<div class="col-md-6">
@@ -272,7 +330,7 @@ foreach($accounts as $key => $account) {
 							</div>
 						</div>
 
-						<!-- Text input-->
+
 						<div class="form-group">
 							<label class="col-md-4 control-label" for="accessTokenInput"><?php echo lang("myaccounts_twitter_form_accessTokenInput"); ?></label>
 							<div class="col-md-6">
@@ -281,7 +339,7 @@ foreach($accounts as $key => $account) {
 							</div>
 						</div>
 
-						<!-- Text input-->
+
 						<div class="form-group">
 							<label class="col-md-4 control-label" for="accessTokenSecretInput"><?php echo lang("myaccounts_twitter_form_accessTokenSecretInput"); ?></label>
 							<div class="col-md-6">
@@ -315,10 +373,49 @@ foreach($accounts as $key => $account) {
 						<div class="form-group">
 							<label class="col-md-4 control-label" for="fpAccessTokenInput"><?php echo lang("myaccounts_facebook_page_form_fpAccessTokenInput"); ?></label>
 							<div class="col-md-6">
-								<input id="fpAccessTokenInput" name="fpAccessTokenInput" value="<?php echo @$account["sfp_access_token"];?>" type="text"
+								<div class="input-group">
+									<input id="fpAccessTokenInput" name="fpAccessTokenInput" value="<?php echo @$account["sfp_access_token"];?>" type="text"
+										placeholder="" class="form-control input-md">
+									<span class="input-group-btn">
+										<button type="button" class="toggle-create-access-token btn btn-default">
+											<span class="glyphicon glyphicon-plus"></span>
+										</button>
+									</span>
+								</div>
+							</div>
+						</div>
+
+						<div class="form-group create-access-token">
+							<label class="col-md-4 control-label" for="applicationIdInput"><?php echo lang("myaccounts_facebook_page_form_applicationIdInput"); ?></label>
+							<div class="col-md-6">
+								<input id="applicationIdInput" name="applicationIdInput" value="" type="text"
 									placeholder="" class="form-control input-md">
 							</div>
 						</div>
+
+						<div class="form-group create-access-token">
+							<label class="col-md-4 control-label" for="applicationSecretKeyInput"><?php echo lang("myaccounts_facebook_page_form_applicationSecretKeyInput"); ?></label>
+							<div class="col-md-6">
+								<input id="applicationSecretKeyInput" name="applicationSecretKeyInput" value="" type="text"
+									placeholder="" class="form-control input-md">
+							</div>
+						</div>
+
+						<div class="form-group create-access-token">
+							<label class="col-md-4 control-label" for="shortLiveUserAccessTokenInput"><?php echo lang("myaccounts_facebook_page_form_shortLiveUserAccessTokenInput"); ?></label>
+							<div class="col-md-6">
+								<input id="shortLiveUserAccessTokenInput" name="shortLiveUserAccessTokenInput" value="" type="text"
+									placeholder="" class="form-control input-md">
+							</div>
+						</div>
+
+						<div class="form-group create-access-token">
+							<label class="col-md-4 control-label" for="createFacebookPageAccessTokenButton"></label>
+							<div class="col-md-8">
+								<button id="createFacebookPageAccessTokenButton" name="createFacebookPageAccessTokenButton" class="createFacebookPageAccessTokenButton btn btn-primary"><?php echo lang("myaccounts_facebook_page_form_createFacebookPageAccessTokenButton"); ?></button>
+							</div>
+						</div>
+
 <!-- TODO
 						<div class="form-group">
 							<label class="col-md-4 control-label" for="testTweeterButton"></label>
@@ -362,7 +459,7 @@ foreach($accounts as $key => $account) {
 						<?php foreach($account["validatorGroups"] as $validatorGroup) {?>
 
 					<div class="validatorGroup">
-						<!-- Text input-->
+
 						<div class="form-group">
 							<label class="col-md-4 control-label" for="nameInput"><?php echo lang("myaccounts_validators_form_groupNameInput"); ?></label>
 							<div class="col-md-6">
@@ -371,7 +468,7 @@ foreach($accounts as $key => $account) {
 							</div>
 						</div>
 
-						<!-- Text input-->
+
 						<div class="form-group">
 							<label class="col-md-4 control-label" for="scoreInput"><?php echo lang("myaccounts_validators_form_groupScoreInput"); ?></label>
 							<div class="col-md-2">
@@ -401,7 +498,7 @@ foreach($accounts as $key => $account) {
 							</div>
 						</div>
 
-						<!-- Button (Double) -->
+
 						<div class="form-group">
 							<label class="col-md-4 control-label" for="deleteGroupButton"></label>
 							<div class="col-md-8">
@@ -414,7 +511,7 @@ foreach($accounts as $key => $account) {
 
 						<?php }?>
 
-						<!-- Button (Double) -->
+
 						<div class="form-group addGroupDiv">
 							<label class="col-md-4 control-label" for="addGroupButton"></label>
 							<div class="col-md-8">
@@ -424,7 +521,7 @@ foreach($accounts as $key => $account) {
 
 						<hr />
 
-						<!-- Button (Double) -->
+
 						<div class="form-group">
 							<label class="col-md-4 control-label" for="saveAccountButton"></label>
 							<div class="col-md-8">
@@ -679,6 +776,45 @@ $(function() {
 			}
 		}
 	});
+
+	$(".toggle-create-access-token").click(function() {
+		var parentForm = $(this).parents("form");
+
+		if ($(this).find("span").hasClass("glyphicon-plus")) {
+			parentForm.find(".create-access-token").show();
+			$(this).find("span").removeClass("glyphicon-plus");
+			$(this).find("span").addClass("glyphicon-minus");
+		}
+		else {
+			parentForm.find(".create-access-token").hide();
+			$(this).find("span").addClass("glyphicon-plus");
+			$(this).find("span").removeClass("glyphicon-minus");
+		}
+	});
+
+	$(".createFacebookPageAccessTokenButton").click(function(event) {
+		event.preventDefault();
+		event.stopPropagation();
+
+		var parentForm = $(this).parents("form");
+
+		var myForm = 	{
+							pageId : parentForm.find("#pageIdInput").val(),
+							applicationId : parentForm.find("#applicationIdInput").val(),
+							applicationSecretKey : parentForm.find("#applicationSecretKeyInput").val(),
+							shortLiveUserAccessToken : parentForm.find("#shortLiveUserAccessTokenInput").val()
+						};
+
+		$.post("do_createFacebookPageAccessToken.php", myForm, function(data) {
+			parentForm.find("#fpAccessTokenInput").val(data.accessToken);
+
+			parentForm.find(".create-access-token").hide();
+			parentForm.find(".toggle-create-access-token span").addClass("glyphicon-plus");
+			parentForm.find(".toggle-create-access-token span").removeClass("glyphicon-minus");
+		}, "json");
+	});
+
+	$(".create-access-token").hide();
 });
 </script>
 </body>

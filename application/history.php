@@ -98,7 +98,7 @@ $(function() {
 							</div>
 
 						<?php }?>
-						<?php echo $tweet["twe_content"]; ?>
+						<?php echo str_replace("\n", "<br/>", $tweet["twe_content"]); ?>
 
 						<?php 	if (count($medias)) {?>
 							<br />

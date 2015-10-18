@@ -28,7 +28,7 @@ class FacebookApiClient {
 		$this->token = $token;
 	}
 
-	function oauthAccessToken() {
+	function oauthAccessToken($clientId, $clientSecret) {
 		$fields = array();
 		$fields["grant_type"] = "fb_exchange_token";
 		$fields["client_id"] = $clientId;
@@ -40,7 +40,7 @@ class FacebookApiClient {
 		return $response;
 	}
 
-	function meAccounts($pageId) {
+	function meAccounts() {
 		$response = $this->_get("/me/accounts", array("access_token" => $this->token));
 
 		return $response;

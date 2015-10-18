@@ -98,7 +98,7 @@ $(function() {
 
 						<?php }?>
 						<span class="tweet-content">
-						<?php echo $tweet["twe_content"]; ?>
+						<?php echo str_replace("\n", "<br/>", $tweet["twe_content"]); ?>
 						</span>
 						<sup><span class="glyphicon glyphicon-pencil"></span></sup>
 
