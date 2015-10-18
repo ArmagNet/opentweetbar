@@ -139,7 +139,7 @@ $(function() {
 							echo str_replace("{date}", $date->format(lang("date_format")), str_replace("{time}", $date->format(lang("time_format")), lang("datetime_format")));
 						}
 					?></td>
-					<td class="vertical-middle"><?php
+					<td class="vertical-middle text-center"><?php
 						$supports = json_decode($tweet["twe_supports"]);
 //						print_r($supports);
 						foreach($supports as $support) {

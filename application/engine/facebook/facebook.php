@@ -28,6 +28,24 @@ class FacebookApiClient {
 		$this->token = $token;
 	}
 
+	function oauthAccessToken() {
+		$fields = array();
+		$fields["grant_type"] = "fb_exchange_token";
+		$fields["client_id"] = $clientId;
+		$fields["client_secret"] = $clientSecret;
+		$fields["fb_exchange_token"] = $this->token;
+
+		$response = $this->_get("/oauth/access_token", $fields);
+
+		return $response;
+	}
+
+	function meAccounts($pageId) {
+		$response = $this->_get("/me/accounts", array("access_token" => $this->token));
+
+		return $response;
+	}
+
 	function getMessages($pageId) {
 		$messages = $this->_get("/$pageId/feed", array("access_token" => $this->token));
 
@@ -35,7 +53,7 @@ class FacebookApiClient {
 	}
 
 	function postMessage($pageId, $message) {
-		$response = $this->_get("/$pageId/feed", array("access_token" => $this->token, "message" => $message));
+		$response = $this->_post("/$pageId/feed", array("access_token" => $this->token, "message" => $message));
 
 		return $response;
 	}
@@ -55,7 +73,7 @@ class FacebookApiClient {
 
 	function _get($method, $fields) {
 		$url = $this->apiUrl;
-		$url .= "/" . $this->version;
+		$url .= "/v" . $this->version;
 		$url .= $method;
 		$url .= "?";
 
@@ -79,8 +97,10 @@ class FacebookApiClient {
 	function _post($method, $fields) {
 
 		$url = $this->apiUrl;
-		$url .= "/" . $this->version;
+		$url .= "/v" . $this->version;
 		$url .= $method;
+
+		error_log("FB API Url call : " . $url);
 
 		//url-ify the data for the POST
 		$fieldsString = http_build_query($fields);

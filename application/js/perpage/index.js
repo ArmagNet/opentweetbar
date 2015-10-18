@@ -86,11 +86,12 @@ function verify_mail() {
 function verifyAll() {
 
 	var numberOfKos =  $(".glyphicon-remove:visible").length;
+	var visibileInput = $("#tweet:visible,#tweet-big:visible");
 
 	if ($("#nicknameInput").length > 0 && !$("#nicknameInput").val()) numberOfKos++;
 	if ($("#xxxInput").length > 0 && !$("#xxxInput").val()) numberOfKos++;
 	if ($("#apasswordInput").length > 0 && !$("#apasswordInput").val()) numberOfKos++;
-	if (!$("#tweet").val()) numberOfKos++;
+	if (!visibileInput.val()) numberOfKos++;
 
 	if (numberOfKos) {
 		$('#tweetButton').attr("disabled", "disabled");
@@ -188,9 +189,10 @@ $(function() {
 	});
 
 	$("#tweet,#tweet-big").keyup(function() {
+		var visibileInput = $("#tweet:visible,#tweet-big:visible");
 
-		if ($(this).val()) {
-			var tweetLength = computeTweetLenght($(this).val());
+		if (visibileInput.val()) {
+			var tweetLength = computeTweetLenght(visibileInput.val());
 
 			verifyAll();
 
@@ -203,7 +205,7 @@ $(function() {
 	});
 
 	$("#tweetButton").click(function() {
-		var supportInputs = $("supportDiv input:checked");
+		var supportInputs = $("#supportDiv input:checked");
 		var supports = [];
 
 		supportInputs.each(function() {
@@ -213,10 +215,12 @@ $(function() {
 		// If there is no supports, only do nothing
 		if (supports.length == 0) return;
 
+		var tweetContent = $("#tweet:visible,#tweet-big:visible").val();
+
 		var myform = 	{
 							supports: JSON.stringify(supports),
 							account: $("#account").val(),
-							tweet: $("#tweet").val(),
+							tweet: tweetContent,
 							mediaIds: $("#mediaIds").val(),
 							mail: $("#mail").val(),
 							cgv: $("#cgvInput").attr("checked") ? "badboy" : "okgirls",

@@ -34,6 +34,7 @@ class TweetBo {
 		$query .= "	FROM social_network_accounts sna";
 		$query .= "	LEFT JOIN sna_configuration ON sco_sna_id = sna_id";
 		$query .= "	LEFT JOIN sna_twitter_configuration ON stc_sna_id = sna_id";
+		$query .= "	LEFT JOIN sna_facebook_page_configuration ON sfp_sna_id = sna_id";
 		$query .= "	WHERE sna_id = :sna_id";
 
 		$args = array("sna_id" => $accountId);
@@ -185,7 +186,7 @@ class TweetBo {
 
 		$supports = json_decode($tweet["twe_supports"]);
 
-		foreach($suppors as $support) {
+		foreach($supports as $support) {
 			switch($support) {
 				case "twitter":
 					$this->sendTweetOnTwitter($tweet);
@@ -209,7 +210,9 @@ class TweetBo {
 		$accessToken = $account["sfp_access_token"];
 
 		$facebookApiClient = new FacebookApiClient($accessToken);
-		$facebookApiClient->postMessage($pageId, $tweet["twe_content"]);
+		$response = $facebookApiClient->postMessage($pageId, $tweet["twe_content"]);
+
+		error_log(print_r($response, true));
 	}
 
 	function sendTweetOnTwitter($tweet) {
@@ -313,11 +316,11 @@ class TweetBo {
 
 		$query = "	INSERT INTO tweets
 						(twe_author, twe_anonymous_nickname, twe_anonymous_mail, twe_destination,
-							twe_content, twe_validation_score, twe_validation_duration,
+							twe_content, twe_validation_score, twe_validation_duration, twe_supports,
 							twe_cron_datetime, twe_creation_datetime, twe_to_retweet)
 					VALUES
 						(:twe_author, :twe_anonymous_nickname, :twe_anonymous_mail, :twe_destination,
-							:twe_content, :twe_validation_score, :twe_validation_duration,
+							:twe_content, :twe_validation_score, :twe_validation_duration, :twe_supports,
 							:twe_cron_datetime, :twe_creation_datetime, :twe_to_retweet) ";
 
 		$statement = $this->pdo->prepare($query);

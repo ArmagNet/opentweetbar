@@ -50,6 +50,7 @@ $_REQUEST["tweet"] = $tweet["twe_content"];
 $_REQUEST["validationDuration"] = $tweet["twe_validation_duration"];
 $_REQUEST["cronDate"] = $tweet["twe_cron_datetime"];
 $_REQUEST["toRetweet"] = $tweet["twe_to_retweet"];
+$_REQUEST["supports"] = "[\"twitter\"]";
 $_REQUEST["mediaIds"] = "";
 
 $mediaSeparator = "";

@@ -195,7 +195,7 @@ foreach($accounts as $account) {
 	}
 }
 
-if (isset($data["ok"])) {
+if (!isset($data["ok"])) {
 	$data["ko"] = "ko";
 }
 
