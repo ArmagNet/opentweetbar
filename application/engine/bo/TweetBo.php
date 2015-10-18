@@ -212,6 +212,11 @@ class TweetBo {
 		$facebookApiClient = new FacebookApiClient($accessToken);
 		$response = $facebookApiClient->postMessage($pageId, $tweet["twe_content"]);
 
+		$updateTweet = array("twe_id" => $tweet["twe_id"]);
+		$updateTweet["twe_facebook_page_id"] = $response["id"];
+
+		$this->update($updateTweet);
+
 		error_log(print_r($response, true));
 	}
 
@@ -252,6 +257,7 @@ class TweetBo {
 
 		// We change back the url for tweet sending
 		$connection->host = "https://api.twitter.com/1.1/";
+		$status = null;
 
 		if ($tweet["twe_to_retweet"]) {
 			$retweet = json_decode($tweet["twe_to_retweet"], true);
@@ -281,7 +287,14 @@ class TweetBo {
 			$status = $connection->post('statuses/update', $parameters);
 		}
 
+		if ($status && isset($status->id_str)) {
+			$updateTweet = array("twe_id" => $tweet["twe_id"]);
+			$updateTweet["twe_twitter_id"] = $status->id_str;
 
+			$this->update($updateTweet);
+		}
+
+//		error_log(print_r($response, true));
 		//		print_r($status);
 	}
 
