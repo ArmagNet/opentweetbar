@@ -57,6 +57,7 @@ $tweetsByAccount = TweetBo::accounted($tweets);
 					<th><?php echo lang("property_tweet"); ?></th>
 					<th class="authorColumn"><?php echo lang("property_author"); ?></th>
 					<th class="dateColumn"><?php echo lang("property_date"); ?></th>
+					<th class="supportsColumn"><?php echo lang("property_supports"); ?></th>
 					<th class="validationColumn"><?php echo lang("property_validators"); ?></th>
 					<th class="actionColumn"><?php echo lang("property_actions"); ?></th>
 				</tr>
@@ -136,6 +137,20 @@ $(function() {
 							$date = new DateTime($tweet["twe_validation_datetime"]);
 
 							echo str_replace("{date}", $date->format(lang("date_format")), str_replace("{time}", $date->format(lang("time_format")), lang("datetime_format")));
+						}
+					?></td>
+					<td class="vertical-middle"><?php
+						$supports = json_decode($tweet["twe_supports"]);
+//						print_r($supports);
+						foreach($supports as $support) {
+							switch($support) {
+								case "twitter":
+									echo "<span class=\"social grey twitter\" title=\"Twitter\" data-toggle=\"tooltip\" data-placement=\"top\" style=\"height: 30px;\"></span>";
+									break;
+								case "facebookPage":
+									echo "<span class=\"social grey facebook\" title=\"Facebook\" data-toggle=\"tooltip\" data-placement=\"top\" style=\"height: 30px;\"></span>";
+									break;
+							}
 						}
 					?></td>
 					<td class="vertical-middle">

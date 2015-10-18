@@ -208,6 +208,7 @@ $lang["property_date"] = "Date";
 $lang["property_validators"] = "Validators";
 $lang["property_validation"] = "Validation";
 $lang["property_actions"] = "Actions";
+$lang["property_supports"] = "Supports";
 
 $lang["register_guide"] = "Welcome to the register page of OpenTweetBar";
 $lang["register_form_legend"] = "Configuration of your access";

@@ -372,7 +372,8 @@ class TweetBo {
 
 	function getCronedTweets($limitDate) {
 		$args = array("twe_cron_datetime" => $limitDate);
-		$query = "	SELECT twe_id, twe_content, twe_to_retweet, twe_validation_score, twe_status, twe_ask_modification
+		$query = "	SELECT twe_id, twe_content, twe_to_retweet, twe_validation_score,
+						twe_supports, twe_status, twe_ask_modification
 						twe_anonymous_mail, twe_anonymous_nickname,
 						twe_creation_datetime,
 						twe_cron_datetime,
@@ -412,7 +413,8 @@ class TweetBo {
 			$status = array($status);
 		}
 
-		$query = "	SELECT twe_id, twe_content, twe_to_retweet, twe_validation_score, twe_status, twe_ask_modification,
+		$query = "	SELECT twe_id, twe_content, twe_to_retweet, twe_validation_score,
+						twe_supports, twe_status, twe_ask_modification,
 						twe_anonymous_mail, twe_anonymous_nickname,
 						twe_creation_datetime,
 						twe_cron_datetime,
@@ -575,6 +577,7 @@ class TweetBo {
 			$indexedTweets[$tweet["twe_id"]]["twe_destination_id"] = isset($tweet["twe_destination_id"]) ? $tweet["twe_destination_id"] : $tweet["twe_destination"] ;
 			$indexedTweets[$tweet["twe_id"]]["twe_validation_score"] = $tweet["twe_validation_score"];
 			$indexedTweets[$tweet["twe_id"]]["twe_status"] = $tweet["twe_status"];
+			$indexedTweets[$tweet["twe_id"]]["twe_supports"] = $tweet["twe_supports"];
 			$indexedTweets[$tweet["twe_id"]]["twe_ask_modification"] = $tweet["twe_ask_modification"];
 			$indexedTweets[$tweet["twe_id"]]["twe_validation_duration"] = $tweet["twe_validation_duration"];
 
