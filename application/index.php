@@ -150,9 +150,18 @@ else {
 			</ul>
 		</div>
 		<input type="text" id="tweet" name="tweet" class="form-control" placeholder="<?php echo lang("index_tweetPlaceholder"); ?>" />
+		<textarea type="text" id="tweet-big" name="tweet-big"
+			class="form-control otbHidden" style="height: 100px;"></textarea>
 		<span class="input-group-btn">
 			<button class="btn btn-default" type="button" id="tweetButton"><?php echo lang("index_tweetButton"); ?></button>
 		</span>
+	</div>
+	<div id="supportDiv" class="input-group text-center" style="width: 100%; padding-top: 5px;">
+		<label id="tweetLabel" style="font-weight: normal;"><input type="checkbox" name="supports" /> <?php echo lang("index_supports_tweet"); ?>
+			<span class="social grey twitter" style="height: 30px;"></span></label>
+		&nbsp;
+		<label id="facebookLabel" style="font-weight: normal;"><input type="checkbox" name="supports" /> <?php echo lang("index_supports_facebook"); ?>
+			<span class="social grey facebook" style="height: 30px;"></span></label>
 	</div>
 	<div class="text-right">
 		<span class="tweeter-count"></span>
@@ -264,6 +273,24 @@ else {
 
 </div>
 
+<script type="text/javascript">
+var accounts = {};
+
+<?php	foreach($accounts as $gaccount) {?>
+	accounts["<?php echo $gaccount["sna_name"]; ?>"] = {
+			label : "<?php echo $gaccount["sna_name"]; ?>",
+			hasTwitter : <?php echo $gaccount["stc_access_token"] ? "true" : "false"; ?>,
+			hasFacebookPage : <?php echo $gaccount["sfp_access_token"] ? "true" : "false"; ?>};
+<?php 	}?>
+
+<?php	foreach($anonymousAccounts as $gaccount) {?>
+	accounts["<?php echo $gaccount["sna_name"]; ?>"] = {
+			label : "<?php echo $gaccount["sna_name"]; ?>",
+			hasTwitter : <?php echo $gaccount["stc_access_token"] ? "true" : "false"; ?>,
+			hasFacebookPage : <?php echo $gaccount["sfp_access_token"] ? "true" : "false"; ?>};
+<?php 	}?>
+
+</script>
 <script type="text/javascript">
 var userLanguage = '<?php echo SessionUtils::getLanguage($_SESSION); ?>';
 var register_validation_user_empty = "<?php echo lang("register_validation_user_empty"); ?>";

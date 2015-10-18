@@ -187,10 +187,10 @@ $(function() {
 		eval("verify_" + field + "();");
 	});
 
-	$("#tweet").keyup(function() {
+	$("#tweet,#tweet-big").keyup(function() {
 
-		if ($("#tweet").val()) {
-			var tweetLength = computeTweetLenght($("#tweet").val());
+		if ($(this).val()) {
+			var tweetLength = computeTweetLenght($(this).val());
 
 			verifyAll();
 
@@ -235,6 +235,7 @@ $(function() {
 			if (data.ok) {
 				$("#okTweetAlert").show().delay(2000).fadeOut(1000);
 				$("#tweet").val("");
+				$("#tweet-big").val("");
 				$("#cronDateInput").val("");
 				$("#validationDurationButtons button[value=0]").click();
 				$("#tweet").keyup();
@@ -259,6 +260,22 @@ $(function() {
 		if (event) event.preventDefault();
 		var accountText = $(this).text().trim();
 
+		var account = accounts[accountText];
+
+		$("#supportDiv label input").attr("disabled", "disabled");
+		$("#supportDiv label input").removeAttr("checked");
+
+		if (account.hasFacebookPage) {
+			$("#supportDiv label#facebookLabel input").removeAttr("disabled");
+			$("#supportDiv label#facebookLabel input").click();
+		}
+		if (account.hasTwitter) {
+			$("#supportDiv label#tweetLabel input").removeAttr("disabled");
+			$("#supportDiv label#tweetLabel input").click();
+		}
+
+		$("#supportDiv label#facebookLabel input").change();
+
 		$("#account").val(accountText);
 		$("#account2").val(accountText);
 		$("#accountButton #text").text(accountText);
@@ -277,6 +294,33 @@ $(function() {
 		$("#validationDurationButtons button").removeClass("active");
 		$(this).addClass("active");
 		$("#validationDurationInput").val($(this).val());
+	});
+
+	$("#supportDiv label input").click(function() {
+		if ($(this).attr("checked")) {
+			$(this).removeAttr("checked");
+		}
+		else {
+			$(this).attr("checked", "checked");
+		}
+		$(this).change();
+	});
+
+	$("#supportDiv label#facebookLabel input").change(function() {
+		if ($(this).attr("checked")) {
+			if ($("#tweet").is(":visible")) {
+				$("#tweet").hide();
+				$("#tweet-big").show();
+				$("#tweet-big").val($("#tweet").val());
+			}
+		}
+		else {
+			if (!$("#tweet").is(":visible")) {
+				$("#tweet").show();
+				$("#tweet-big").hide();
+				$("#tweet").val($("#tweet-big").val());
+			}
+		}
 	});
 
 	$("#tweet").keyup();

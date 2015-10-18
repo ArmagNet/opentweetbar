@@ -72,6 +72,8 @@ par d'autres utilisateurs avant d'être publiés.";
 $lang["index_accounts"] = "Comptes";
 $lang["index_tweetPlaceholder"] = "tweet...";
 $lang["index_tweetButton"] = "Tweeter";
+$lang["index_supports_tweet"] = "Tweet";
+$lang["index_supports_facebook"] = "Facebook";
 $lang["index_options_mediaInput"] = "Media";
 $lang["index_options_cronDateInput"] = "Départ différé";
 $lang["index_options_cronDatePlaceholder"] = "aaaa-mm-jj hh:mm";

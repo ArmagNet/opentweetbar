@@ -72,6 +72,8 @@ The tweets can or must be validated by other users before being published.";
 $lang["index_accounts"] = "Accounts";
 $lang["index_tweetPlaceholder"] = "tweet...";
 $lang["index_tweetButton"] = "Tweet it";
+$lang["index_supports_tweet"] = "Tweet";
+$lang["index_supports_facebook"] = "Facebook";
 $lang["index_options_mediaInput"] = "Media";
 $lang["index_options_cronDateInput"] = "Delayed departure";
 $lang["index_options_cronDatePlaceholder"] = "yyyy-mm-dd hh:mm";

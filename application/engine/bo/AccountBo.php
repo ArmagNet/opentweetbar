@@ -192,6 +192,8 @@ class AccountBo {
 		$query .= "	SELECT DISTINCT *";
 		$query .= "	FROM social_network_accounts sna";
 		$query .= "	JOIN sna_configuration ON sco_sna_id = sna_id";
+ 		$query .= "	LEFT JOIN sna_twitter_configuration ON stc_sna_id = sna_id";
+ 		$query .= "	LEFT JOIN sna_facebook_page_configuration ON sfp_sna_id = sna_id";
 		$query .= "	WHERE sco_anonymous_permitted = 1 ";
 
 		$excludedIds = array();
@@ -232,6 +234,8 @@ class AccountBo {
 		$query .= "	JOIN sna_configuration ON sco_sna_id = sna_id";
 		$query .= "	JOIN validator_groups ON vgr_sna_id = sna_id";
 		$query .= "	JOIN validators ON val_validator_group_id = vgr_id";
+ 		$query .= "	LEFT JOIN sna_twitter_configuration ON stc_sna_id = sna_id";
+ 		$query .= "	LEFT JOIN sna_facebook_page_configuration ON sfp_sna_id = sna_id";
 		$query .= "	WHERE val_user_id = :use_id";
 		$query .= "	ORDER BY sna_name ASC";
 
