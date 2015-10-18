@@ -157,10 +157,10 @@ else {
 		</span>
 	</div>
 	<div id="supportDiv" class="input-group text-center" style="width: 100%; padding-top: 5px;">
-		<label id="tweetLabel" style="font-weight: normal;"><input type="checkbox" name="supports" /> <?php echo lang("index_supports_tweet"); ?>
+		<label id="tweetLabel" style="font-weight: normal;"><input type="checkbox" name="supports" value="twitter" /> <?php echo lang("index_supports_tweet"); ?>
 			<span class="social grey twitter" style="height: 30px;"></span></label>
 		&nbsp;
-		<label id="facebookLabel" style="font-weight: normal;"><input type="checkbox" name="supports" /> <?php echo lang("index_supports_facebook"); ?>
+		<label id="facebookLabel" style="font-weight: normal;"><input type="checkbox" name="supports" value="facebookPage" /> <?php echo lang("index_supports_facebook"); ?>
 			<span class="social grey facebook" style="height: 30px;"></span></label>
 	</div>
 	<div class="text-right">

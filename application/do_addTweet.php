@@ -107,6 +107,7 @@ foreach($accounts as $account) {
 	}
 	$tweet["twe_destination"] = $accountId;
 	$tweet["twe_content"] = $_REQUEST["tweet"];
+	$tweet["twe_supports"] = $_REQUEST["supports"];
 	$tweet["twe_validation_score"] = $account["sco_validation_score"];
 	$tweet["twe_validation_duration"] = $_REQUEST["validationDuration"];
 	$tweet["twe_cron_datetime"] = $_REQUEST["cronDate"];

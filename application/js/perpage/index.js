@@ -203,7 +203,18 @@ $(function() {
 	});
 
 	$("#tweetButton").click(function() {
+		var supportInputs = $("supportDiv input:checked");
+		var supports = [];
+
+		supportInputs.each(function() {
+			supports[supports.length] = $(this).val();
+		});
+
+		// If there is no supports, only do nothing
+		if (supports.length == 0) return;
+
 		var myform = 	{
+							supports: JSON.stringify(supports),
 							account: $("#account").val(),
 							tweet: $("#tweet").val(),
 							mediaIds: $("#mediaIds").val(),
