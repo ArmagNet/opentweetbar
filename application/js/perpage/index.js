@@ -327,6 +327,9 @@ $(function() {
 				$("#tweet").hide();
 				$("#tweet-big").show();
 				$("#tweet-big").val($("#tweet").val());
+
+				$("#accountButton").css({height: $("#tweet-big").css("height")});
+				$("#tweetButton").css({height: $("#tweet-big").css("height")});
 			}
 		}
 		else {
@@ -334,6 +337,9 @@ $(function() {
 				$("#tweet").show();
 				$("#tweet-big").hide();
 				$("#tweet").val($("#tweet-big").val());
+
+				$("#accountButton").css({height: ""});
+				$("#tweetButton").css({height: ""});
 			}
 		}
 	});
