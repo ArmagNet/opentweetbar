@@ -105,6 +105,38 @@ function computeTweetLenght(text) {
 	return 140 - text.length;
 }
 
+function cutTweet(text, tweets) {
+	var maxLength = 140 - 7;
+
+	if (text.length > maxLength) {
+		var cutLength = text.regexLastIndexOf(/[ ,;]/, maxLength);
+
+		var tweet = text.substring(0, cutLength).trim();
+		tweets[tweets.length] = tweet;
+
+		text = text.substring(cutLength + 1).trim();
+
+		cutTweet(text, tweets);
+
+		return;
+	}
+
+	tweets[tweets.length] = text;
+
+	var cutTweets = $("#cutTweets ul");
+
+	for(var index = 0; index < tweets.length; ++index) {
+		var cutTweetElement = $("<li class='list-group-item'></li>");
+		cutTweetElement.text(tweets[index]);
+
+		var position = (index + 1) + "/" + tweets.length;
+
+		cutTweetElement.append($("<span class='badge'>" + position + "</span>"));
+
+		cutTweets.append(cutTweetElement);
+	}
+}
+
 function mediaProgressHandlingFunction(e) {
     if (e.lengthComputable){
         var percent = Math.floor(e.loaded / e.total * 100);
@@ -191,8 +223,18 @@ $(function() {
 	$("#tweet,#tweet-big").keyup(function() {
 		var visibileInput = $("#tweet:visible,#tweet-big:visible");
 
-		if (visibileInput.val()) {
-			var tweetLength = computeTweetLenght(visibileInput.val());
+		var tweetContent = visibileInput.val();
+
+		$("#cutTweets").hide();
+		$("#cutTweets ul").children().remove();
+
+		if (tweetContent) {
+			var tweetLength = computeTweetLenght(tweetContent);
+
+			if (tweetLength < 0) {
+				cutTweet(tweetContent, []);
+				$("#cutTweets").show();
+			}
 
 			verifyAll();
 

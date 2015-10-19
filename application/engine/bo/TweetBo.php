@@ -28,6 +28,32 @@ class TweetBo {
 		return new TweetBo($pdo);
 	}
 
+	static function cutTweet($text, &$tweets) {
+		$maxLength = 140 - 7;
+
+		if (strlen($text) > $maxLength) {
+			$cutLength = regexLastIndexOf($text, '/[ ,;]/mi', $maxLength);
+
+			$tweet = trim(substr($text, 0, $cutLength + 1));
+			$tweets[] = $tweet;
+
+			$text = trim(substr($text, $cutLength + 1));
+
+			TweetBo::cutTweet($text, $tweets);
+
+			return;
+		}
+
+		$tweets[] = $text;
+
+		// add n/m
+		foreach($tweets as $index => $tweet) {
+			$tweets[$index] = $tweet . " " . ($index + 1) . "/" . count($tweets);
+		}
+
+		return;
+	}
+
 	function getAccount($accountId) {
 		$query = "";
 		$query .= "	SELECT *";
@@ -278,13 +304,33 @@ class TweetBo {
 		else {
 			//			error_log("Will send a tweet");
 
-			$parameters = array('status' => $tweet["twe_content"]);
+			if (strlen($tweet["twe_content"]) <= 140) {
+				$parameters = array('status' => $tweet["twe_content"]);
 
-			if (count($twitterMediaIds)) {
-				$parameters["media_ids"] = implode(",", $twitterMediaIds);
+				if (count($twitterMediaIds)) {
+					$parameters["media_ids"] = implode(",", $twitterMediaIds);
+				}
+
+				$status = $connection->post('statuses/update', $parameters);
 			}
+			else {
+				include_once "engine/utils/StringUtils.php";
 
-			$status = $connection->post('statuses/update', $parameters);
+				$contents = array();
+				TweetBo::cutTweet($tweet["twe_content"], $contents);
+
+				foreach($contents as $index => $content) {
+					$parameters = array('status' => $content);
+
+					if (count($twitterMediaIds) && $index == 0) {
+						$parameters["media_ids"] = implode(",", $twitterMediaIds);
+					}
+
+					$status = $connection->post('statuses/update', $parameters);
+
+					time_nanosleep(0, 300000000);
+				}
+			}
 		}
 
 		if ($status && isset($status->id_str)) {

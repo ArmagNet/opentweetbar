@@ -74,6 +74,7 @@ $lang["index_tweetPlaceholder"] = "tweet...";
 $lang["index_tweetButton"] = "Tweet it";
 $lang["index_supports_tweet"] = "Tweet";
 $lang["index_supports_facebook"] = "Facebook";
+$lang["index_cutTweets_legend"] = "Automatic cutting";
 $lang["index_options_mediaInput"] = "Media";
 $lang["index_options_cronDateInput"] = "Delayed departure";
 $lang["index_options_cronDatePlaceholder"] = "yyyy-mm-dd hh:mm";

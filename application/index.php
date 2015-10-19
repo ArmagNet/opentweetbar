@@ -167,6 +167,11 @@ else {
 		<span class="tweeter-count"></span>
 	</div>
 
+	<fieldset id="cutTweets" style="display: none;">
+		<legend><?php echo lang("index_cutTweets_legend"); ?></legend>
+		<ul class="list-group"></ul>
+	</fieldset>
+
 	<div class="panel-group" id="accordion">
 		<div class="panel panel-default" id="panel1">
 			<div class="panel-heading">
