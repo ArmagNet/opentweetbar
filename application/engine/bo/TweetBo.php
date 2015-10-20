@@ -28,7 +28,25 @@ class TweetBo {
 		return new TweetBo($pdo);
 	}
 
-	static function cutTweet($text, &$tweets) {
+	static function urlized($tweetContent) {
+		$regex = '/((https?):\/\/([a-z.\/0-9\-\_%#]*))/mi';
+		preg_match_all($regex, $tweetContent, $matches, PREG_OFFSET_CAPTURE);
+
+		//	print_r($matches);
+
+		$result = array("urls" => array(), "content" => $tweetContent);
+
+		foreach($matches[0] as $index => $match) {
+			if (strlen($matches[3][$index][0]) > 15) {
+				$result["content"] = str_replace($match[0], $matches[2][$index][0] . "://##############" . count($result["urls"]), $result["content"]);
+				$result["urls"][] = $match[0];
+			}
+		}
+
+		return $result;
+	}
+
+	static function cutTweet($text, &$tweets, $urls) {
 		$maxLength = 140 - 7;
 
 		if (strlen($text) > $maxLength) {
@@ -39,7 +57,7 @@ class TweetBo {
 
 			$text = trim(substr($text, $cutLength + 1));
 
-			TweetBo::cutTweet($text, $tweets);
+			TweetBo::cutTweet($text, $tweets, $urls);
 
 			return;
 		}
@@ -48,6 +66,11 @@ class TweetBo {
 
 		// add n/m
 		foreach($tweets as $index => $tweet) {
+			foreach($urls as $jndex => $url) {
+				$tweet = str_replace("http://##############" . $jndex, $url, $tweet);
+				$tweet = str_replace("https://##############" . $jndex, $url, $tweet);
+			}
+
 			$tweets[$index] = $tweet . " " . ($index + 1) . "/" . count($tweets);
 		}
 
@@ -304,7 +327,9 @@ class TweetBo {
 		else {
 			//			error_log("Will send a tweet");
 
-			if (strlen($tweet["twe_content"]) <= 140) {
+			$result = TweetBo::urlized($tweet["twe_content"]);
+
+			if (strlen($result["content"]) <= 140) {
 				$parameters = array('status' => $tweet["twe_content"]);
 
 				if (count($twitterMediaIds)) {
@@ -317,7 +342,7 @@ class TweetBo {
 				include_once "engine/utils/StringUtils.php";
 
 				$contents = array();
-				TweetBo::cutTweet($tweet["twe_content"], $contents);
+				TweetBo::cutTweet($result["content"], $contents, $result["urls"]);
 
 				foreach($contents as $index => $content) {
 					$parameters = array('status' => $content);

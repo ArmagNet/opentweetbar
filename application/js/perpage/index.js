@@ -105,7 +105,32 @@ function computeTweetLenght(text) {
 	return 140 - text.length;
 }
 
-function cutTweet(text, tweets) {
+function urlized(tweetContent) {
+	var urlRegExp = /((https?):\/\/([a-z.\/0-9\-\_%#]*))/mig;
+	var m;
+	var urls = [];
+	var finalContent = tweetContent;
+
+	while ((m = urlRegExp.exec(tweetContent)) !== null) {
+
+	    if (m.index === urlRegExp.lastIndex) {
+	        re.lastIndex++;
+	    }
+	    // View your result using the m-variable.
+	    // eg m[0] etc.
+
+	    if (m[3].length > 15) {
+		    finalContent = finalContent.replace(m[0], m[2] + "://##############" + urls.length);
+		    urls[urls.length] = m[0];
+	    }
+	}
+
+	var returned = {urls: urls, content: finalContent};
+
+	return returned;
+}
+
+function cutTweet(text, tweets, urls) {
 	var maxLength = 140 - 7;
 
 	if (text.length > maxLength) {
@@ -116,7 +141,7 @@ function cutTweet(text, tweets) {
 
 		text = text.substring(cutLength + 1).trim();
 
-		cutTweet(text, tweets);
+		cutTweet(text, tweets, urls);
 
 		return;
 	}
@@ -127,7 +152,14 @@ function cutTweet(text, tweets) {
 
 	for(var index = 0; index < tweets.length; ++index) {
 		var cutTweetElement = $("<li class='list-group-item'></li>");
-		cutTweetElement.text(tweets[index]);
+		var text = tweets[index];
+
+		for(var jndex = 0; jndex < urls.length; ++jndex) {
+			text = text.replace("http://##############" + jndex, urls[jndex]);
+			text = text.replace("https://##############" + jndex, urls[jndex]);
+		}
+
+		cutTweetElement.text(text);
 
 		var position = (index + 1) + "/" + tweets.length;
 
@@ -225,6 +257,9 @@ $(function() {
 
 		var tweetContent = visibileInput.val();
 
+		var computed = urlized(tweetContent);
+		tweetContent = computed.content;
+
 		$("#cutTweets").hide();
 		$("#cutTweets ul").children().remove();
 
@@ -232,7 +267,7 @@ $(function() {
 			var tweetLength = computeTweetLenght(tweetContent);
 
 			if (tweetLength < 0) {
-				cutTweet(tweetContent, []);
+				cutTweet(tweetContent, [], computed.urls);
 				$("#cutTweets").show();
 			}
 
