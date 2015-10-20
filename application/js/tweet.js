@@ -110,6 +110,7 @@ function addTweetHandlers(tweetElement) {
         				retweetForm["cronDate"] = "";
         				retweetForm["mediaIds"] = "";
         				retweetForm["password"] = "";
+        				retweetForm["supports"] = '["twitter"]';
         				retweetForm["tweet"] = ""; // TODO later quote mode
 
         				$("input[name=retweet_account_ids]").each(function() {

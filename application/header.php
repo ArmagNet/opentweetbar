@@ -139,7 +139,7 @@ if (count($accounts)) {
 						data-toggle="tooltip" data-placement="bottom"><span class="glyphicon glyphicon-log-out"></span><span class="sr-only">Logout</span> </a></li>
 					<?php 	} else { ?>
 					<li><a id="loginLink" href="#" title="<?php echo lang("menu_login"); ?>"
-						data-toggle="tooltip" data-placement="bottom"><span class="glyphicon glyphicon-log-in"></span><span class="sr-only">Login</span> </a></li>
+						data-toggle="tooltip" data-placement="left"><span class="glyphicon glyphicon-log-in"></span><span class="sr-only">Login</span> </a></li>
 					<?php 	}?>
 				</ul>
 			</div>
