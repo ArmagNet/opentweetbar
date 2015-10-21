@@ -23,7 +23,7 @@ class DmNotifier {
 		global $tweetBo;
 		global $config;
 
-		$noticeTweet = array();
+		$noticeTweet = array("twe_supports" => '["twitter"]');
 		$noticeTweet["twe_destination"] = $account["sna_name"];
 		$noticeTweet["twe_destination_id"] = $account["sna_id"];
 
@@ -35,7 +35,7 @@ class DmNotifier {
 		global $tweetBo;
 		global $config;
 
-		$noticeTweet = array();
+		$noticeTweet = array("twe_supports" => '["twitter"]');
 		$noticeTweet["twe_destination"] = $account["sna_name"];
 		$noticeTweet["twe_destination_id"] = $account["sna_id"];
 

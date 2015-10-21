@@ -210,7 +210,7 @@ $(function() {
 					</td>
 					<td class="vertical-middle">
 
-						<?php 	if ($tweet["validation"][1] == 0 && $tweet["twe_author_id"] != $userId) {?>
+						<?php 	if ($tweet["validation"][1] == 0 && ($tweet["twe_author_id"] != $userId || $tweet["validation"][0] == 0)) {?>
 						<button id="validate_<?php echo $tweet["twe_id"]; ?>" class="btn btn-success validate-button" type="button">
 							<?php echo lang("common_validate"); ?> <span class="glyphicon glyphicon-ok"></span>
 						</button>
