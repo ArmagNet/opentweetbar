@@ -329,7 +329,7 @@ class TweetBo {
 
 			$result = TweetBo::urlized($tweet["twe_content"]);
 
-			if (strlen($result["content"]) <= 140) {
+			if (strlen(utf8_decode($result["content"])) <= 140) {
 				$parameters = array('status' => $tweet["twe_content"]);
 
 				if (count($twitterMediaIds)) {
