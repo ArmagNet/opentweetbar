@@ -49,7 +49,7 @@ class TweetBo {
 	static function cutTweet($text, &$tweets, $urls) {
 		$maxLength = 140 - 7;
 
-		if (strlen($text) > $maxLength) {
+		if (strlen(utf8_decode($text)) > $maxLength) {
 			$cutLength = regexLastIndexOf($text, '/[ ,;]/mi', $maxLength);
 
 			$tweet = trim(substr($text, 0, $cutLength + 1));
