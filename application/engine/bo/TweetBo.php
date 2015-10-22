@@ -718,7 +718,14 @@ class TweetBo {
 			if (!isset($indexedTweets[$tweet["twe_id"]]["twe_validation_datetime"])) {
 				$indexedTweets[$tweet["twe_id"]]["twe_validation_datetime"] = $tweet["tva_datetime"];
 			}
+			else if ($indexedTweets[$tweet["twe_id"]]["twe_validation_datetime"] < $tweet["tva_datetime"]) {
+				$indexedTweets[$tweet["twe_id"]]["twe_validation_datetime"] = $tweet["tva_datetime"];
+			}
+
 			if (!isset($indexedTweets[$tweet["twe_id"]]["twe_creation_datetime"])) {
+				$indexedTweets[$tweet["twe_id"]]["twe_creation_datetime"] = $tweet["tva_datetime"];
+			}
+			else if ($indexedTweets[$tweet["twe_id"]]["twe_creation_datetime"] > $tweet["tva_datetime"]) {
 				$indexedTweets[$tweet["twe_id"]]["twe_creation_datetime"] = $tweet["tva_datetime"];
 			}
 
