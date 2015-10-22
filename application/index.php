@@ -200,7 +200,7 @@ else {
 <?php }?>
 
 							<div class="form-group has-feedback">
-								<label class="col-md-4 control-label" for="nicknameInput"><?php echo lang("index_options_mediaInput"); ?></label>
+								<label class="col-md-4 control-label" for="mediaInput"><?php echo lang("index_options_mediaInput"); ?></label>
 								<div class="col-md-6 padding-left-0">
 
 									<div class="progress otbHidden" id="mediaProgress">
@@ -217,6 +217,8 @@ else {
 									<p id="mediaHelp" class="help-block otbHidden"></p>
 								</div>
 							</div>
+							<?php echo addAlertDialog("error_media_sizeErrorAlert", lang("error_media_sizeError"), "danger"); ?>
+							<?php echo addAlertDialog("error_media_defaultErrorAlert", lang("error_media_defaultError"), "danger"); ?>
 
 							<!-- Button (Double) -->
 							<div class="form-group">

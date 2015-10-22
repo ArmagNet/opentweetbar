@@ -16,6 +16,38 @@
     You should have received a copy of the GNU General Public License
     along with OpenTweetBar.  If not, see <http://www.gnu.org/licenses/>.
 */
+
+// Returns a file size limit in bytes based on the PHP upload_max_filesize
+// and post_max_size
+function file_upload_max_size() {
+	static $max_size = -1;
+
+	if ($max_size < 0) {
+		// Start with post_max_size.
+		$max_size = parse_size(ini_get('post_max_size'));
+
+		// If upload_max_size is less, then reduce. Except if upload_max_size is
+		// zero, which indicates no limit.
+		$upload_max = parse_size(ini_get('upload_max_filesize'));
+		if ($upload_max > 0 && $upload_max < $max_size) {
+			$max_size = $upload_max;
+		}
+	}
+	return $max_size;
+}
+
+function parse_size($size) {
+	$unit = preg_replace('/[^bkmgtpezy]/i', '', $size); // Remove the non-unit characters from the size.
+	$size = preg_replace('/[^0-9\.]/', '', $size); // Remove the non-numeric characters from the size.
+	if ($unit) {
+		// Find the position of the unit in the ordered string which is the power of magnitude to multiply a kilobyte by.
+		return round($size * pow(1024, stripos('bkmgtpezy', $unit[0])));
+	}
+	else {
+		return round($size);
+	}
+}
+
 include_once("config/database.php");
 require_once("engine/utils/SessionUtils.php");
 require_once("engine/bo/AccountBo.php");
@@ -42,6 +74,21 @@ $media = array();
 $media["med_name"] = $file["name"];
 $media["med_mimetype"] = $file["type"];
 $media["med_sna_id"] = $accountId;
+
+if ($file["error"] != UPLOAD_ERR_OK) {
+	$data = array("ko" => "ko");
+	switch($file["error"]) {
+		case UPLOAD_ERR_INI_SIZE :
+			$data["message"] = "error_media_sizeError";
+			$data["maxSize"] = file_upload_max_size();
+			break;
+		default:
+			$data["message"] = "error_media_defaultError";
+	}
+
+	echo json_encode($data);
+	exit();
+}
 
 $handle = fopen($file["tmp_name"], "r");
 $media["med_content"] = fread($handle, filesize($file["tmp_name"]));

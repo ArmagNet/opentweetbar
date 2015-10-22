@@ -17,6 +17,23 @@
     along with OpenTweetBar.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+function humanFileSize(bytes, si) {
+    var thresh = si ? 1000 : 1024;
+    if(Math.abs(bytes) < thresh) {
+        return bytes + ' B';
+    }
+    var units = si
+        ? ['kB','MB','GB','TB','PB','EB','ZB','YB']
+        : ['KiB','MiB','GiB','TiB','PiB','EiB','ZiB','YiB'];
+    var u = -1;
+    do {
+        bytes /= thresh;
+        ++u;
+    }
+    while(Math.abs(bytes) >= thresh && u < units.length - 1);
+    return bytes.toFixed(1)+' '+units[u];
+}
+
 function changeStatus(data, field) {
 	if (data.ok && !data.exist) {
 		$("#" + field).addClass("glyphicon-ok");
@@ -216,6 +233,16 @@ $(function() {
         			if ($(".mediaImage").length >= 4) {
             			$("#mediaInput").hide();
         			}
+        		}
+        		else {
+        			$("#mediaInput").val("");
+        			$("#mediaProgress").hide();
+        			$("#mediaInput").show();
+
+        			if (data.maxSize) {
+        				$("#" + data.message + "Alert #maxSize").text(humanFileSize(data.maxSize, false));
+        			}
+        			$("#" + data.message + "Alert").show().delay(2000).fadeOut(1000);
         		}
 	        },
 	        data: formData,
