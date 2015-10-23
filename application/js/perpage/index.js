@@ -197,6 +197,23 @@ function mediaProgressHandlingFunction(e) {
 
 $(function() {
 	$("#mediaInput").change(function() {
+		// Check size limit
+	    if (window.FileReader) {
+	    	var file = $("#mediaInput").get(0).files[0];
+	    	var maxSize = $(this).data("max-size");
+
+	    	if (maxSize && maxSize < file.size) {
+    			$("#mediaInput").val("");
+    			$("#mediaProgress").hide();
+    			$("#mediaInput").show();
+
+				$("#error_media_sizeErrorAlert #maxSize").text(humanFileSize(maxSize, false));
+    			$("#error_media_sizeErrorAlert").show().delay(2000).fadeOut(1000);
+
+    			return;
+	    	}
+	    }
+
 	    var formData = new FormData($('#optionForm')[0]);
 
         $("#mediaProgress .progress-bar").attr("aria-valuenow", 0);

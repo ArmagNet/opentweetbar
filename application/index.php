@@ -17,6 +17,7 @@
     along with OpenTweetBar.  If not, see <http://www.gnu.org/licenses/>.
 */
 include_once("header.php");
+require_once("engine/utils/UploadUtils.php");
 
 $account = "";
 if (isset($_REQUEST["c"])) {
@@ -210,7 +211,7 @@ else {
 									</div>
 
 									<input id="mediaIds" name="mediaIds" value="-1" type="hidden" />
-									<input id="mediaInput" name="mediaInput" value="" type="file"
+									<input id="mediaInput" name="mediaInput" value="" type="file" data-max-size="<?php echo file_upload_max_size(); ?>"
 										placeholder="" class="form-control input-md">
 									<span id="mediaStatus"
 										class="glyphicon glyphicon-ok form-control-feedback otbHidden" aria-hidden="true"></span>
