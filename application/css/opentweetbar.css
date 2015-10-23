@@ -141,6 +141,19 @@ html,body {
     width: 100%;
 }
 
+.account-panel .panel-heading {
+	padding-top: 5px;
+	font-size: 30px;
+	text-align: center;
+	height: 116px;
+    background-clip: border-box;
+    background-size: cover;
+}
+
+.account-panel .panel-heading span {
+    background-color: rgba(245, 245, 245, 0.7);
+}
+
 /* Spin animation */
 .spin {
      -webkit-transform-origin: 50% 50%;

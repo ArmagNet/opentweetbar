@@ -65,11 +65,11 @@ foreach ($accounts as $account) {
 	</div>
 
 	<?php 	foreach ($accounts as $account) {?>
-	<div class="col-md-4 account-panel" id="account-panel-<?php echo $account["sna_id"];?>" data-account-id="<?php echo $account["sna_id"];?>">
+	<div class="col-md-4 account-panel" class="account-panel" id="account-panel-<?php echo $account["sna_id"];?>" data-account-id="<?php echo $account["sna_id"];?>">
 		<div class="panel panel-default">
 			<!-- Default panel contents -->
-			<div class="panel-heading">
-				<?php echo str_replace("{account}", $account["sna_name"], lang("timelines_account_title")); ?>
+			<div class="panel-heading" style="background-image: url('do_getBanner.php?accountId=<?php echo $account["sna_id"]; ?>'); ">
+				<span><?php echo str_replace("{account}", $account["sna_name"], lang("timelines_account_title")); ?></span>
 			</div>
 			<div class="panel-body" style="overflow-y: scroll; max-height: 500px;">
 			</div>

@@ -45,24 +45,12 @@ if (!$account) {
 	echo json_encode(array("ko" => "no account access found"));
 	exit();
 }
+// TODO works for twitter-ed account
+$bannerUrl = TweetBo::getProfileBanner($account);
+$bannerUrl .= "/300x100";
 
-$sinceId = null;
-if (isset($_REQUEST["sinceId"])) {
-	$sinceId = intval($_REQUEST["sinceId"]);
-}
+error_log($bannerUrl);
 
-$numberOfTweets = null;
-if (isset($_REQUEST["numberOfTweets"])) {
-	$numberOfTweets = intval($_REQUEST["numberOfTweets"]);
-}
+readfile($bannerUrl);
 
-// error_log("Start retrieve for $requestedAccountId");
-// error_log(print_r($account, true));
-// error_log($sinceId);
-$timeline = TweetBo::getTimeline($account, $sinceId, $numberOfTweets);
-// error_log("Retrieve for $requestedAccountId");
-
-// error_log(print_r($timeline, true));
-
-echo json_encode(array("ok" => "ok", "accountId" => $requestedAccountId, "timeline" => $timeline));
 ?>

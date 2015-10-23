@@ -369,6 +369,27 @@ class TweetBo {
 		//		print_r($status);
 	}
 
+	static function getProfileBanner($account) {
+		include_once "engine/twitter/twitteroauth.php";
+
+		$key = $account["stc_api_key"];
+		$secret = $account["stc_api_secret"];
+		$token = $account["stc_access_token"];
+		$token_secret = $account["stc_access_token_secret"];
+
+		//		print_r($account);
+
+		$connection = new TwitterOAuth($key, $secret, $token, $token_secret);
+
+		$parameters = array();
+
+		$result = $connection->get('account/verify_credentials', $parameters);
+
+		error_log(print_r($result, true));
+
+		return $result->profile_banner_url;
+	}
+
 	function updateStatus($tweet, $status) {
 		$args = array("twe_id" => $tweet["twe_id"], "twe_status" => $status);
 		$query = "	UPDATE tweets SET
