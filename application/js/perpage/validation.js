@@ -219,12 +219,16 @@ function addListeners(tweets) {
 							"userId" : $("#user_" + id).val(),
 							"hash" : $("#hash_" + id).val()};
 
-			$.post("do_deleteTweet.php", myform, function(data) {
-				if (data.ok) {
-					$("#okDeleteTweetAlert").show().delay(2000).fadeOut(1000);
-					deleteTweetUI(id);
+			bootbox.confirm("Voulez-vous vraiment supprimer ce tweet ?", function(result) {
+				if (result) {
+					$.post("do_deleteTweet.php", myform, function(data) {
+						if (data.ok) {
+							$("#okDeleteTweetAlert").show().delay(2000).fadeOut(1000);
+							deleteTweetUI(id);
+						}
+					}, "json");
 				}
-			}, "json");
+			});
 		});
 
 		$(this).find(".ask-for-modification-button").click(function() {
@@ -236,25 +240,30 @@ function addListeners(tweets) {
 							"userId" : $("#user_" + id).val(),
 							"hash" : $("#hash_" + id).val()};
 
-			$.post("do_askForModification.php", myform, function(data) {
-				if (data.ok) {
-					$("#okAskForModificationAlert").show().delay(2000).fadeOut(1000);
+			bootbox.confirm("Voulez-vous demandez une modification sans la faire vous-même ?", function(result) {
+				if (result) {
 
-					var td = tr.find("td").eq(0);
+					$.post("do_askForModification.php", myform, function(data) {
+						if (data.ok) {
+							$("#okAskForModificationAlert").show().delay(2000).fadeOut(1000);
 
-					if (!td.find(".ask-for-modification").length) {
-						td.append(
-							$("*[data-template-id=template-ask-for-modification]").template("use", {data: {}}).children()
-						);
-					}
+							var td = tr.find("td").eq(0);
+
+							if (!td.find(".ask-for-modification").length) {
+								td.append(
+									$("*[data-template-id=template-ask-for-modification]").template("use", {data: {}}).children()
+								);
+							}
+						}
+					}, "json");
 				}
-			}, "json");
+			});
 		});
 
 		$(this).find(".reject-button").click(function() {
 			var id = getElementId($(this));
 
-			bootbox.prompt("Motivation du rejet :", function(result) {
+			bootbox.prompt("Motivation du rejet (si modifier vous-même le tweet n'est pas suffisant) :", function(result) {
 				if (result === null) {
 				}
 				else {
