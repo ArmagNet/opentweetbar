@@ -287,6 +287,7 @@ $lang["error_login_ban"] = "Your IP has been blocked for 10mn.";
 $lang["error_login_bad"] = "Vérifier vos identifiants, l'identification a échouée.";
 $lang["ok_twitter_success"] = "The Twitter configuration works";
 $lang["error_twitter_cant_authenticate"] = "The Twitter configuration doesn't work, verify the differents connection parameters";
+$lang["error_media_typeError"] = "The uploaded file must be an image";
 $lang["error_media_sizeError"] = "The uploaded file is too large (maximum size : <span id='maxSize'></span>)";
 $lang["error_media_defaultError"] = "An error occurred in the processing of a file upload, please try again later";
 

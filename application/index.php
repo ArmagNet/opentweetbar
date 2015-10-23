@@ -211,13 +211,16 @@ else {
 									</div>
 
 									<input id="mediaIds" name="mediaIds" value="-1" type="hidden" />
-									<input id="mediaInput" name="mediaInput" value="" type="file" data-max-size="<?php echo file_upload_max_size(); ?>"
+									<input id="mediaInput" name="mediaInput" value="" type="file"
+										data-max-size="<?php echo file_upload_max_size(); ?>"
+										data-authorized-types="image/jpeg,image/png,image/gif"
 										placeholder="" class="form-control input-md">
 									<span id="mediaStatus"
 										class="glyphicon glyphicon-ok form-control-feedback otbHidden" aria-hidden="true"></span>
 									<p id="mediaHelp" class="help-block otbHidden"></p>
 								</div>
 							</div>
+							<?php echo addAlertDialog("error_media_typeErrorAlert", lang("error_media_typeError"), "danger"); ?>
 							<?php echo addAlertDialog("error_media_sizeErrorAlert", lang("error_media_sizeError"), "danger"); ?>
 							<?php echo addAlertDialog("error_media_defaultErrorAlert", lang("error_media_defaultError"), "danger"); ?>
 

@@ -201,6 +201,7 @@ $(function() {
 	    if (window.FileReader) {
 	    	var file = $("#mediaInput").get(0).files[0];
 	    	var maxSize = $(this).data("max-size");
+	    	var types = $(this).data("authorized-types");
 
 	    	if (maxSize && maxSize < file.size) {
     			$("#mediaInput").val("");
@@ -211,6 +212,29 @@ $(function() {
     			$("#error_media_sizeErrorAlert").show().delay(2000).fadeOut(1000);
 
     			return;
+	    	}
+
+	    	if (types && file.type) {
+	    		types = types.split(",");
+
+	    		var authorized = false;
+
+	    		for(var index = 0; index < types.length; ++index) {
+	    			if (file.type == types[index]) {
+	    				authorized = true;
+	    				break;
+	    			}
+	    		}
+
+	    		if (!authorized) {
+	    			$("#mediaInput").val("");
+	    			$("#mediaProgress").hide();
+	    			$("#mediaInput").show();
+
+	    			$("#error_media_typeErrorAlert").show().delay(2000).fadeOut(1000);
+
+	    			return;
+	    		}
 	    	}
 	    }
 
