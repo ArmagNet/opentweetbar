@@ -49,8 +49,5 @@ if (!$account) {
 $bannerUrl = TweetBo::getProfileBanner($account);
 $bannerUrl .= "/300x100";
 
-error_log($bannerUrl);
-
 readfile($bannerUrl);
-
 ?>

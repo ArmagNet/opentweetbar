@@ -11,6 +11,8 @@ function getHtmlTweet(tweet) {
 	var text = source.text;
 	text = text.replace(/\n/g, "<br>");
 
+	var imgs = [];
+
 	// handle hashtags
 	for(var index = 0; index < source.entities.hashtags.length; ++index) {
 		var hashtag = source.entities.hashtags[index];
@@ -35,7 +37,18 @@ function getHtmlTweet(tweet) {
 		text = text.replace(re, "<a href=\""+url+"\" target=\"_blank\">@"+userMention.screen_name+"</a>");
 	}
 
-	// TODO handle medias
+	// handle medias
+	if (source.extended_entities && source.extended_entities.media) {
+		for(var index = 0; index < source.extended_entities.media.length; ++index) {
+			var media = source.extended_entities.media[index];
+			var re = new RegExp(media.url, "g");
+
+			var img = $("<a data-gallery='"+source.id_str+"' href='do_getMedia.php?mediaUrl="+encodeURIComponent(media.media_url)+"&type="+media.type+"'><img src='do_getMedia.php?mediaUrl="+encodeURIComponent(media.media_url + ":thumb")+"&type="+media.type+"' style='width: 150px; height: 150px; '/></a>");
+			imgs[imgs.length] = img;
+
+			text = text.replace(re, "");
+		}
+	}
 
 	var data = {
 			"tweet_user_screen_name" : tweet.user.screen_name,
@@ -54,7 +67,27 @@ function getHtmlTweet(tweet) {
 		html = $("*[data-template-id=template-tweet]").template("use", { "data": data });
 	}
 
+	if (imgs.length > 0) {
+		html.find("p").after($("<div class='images' style='text-align: center; '></div>"));
+		var imagesDiv = html.find("div.images");
+
+		for(var index = 0; index < imgs.length; ++index) {
+			img = imgs[index];
+
+			img.data("type", "image");
+			img.data("toggle", "lightbox");
+		 	img.data("footer", text);
+
+			imagesDiv.append(img);
+		}
+	}
+
 	html.attr("data-tweet", JSON.stringify(tweet));
+
+	html.find("div.images a").click(function(event) {
+	    event.preventDefault();
+	    $(this).ekkoLightbox({gallery: source.id_str});
+	});
 
 	return html;
 }
