@@ -205,7 +205,7 @@ $lang["mypage_tweet_and_validations_chart_axisY"] = "Quantité";
 $lang["mypage_score_chart_axisY"] = "Score";
 $lang["mypage_tweet_and_validations_chart_axisX"] = "Date";
 $lang["mypage_tweet_and_validations_chart_formatDate"] = "DD/MM/YYYY";
-$lang["mypage_tweet_and_validations_chart_jsFormatDate"] = "(date.getDate() < 10 ? '0' : '') + date.getDate() + '/' + (date.getMonth() < 11 ? '0' : '') + (date.getMonth() + 1) + '/' + date.getFullYear()";
+$lang["mypage_tweet_and_validations_chart_jsFormatDate"] = "(date.getDate() < 10 ? '0' : '') + date.getDate() + '/' + (date.getMonth() < 9 ? '0' : '') + (date.getMonth() + 1) + '/' + date.getFullYear()";
 
 $lang["property_tweet"] = "Tweet";
 $lang["property_author"] = "Auteur";
