@@ -353,7 +353,7 @@ class TweetBo {
 
 					$status = $connection->post('statuses/update', $parameters);
 
-					time_nanosleep(0, 300000000);
+					time_nanosleep(0, 500000000);
 				}
 			}
 		}
