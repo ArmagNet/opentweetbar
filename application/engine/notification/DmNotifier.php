@@ -62,6 +62,11 @@ class DmNotifier {
 		}
 
 		$noticeTweet["twe_content"] = "D ". $validator["use_login"] . " " . $tweetContent;
+
+		if (strlen($noticeTweet["twe_content"]) > 140) {
+			$noticeTweet["twe_content"] = substr($noticeTweet["twe_content"], 0, 140);
+		}
+
 		$tweetBo->sendTweet($noticeTweet);
 		time_nanosleep(0, 300000000);
 
