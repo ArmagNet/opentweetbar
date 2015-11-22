@@ -100,6 +100,15 @@ function updateTweets() {
 }
 
 $(function() {
+	$(".account-panel").on("click", "p a[href*='twitter.com'][href*='status']", function(event) {
+		event.preventDefault();
+		event.stopPropagation();
+
+		$("#searchTweetForm #searchInput").val($(this).attr("href"));
+		$("#searchTweetForm #searchButton").click();
+		$.scrollTo($("#searchTweetForm #searchButton"), 400);
+	});
+
 	$(".account-panel").each(function() {
 		var accountId = $(this).data("account-id");
 		var sinceId = $(this).data("since-id");
