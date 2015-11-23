@@ -60,10 +60,12 @@ if (!$tweet) {
 	exit();
 }
 
+/*
 if (!isset($_SERVER["HTTP_REFERER"])) {
 	echo lang("do_validation_error", true, $user["use_language"]);
 	exit();
 }
+*/
 
 $trueHash = TweetBo::hash($tweet, $userId);
 
