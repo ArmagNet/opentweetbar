@@ -43,7 +43,13 @@ $tweetsByAccount = TweetBo::accounted($tweets);
 
 	<?php 	if ($user) {?>
 
-	<?php 	foreach ($tweetsByAccount as $account => $tweets) {?>
+	<?php 	foreach($accounts as $accountArray) {
+
+				$account = $accountArray["sna_name"];
+				$tweets = $tweetsByAccount[$account];
+
+				if (!count($tweets)) continue;
+	?>
 	<div class="panel panel-default">
 		<!-- Default panel contents -->
 		<div class="panel-heading">
