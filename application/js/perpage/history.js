@@ -96,6 +96,7 @@ $(function() {
 			var previous = $("#account-" + accountId);
 			previous.before(newAccount);
 			previous.remove();
+			newAccount.find('[data-toggle="tooltip"]').tooltip();
 			$.scrollTo(newAccount, 400);
 		}, "html");
 	});
