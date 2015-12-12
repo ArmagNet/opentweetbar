@@ -26,6 +26,28 @@ foreach ($accounts as $account) {
 
 $mediaBo = MediaBo::newInstance($connection);
 
+if (isset($_REQUEST["accountId"])) {
+	$strictAccounts = array();
+
+	foreach($accounts as $account) {
+		if ($account["sna_id"] == $_REQUEST["accountId"]) {
+			$strictAccounts[] = $account;
+		}
+	}
+
+	$accounts = $strictAccounts;
+}
+
+$tweetPage = 1;
+if (isset($_REQUEST["page"])) {
+	$tweetPage =	$_REQUEST["page"];
+}
+
+$numberPerPage = 5;
+if (isset($_REQUEST["numberPerPage"])) {
+	$numberPerPage = $_REQUEST["numberPerPage"];
+}
+
 $tweets = $tweetBo->getTweets($accounts, array('validated','expired','croned','rejected'));
 $tweets = TweetBo::indexValidations($tweets, $user);
 $tweetsByAccount = TweetBo::accounted($tweets);
@@ -50,7 +72,7 @@ $tweetsByAccount = TweetBo::accounted($tweets);
 
 				if (!count($tweets)) continue;
 	?>
-	<div class="panel panel-default">
+	<div class="panel panel-default account" id="account-<?php echo $accountArray["sna_id"]; ?>" data-account-id="<?php echo $accountArray["sna_id"]; ?>">
 		<!-- Default panel contents -->
 		<div class="panel-heading">
 			<?php echo str_replace("{account}", "$account", lang("history_account_title")); ?>
@@ -69,7 +91,16 @@ $tweetsByAccount = TweetBo::accounted($tweets);
 				</tr>
 			</thead>
 			<tbody>
-				<?php 	foreach($tweets as $tweet) {
+				<?php
+
+				$index = -1;
+				foreach($tweets as $tweet) {
+					$index++;
+
+					// After the current page
+					if ($index >= $tweetPage * $numberPerPage) continue;
+					// Before the current page
+					if ($index < ($tweetPage - 1) * $numberPerPage) continue;
 
 					$medias = $mediaBo->getMedias(array("tme_tweet_id" => $tweet["twe_id"]));
 
@@ -191,7 +222,7 @@ $(function() {
 			</tbody>
 		</table>
 
-		<?php echo addPagination(count($tweets), 5); ?>
+		<?php echo addPagination(count($tweets), 5, $tweetPage); ?>
 	</div>
 
 	<br>

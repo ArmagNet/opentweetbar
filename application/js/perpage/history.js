@@ -1,5 +1,5 @@
 $(function() {
-	$(".fork-button").click(function() {
+	$("body").on("click", ".fork-button", function() {
 		var tweetId = $(this).data("tweet-id");
 		var tweetAccount = $(this).data("account");
 
@@ -63,5 +63,40 @@ $(function() {
                 }
             }
         });
+	});
+
+	$("body").on("click", ".pagination li a", function(e) {
+		e.preventDefault();
+
+		var text = $(this).text();
+		var page = -1;
+		var currentPage = $(this).parents("nav").find("li.active").text();
+		var length = $(this).parents("nav").find("li").length;
+
+		if ($.isNumeric(text)) {
+			page = text;
+		}
+		else if (text.indexOf("Previous") != -1) {
+			page = currentPage - 1;
+		}
+
+		else if (text.indexOf("Next") != -1) {
+			page = currentPage - (-1);
+		}
+
+		if (page < 1) page = 1;
+		if (page > length - 2) page = length -2;
+
+		var accountId = $(this).parents(".account").data("account-id");
+
+//		console.log("Get page " + page + " for " + accountId);
+
+		$.get("history.php", {page: page, accountId: accountId, numberPerPage: tweetPerPage}, function(data) {
+			var newAccount = $(data).find(".account");
+			var previous = $("#account-" + accountId);
+			previous.before(newAccount);
+			previous.remove();
+			$.scrollTo(newAccount, 400);
+		}, "html");
 	});
 });

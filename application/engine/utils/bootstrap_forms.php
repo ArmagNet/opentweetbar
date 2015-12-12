@@ -24,7 +24,7 @@ function addAlertDialog($id, $text, $level = "default") {
 	return $formElement;
 }
 
-function addPagination($numberOfElements, $numberOfElementsPerPage) {
+function addPagination($numberOfElements, $numberOfElementsPerPage, $currentPage = 1) {
 
 	if ($numberOfElements < $numberOfElementsPerPage) return "";
 
@@ -32,14 +32,18 @@ function addPagination($numberOfElements, $numberOfElementsPerPage) {
 
 	$formElement .= "<nav class=\"text-center\">";
 	$formElement .= "	<ul class=\"pagination\">";
-	$formElement .= "		<li class=\"disabled\"><a href=\"#\"><span aria-hidden=\"true\">&laquo;</span><span class=\"sr-only\">Previous</span> </a></li>";
-	$formElement .= "		<li class=\"active\"><a href=\"#\">1</a></li>";
+	$formElement .= "		<li class=\"" . (($currentPage == 1) ? "disabled" :"") ."\"><a href=\"#\"><span aria-hidden=\"true\">&laquo;</span><span class=\"sr-only\">Previous</span> </a></li>";
 
-	for($page = 2; $page <= ceil($numberOfElements / $numberOfElementsPerPage); $page++) {
-		$formElement .= "		<li><a href=\"#\">$page</a></li>";
+	for($page = 1; $page <= ceil($numberOfElements / $numberOfElementsPerPage); $page++) {
+		if ($page == $currentPage) {
+			$formElement .= "		<li class=\"active\"><a href=\"#\">$page</a></li>";
+		}
+		else {
+			$formElement .= "		<li><a href=\"#\">$page</a></li>";
+		}
 	}
 
-	$formElement .= "		<li><a href=\"#\"><span aria-hidden=\"true\">&raquo;</span><span class=\"sr-only\">Next</span> </a></li>";
+	$formElement .= "		<li class=\"" . (($currentPage == $page - 1) ? "disabled" :"") ."\"><a href=\"#\"><span aria-hidden=\"true\">&raquo;</span><span class=\"sr-only\">Next</span> </a></li>";
 	$formElement .= "	</ul>";
 	$formElement .= "</nav>";
 

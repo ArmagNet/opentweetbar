@@ -65,6 +65,7 @@ $(function() {
 <script src="js/user.js"></script>
 <script src="js/window.js"></script>
 <script src="js/pagination.js"></script>
+<!-- <?php echo "js/perpage/" . $page . ".js"; ?> -->
 <?php
 if (is_file("js/perpage/" . $page . ".js")) {
 	echo "<script src=\"js/perpage/" . $page . ".js\"></script>\n";

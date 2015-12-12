@@ -42,6 +42,8 @@ $(function() {
 	$(".pagination li a").click(function(e) {
 		e.preventDefault();
 
+		return;
+
 		var text = $(this).text();
 		var page = -1;
 		var currentPage = $(this).parents("nav").find("li.active").text();

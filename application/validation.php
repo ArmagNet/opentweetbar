@@ -62,7 +62,7 @@ function isAdministrator($accountId) {
 
 				if (!count($tweets)) continue;
 	?>
-	<div class="panel panel-default">
+	<div class="panel panel-default account" id="account-<?php echo $accountArray["sna_id"]; ?>" data-account-id="<?php echo $accountArray["sna_id"]; ?>">
 		<!-- Default panel contents -->
 		<div class="panel-heading">
 			<?php echo str_replace("{account}", $account, lang("validation_account_title")); ?>
