@@ -222,7 +222,7 @@ $(function() {
 			</tbody>
 		</table>
 
-		<?php echo addPagination(count($tweets), 5, $tweetPage); ?>
+		<?php echo addPagination(count($tweets), 5, $tweetPage, false); ?>
 	</div>
 
 	<br>

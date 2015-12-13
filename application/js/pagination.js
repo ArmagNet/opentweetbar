@@ -39,10 +39,12 @@ $(function() {
 		showPage($(this), 1);
 	});
 
-	$(".pagination li a").click(function(e) {
+	$("body").on("click", ".pagination li a", function(e) {
 		e.preventDefault();
 
-		return;
+		if ($(this).parents(".pagination").hasClass("no-pagination")) {
+			return;
+		}
 
 		var text = $(this).text();
 		var page = -1;

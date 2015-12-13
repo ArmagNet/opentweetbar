@@ -315,6 +315,12 @@ $(function() {
 
 <?php include("footer.php");?>
 <script type="text/javascript">
+$(function() {
+<?php	if ($userId) { ?>
+	var renewTimer = $.timer(updateValidations);
+	renewTimer.set({ time : 120000, autostart : true });
+<?php 	} ?>
+});
 </script>
 </body>
 </html>

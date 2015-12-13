@@ -41,263 +41,276 @@ function updateTweetRow(tweetId) {
 	}, "html");
 }
 
-function addListeners(tweets) {
-	tweets.each(function() {
-		$(this).find(".test-button").click(function() {
-			var tweetId = $(this).data("tweet-id");
+function addListeners() {
+	$("body").on("click", ".test-button", function() {
+		var tweetId = $(this).data("tweet-id");
 
-			updateTweetRow(tweetId);
-		});
+		updateTweetRow(tweetId);
+	});
 
-		$(this).find(".fork-button").click(function() {
-			var tweetId = $(this).data("tweet-id");
-			var tweetAccount = $(this).data("account");
+	$("body").on("click", ".fork-button", function() {
+		var tweetId = $(this).data("tweet-id");
+		var tweetAccount = $(this).data("account");
 
-			var message = "<div>Pour les comptes ";
+		var message = "<div>Pour les comptes ";
 
-			for(var accountId in accountIdLabels) {
-				var accountLabel = accountIdLabels[accountId];
-				var checkbox = "<label><input type='checkbox' name=\"fork_account_ids\" ";
-				if (accountLabel == tweetAccount) {
-					checkbox += " disabled='disabled' ";
-				}
-				checkbox += " value='"+accountId+"' />" + accountLabel + "</label> ";
-
-				message += checkbox;
+		for(var accountId in accountIdLabels) {
+			var accountLabel = accountIdLabels[accountId];
+			var checkbox = "<label><input type='checkbox' name=\"fork_account_ids\" ";
+			if (accountLabel == tweetAccount) {
+				checkbox += " disabled='disabled' ";
 			}
-			message += "</div>";
-			message = $(message);
+			checkbox += " value='"+accountId+"' />" + accountLabel + "</label> ";
 
-			message.find("input[type=checkbox]").click(function(event) {
-				if ($(this).attr("checked")) {
-					$(this).removeAttr("checked");
-				}
-				else {
-					$(this).attr("checked", "checked");
-				}
-			});
+			message += checkbox;
+		}
+		message += "</div>";
+		message = $(message);
 
-			bootbox.dialog({
-	            title: "Proposer ce tweet aux autres comptes ?",
-	            message: message,
-	            buttons: {
-	                success: {
-	                    label: "Fork",
-	                    className: "btn-primary",
-	                    callback: function () {
-	        				var forkForm = {"tweetId": tweetId, "secondaryAccounts[]": []};
-
-	        				forkForm["account"] = null;
-
-	        				$("input[name=fork_account_ids]").each(function() {
-	        					if ($(this).attr("checked")) {
-	        						if (!forkForm["account"]) {
-	        							forkForm["account"] = accountIdLabels[$(this).val()];
-	        						}
-	        						else {
-	        							forkForm["secondaryAccounts[]"][forkForm["secondaryAccounts[]"].length] = accountIdLabels[$(this).val()];
-	        						}
-	        					}
-	        				});
-
-	        				if (!forkForm["account"]) return;
-
-	        				$.post("do_forkTweet.php", forkForm, function(data) {
-	        					if (data.ok) {
-	        						$("#validationMenuItem .badge").text($("#validationMenuItem .badge").text() - (-1 - forkForm["secondaryAccounts[]"].length)).show();
-
-	        						// reload page
-	        					}
-	        				}, "json");
-	                    }
-	                }
-	            }
-	        });
+		message.find("input[type=checkbox]").click(function(event) {
+			if ($(this).attr("checked")) {
+				$(this).removeAttr("checked");
+			}
+			else {
+				$(this).attr("checked", "checked");
+			}
 		});
 
-		$(this).find(".tweet-content").click(function() {
-			var tweetContentSpan = $(this);
-			var input = $("<textarea></textarea");
-			input.text(tweetContentSpan.text().trim());
+		bootbox.dialog({
+            title: "Proposer ce tweet aux autres comptes ?",
+            message: message,
+            buttons: {
+                success: {
+                    label: "Fork",
+                    className: "btn-primary",
+                    callback: function () {
+        				var forkForm = {"tweetId": tweetId, "secondaryAccounts[]": []};
 
-			tweetContentSpan.before(input);
-			input.focus();
+        				forkForm["account"] = null;
 
-			var buttons = "<div class=\"text-right\">";
-			buttons += "<button class=\"btn btn-primary modify-button\" type=\"button\">Modifier <span class=\"glyphicon glyphicon-ok\"></span></button>";
-			buttons += " <button class=\"btn btn-default cancel-button\" type=\"button\">Annuler <span class=\"glyphicon glyphicon-remove\"></span></button>";
-			buttons += "</div>";
-			buttons = $(buttons);
-			tweetContentSpan.before(buttons);
+        				$("input[name=fork_account_ids]").each(function() {
+        					if ($(this).attr("checked")) {
+        						if (!forkForm["account"]) {
+        							forkForm["account"] = accountIdLabels[$(this).val()];
+        						}
+        						else {
+        							forkForm["secondaryAccounts[]"][forkForm["secondaryAccounts[]"].length] = accountIdLabels[$(this).val()];
+        						}
+        					}
+        				});
 
-			tweetContentSpan.hide();
+        				if (!forkForm["account"]) return;
 
-			input.blur(function() {
-				if (input.val() == input.text()) {
-					tweetContentSpan.show();
-					input.remove();
-					buttons.remove();
-				}
-			});
+        				$.post("do_forkTweet.php", forkForm, function(data) {
+        					if (data.ok) {
+        						$("#validationMenuItem .badge").text($("#validationMenuItem .badge").text() - (-1 - forkForm["secondaryAccounts[]"].length)).show();
 
-			var modifyButton = buttons.find(".modify-button");
-			modifyButton.click(function() {
-				// TODO modify content
+        						// reload page
+        					}
+        				}, "json");
+                    }
+                }
+            }
+        });
+	});
 
-				var tr = $(this).parents("tr");
+	$("body").on("click", ".tweet-content", function() {
+		var tweetContentSpan = $(this);
+		var input = $("<textarea></textarea");
+		input.text(tweetContentSpan.text().trim());
 
-				var id = getElementId(tr);
+		tweetContentSpan.before(input);
+		input.focus();
 
-				if (input.val() != input.text()) {
-					var myform = {	"tweetId" : id,
-								"content" : input.val(),
-								"userId" : $("#user_" + id).val(),
-								"hash" : $("#hash_" + id).val()};
+		var buttons = "<div class=\"text-right\">";
+		buttons += "<button class=\"btn btn-primary modify-button\" type=\"button\">Modifier <span class=\"glyphicon glyphicon-ok\"></span></button>";
+		buttons += " <button class=\"btn btn-default cancel-button\" type=\"button\">Annuler <span class=\"glyphicon glyphicon-remove\"></span></button>";
+		buttons += "</div>";
+		buttons = $(buttons);
+		tweetContentSpan.before(buttons);
 
-					$.post("do_modifyTweet.php", myform, function(data) {
-						tweetContentSpan.text(myform.content);
+		tweetContentSpan.hide();
 
-						tr.find(".ask-for-modification").prev().remove();
-						tr.find(".ask-for-modification").remove();
-						tr.find(".reject-information").prev().remove();
-						tr.find(".reject-information").remove();
-
-						tr.find(".progress-bar-success, .progress-bar-info").css({"width" : "0%"});
-
-						$("#hash_" + id).val(data.hash);
-
-						tweetContentSpan.show();
-						input.remove();
-						buttons.remove();
-
-						updateTweetRow(id);
-					}, "json");
-				}
-				else {
-					tweetContentSpan.show();
-					input.remove();
-					buttons.remove();
-				}
-			});
-
-			var cancelButton = buttons.find(".cancel-button");
-			cancelButton.click(function() {
+		input.blur(function() {
+			if (input.val() == input.text()) {
 				tweetContentSpan.show();
 				input.remove();
 				buttons.remove();
-			});
+			}
 		});
 
-		$(this).find(".validate-button").click(function() {
-			var id = getElementId($(this));
+		var modifyButton = buttons.find(".modify-button");
+		modifyButton.click(function() {
+			// TODO modify content
 
-			var myform = {	"tweetId" : id,
-							"userId" : $("#user_" + id).val(),
-							"hash" : $("#hash_" + id).val()};
-			$.post("do_validateTweet.php", myform, function(data) {
-				if (data.ok) {
-					$("#row_" + id + " .progress-bar-success").css("width", data.score + "%");
-					$("#row_" + id + " .progress").attr("title", data.total_score + " / " + data.validation_score);
-
-					if (data.validated) {
-						$("#okFinalValidateTweetAlert").show().delay(2000).fadeOut(1000);
-						deleteTweetUI(id);
-					}
-					else {
-						$("#okValidateTweetAlert").show().delay(2000).fadeOut(1000);
-						$("#validate_" + id).fadeOut().remove();
-						$("#reject_" + id).fadeOut().remove();
-					}
-				}
-			}, "json");
-		});
-
-		$(this).find(".delete-button").click(function() {
-			var id = getElementId($(this));
-
-			var myform = {	"tweetId" : id,
-							"userId" : $("#user_" + id).val(),
-							"hash" : $("#hash_" + id).val()};
-
-			bootbox.confirm("Voulez-vous vraiment supprimer ce tweet ?", function(result) {
-				if (result) {
-					$.post("do_deleteTweet.php", myform, function(data) {
-						if (data.ok) {
-							$("#okDeleteTweetAlert").show().delay(2000).fadeOut(1000);
-							deleteTweetUI(id);
-						}
-					}, "json");
-				}
-			});
-		});
-
-		$(this).find(".ask-for-modification-button").click(function() {
 			var tr = $(this).parents("tr");
 
-			var id = getElementId($(this));
+			var id = getElementId(tr);
 
-			var myform = {	"tweetId" : id,
+			if (input.val() != input.text()) {
+				var myform = {	"tweetId" : id,
+							"content" : input.val(),
 							"userId" : $("#user_" + id).val(),
 							"hash" : $("#hash_" + id).val()};
 
-			bootbox.confirm("Voulez-vous demandez une modification sans la faire vous-même ?", function(result) {
-				if (result) {
+				$.post("do_modifyTweet.php", myform, function(data) {
+					tweetContentSpan.text(myform.content);
 
-					$.post("do_askForModification.php", myform, function(data) {
-						if (data.ok) {
-							$("#okAskForModificationAlert").show().delay(2000).fadeOut(1000);
+					tr.find(".ask-for-modification").prev().remove();
+					tr.find(".ask-for-modification").remove();
+					tr.find(".reject-information").prev().remove();
+					tr.find(".reject-information").remove();
 
-							var td = tr.find("td").eq(0);
+					tr.find(".progress-bar-success, .progress-bar-info").css({"width" : "0%"});
 
-							if (!td.find(".ask-for-modification").length) {
-								td.append(
-									$("*[data-template-id=template-ask-for-modification]").template("use", {data: {}}).children()
-								);
-							}
-						}
-					}, "json");
-				}
-			});
+					$("#hash_" + id).val(data.hash);
+
+					tweetContentSpan.show();
+					input.remove();
+					buttons.remove();
+
+					updateTweetRow(id);
+				}, "json");
+			}
+			else {
+				tweetContentSpan.show();
+				input.remove();
+				buttons.remove();
+			}
 		});
 
-		$(this).find(".reject-button").click(function() {
-			var id = getElementId($(this));
+		var cancelButton = buttons.find(".cancel-button");
+		cancelButton.click(function() {
+			tweetContentSpan.show();
+			input.remove();
+			buttons.remove();
+		});
+	});
 
-			bootbox.prompt("Motivation du rejet (si modifier vous-même le tweet n'est pas suffisant) :", function(result) {
-				if (result === null) {
+	$("body").on("click", ".validate-button", function() {
+		var id = getElementId($(this));
+
+		var myform = {	"tweetId" : id,
+						"userId" : $("#user_" + id).val(),
+						"hash" : $("#hash_" + id).val()};
+		$.post("do_validateTweet.php", myform, function(data) {
+			if (data.ok) {
+				$("#row_" + id + " .progress-bar-success").css("width", data.score + "%");
+				$("#row_" + id + " .progress").attr("title", data.total_score + " / " + data.validation_score);
+
+				if (data.validated) {
+					$("#okFinalValidateTweetAlert").show().delay(2000).fadeOut(1000);
+					deleteTweetUI(id);
 				}
 				else {
-					var myform = {	"tweetId" : id,
-							"userId" : $("#user_" + id).val(),
-							"hash" : $("#hash_" + id).val(),
-							"rejection" : true,
-							"motivation" : result};
-
-					$.post("do_validateTweet.php", myform, function(data) {
-						if (data.ok) {
-							$("#row_" + id + " .progress-bar-success").css("width", data.score + "%");
-							$("#row_" + id + " .progress").attr("title", data.total_score + " / " + data.validation_score);
-
-							var td = $("#row_" + id + " td").eq(0);
-
-							td.append(
-								$("*[data-template-id=template-reject-tweet]").template("use", {data: {
-											"motivation" : myform["motivation"]
-										}}).children()
-							);
-
-							$("#okRejectTweetAlert").show().delay(2000).fadeOut(1000);
-							$("#validate_" + id).fadeOut().remove();
-							$("#reject_" + id).fadeOut().remove();
-							updateTweetRow(id);
-						}
-					}, "json");
+					$("#okValidateTweetAlert").show().delay(2000).fadeOut(1000);
+					$("#validate_" + id).fadeOut().remove();
+					$("#reject_" + id).fadeOut().remove();
 				}
-			});
+			}
+		}, "json");
+	});
+
+	$("body").on("click", ".delete-button", function() {
+		var id = getElementId($(this));
+
+		var myform = {	"tweetId" : id,
+						"userId" : $("#user_" + id).val(),
+						"hash" : $("#hash_" + id).val()};
+
+		bootbox.confirm("Voulez-vous vraiment supprimer ce tweet ?", function(result) {
+			if (result) {
+				$.post("do_deleteTweet.php", myform, function(data) {
+					if (data.ok) {
+						$("#okDeleteTweetAlert").show().delay(2000).fadeOut(1000);
+						deleteTweetUI(id);
+					}
+				}, "json");
+			}
+		});
+	});
+
+	$("body").on("click", ".ask-for-modification-button", function() {
+		var tr = $(this).parents("tr");
+
+		var id = getElementId($(this));
+
+		var myform = {	"tweetId" : id,
+						"userId" : $("#user_" + id).val(),
+						"hash" : $("#hash_" + id).val()};
+
+		bootbox.confirm("Voulez-vous demandez une modification sans la faire vous-même ?", function(result) {
+			if (result) {
+
+				$.post("do_askForModification.php", myform, function(data) {
+					if (data.ok) {
+						$("#okAskForModificationAlert").show().delay(2000).fadeOut(1000);
+
+						var td = tr.find("td").eq(0);
+
+						if (!td.find(".ask-for-modification").length) {
+							td.append(
+								$("*[data-template-id=template-ask-for-modification]").template("use", {data: {}}).children()
+							);
+						}
+					}
+				}, "json");
+			}
+		});
+	});
+
+	$("body").on("click", ".reject-button", function() {
+		var id = getElementId($(this));
+
+		bootbox.prompt("Motivation du rejet (si modifier vous-même le tweet n'est pas suffisant) :", function(result) {
+			if (result === null) {
+			}
+			else {
+				var myform = {	"tweetId" : id,
+						"userId" : $("#user_" + id).val(),
+						"hash" : $("#hash_" + id).val(),
+						"rejection" : true,
+						"motivation" : result};
+
+				$.post("do_validateTweet.php", myform, function(data) {
+					if (data.ok) {
+						$("#row_" + id + " .progress-bar-success").css("width", data.score + "%");
+						$("#row_" + id + " .progress").attr("title", data.total_score + " / " + data.validation_score);
+
+						var td = $("#row_" + id + " td").eq(0);
+
+						td.append(
+							$("*[data-template-id=template-reject-tweet]").template("use", {data: {
+										"motivation" : myform["motivation"]
+									}}).children()
+						);
+
+						$("#okRejectTweetAlert").show().delay(2000).fadeOut(1000);
+						$("#validate_" + id).fadeOut().remove();
+						$("#reject_" + id).fadeOut().remove();
+						updateTweetRow(id);
+					}
+				}, "json");
+			}
 		});
 	});
 }
 
+function updateValidations() {
+	$.get("validation.php", {}, function(data) {
+
+		var newAccount = $(data).find(".account");
+
+		var previous = $(".account");
+		previous.remove();
+
+		$(".well").after(newAccount);
+
+		newAccount.find('[data-toggle="tooltip"]').tooltip();
+
+	}, "html");
+}
+
 $(function() {
-	addListeners($(".tweet-row"));
+	addListeners();
 });

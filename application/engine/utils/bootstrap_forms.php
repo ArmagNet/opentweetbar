@@ -24,14 +24,14 @@ function addAlertDialog($id, $text, $level = "default") {
 	return $formElement;
 }
 
-function addPagination($numberOfElements, $numberOfElementsPerPage, $currentPage = 1) {
+function addPagination($numberOfElements, $numberOfElementsPerPage, $currentPage = 1, $paginate = true) {
 
 	if ($numberOfElements < $numberOfElementsPerPage) return "";
 
 	$formElement = "";
 
 	$formElement .= "<nav class=\"text-center\">";
-	$formElement .= "	<ul class=\"pagination\">";
+	$formElement .= "	<ul class=\"pagination ".($paginate ? "" : "no-pagination")."\">";
 	$formElement .= "		<li class=\"" . (($currentPage == 1) ? "disabled" :"") ."\"><a href=\"#\"><span aria-hidden=\"true\">&laquo;</span><span class=\"sr-only\">Previous</span> </a></li>";
 
 	for($page = 1; $page <= ceil($numberOfElements / $numberOfElementsPerPage); $page++) {
