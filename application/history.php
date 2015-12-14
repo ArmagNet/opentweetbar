@@ -48,7 +48,7 @@ if (isset($_REQUEST["numberPerPage"])) {
 	$numberPerPage = $_REQUEST["numberPerPage"];
 }
 
-$tweets = $tweetBo->getTweets($accounts, array('validated','expired','croned','rejected'));
+$tweets = $tweetBo->getTweets($accounts, array('validated','expired','croned','rejected','deleted'));
 $tweets = TweetBo::indexValidations($tweets, $user);
 $tweetsByAccount = TweetBo::accounted($tweets);
 
@@ -114,6 +114,7 @@ $tweetsByAccount = TweetBo::accounted($tweets);
 								case "croned":
 									echo ' class="info" ';
 									break;
+								case "deleted":
 								case "rejected":
 									echo ' class="danger" ';
 									break;
