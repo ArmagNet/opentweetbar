@@ -17,11 +17,10 @@
     along with OpenTweetBar.  If not, see <http://www.gnu.org/licenses/>.
 */
 ?>
-<nav class="navbar navbar-inverse navbar-bottom" role="navigation">
+<nav id="footer" class="navbar navbar-inverse navbar-bottom" role="navigation">
 
 	<ul class="nav navbar-nav">
 		<li <?php if ($page == "about") echo 'class="active"'; ?>><a href="about.php"><?php echo lang("about_footer"); ?></a></li>
-		<li><a href="https://flattr.com/submit/auto?user_id=armagnet_fai&url=https%3A%2F%2Fwww.opentweetbar.net%2F" target="_blank"><img src="//api.flattr.com/button/flattr-badge-large.png" alt="Flattr this" title="Flattr this" border="0"></a></li>
 	</ul>
 	<p class="navbar-text pull-right"><?php echo lang("opentweetbar_footer"); ?></p>
 </nav>
@@ -57,6 +56,9 @@ $(function() {
 	var validationTimer = $.timer(updateCountValidations);
 	validationTimer.set({ time : 60000, autostart : true });
 <?php 	} ?>
+
+	$("#footer ul").append($("<li><a href=\"https://flattr.com/submit/auto?user_id=armagnet_fai&url=https%3A%2F%2Fwww.opentweetbar.net%2F\" target=\"_blank\"><img src=\"//api.flattr.com/button/flattr-badge-large.png\" alt=\"Flattr this\" title=\"Flattr this\" border=\"0\"></a></li>"));
+
 });
 </script>
 <script src="js/jquery.template.js"></script>
