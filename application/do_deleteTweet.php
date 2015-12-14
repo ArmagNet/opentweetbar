@@ -64,6 +64,12 @@ if ($tweet["twe_author_id"] != $userId && !$isAdmin) {
 	exit();
 }
 
+// Only "in validation" tweet can be deleted
+if ($tweet["twe_status"] != "inValidation") {
+	echo json_encode(array("ko" => "ko", "message" => "not_in_validation"));
+	exit();
+}
+
 $data = array();
 
 if ($tweetBo->updateStatus($tweet, "deleted")) {
