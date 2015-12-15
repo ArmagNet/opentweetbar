@@ -191,3 +191,10 @@ html,body {
     transform: rotate(360deg);
   }
 }
+
+.alert {
+    position: fixed;
+    bottom: 50px;
+    right: 10px;
+    z-index: 1000;
+}

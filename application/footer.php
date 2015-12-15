@@ -57,8 +57,12 @@ $(function() {
 	validationTimer.set({ time : 60000, autostart : true });
 <?php 	} ?>
 
-	$("#footer ul").append($("<li><a href=\"https://flattr.com/submit/auto?user_id=armagnet_fai&url=https%3A%2F%2Fwww.opentweetbar.net%2F\" target=\"_blank\"><img src=\"//api.flattr.com/button/flattr-badge-large.png\" alt=\"Flattr this\" title=\"Flattr this\" border=\"0\"></a></li>"));
-
+	var flatterDelayTimer = $.timer(function() {
+		$("#footer ul").append($("<li><a href=\"https://flattr.com/submit/auto?user_id=armagnet_fai&url=https%3A%2F%2Fwww.opentweetbar.net%2F\" target=\"_blank\"><img src=\"//api.flattr.com/button/flattr-badge-large.png\" alt=\"Flattr this\" title=\"Flattr this\" border=\"0\"></a></li>"));
+		flatterDelayTimer.stop();
+	});
+	flatterDelayTimer.set({time: 2000, autostart : true });
+	flatterDelayTimer.once(1);
 });
 </script>
 <script src="js/jquery.template.js"></script>

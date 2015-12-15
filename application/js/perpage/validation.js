@@ -26,6 +26,10 @@ function deleteTweetUI(id) {
 		if (currentPage) {
 			showPage(table, currentPage);
 		}
+
+		if (table.find("tbody tr").length == 0) {
+			table.parents(".account").hide();
+		}
 	});
 }
 
@@ -141,7 +145,7 @@ function addListeners() {
 
 		var modifyButton = buttons.find(".modify-button");
 		modifyButton.click(function() {
-			// TODO modify content
+			// modify content
 
 			var tr = $(this).parents("tr");
 
@@ -218,6 +222,7 @@ function addListeners() {
 						"userId" : $("#user_" + id).val(),
 						"hash" : $("#hash_" + id).val()};
 
+		bootbox.setLocale("fr");
 		bootbox.confirm("Voulez-vous vraiment supprimer ce tweet ?", function(result) {
 			if (result) {
 				$.post("do_deleteTweet.php", myform, function(data) {
@@ -239,6 +244,7 @@ function addListeners() {
 						"userId" : $("#user_" + id).val(),
 						"hash" : $("#hash_" + id).val()};
 
+		bootbox.setLocale("fr");
 		bootbox.confirm("Voulez-vous demandez une modification sans la faire vous-même ?", function(result) {
 			if (result) {
 
@@ -262,6 +268,7 @@ function addListeners() {
 	$("body").on("click", ".reject-button", function() {
 		var id = getElementId($(this));
 
+		bootbox.setLocale("fr");
 		bootbox.prompt("Motivation du rejet (si modifier vous-même le tweet n'est pas suffisant) :", function(result) {
 			if (result === null) {
 			}

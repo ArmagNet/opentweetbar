@@ -350,6 +350,8 @@ $(function() {
 	});
 
 	$("#tweetButton").click(function() {
+		$("#tweetButton").attr("disabled", "disabled");
+
 		var supportInputs = $("#supportDiv input:checked");
 		var supports = [];
 
@@ -392,6 +394,8 @@ $(function() {
 		}
 
 		$.post("do_addTweet.php", myform, function(data) {
+			$("#tweetButton").attr("disabled", "disabled");
+
 			if (data.ok) {
 				$("#okTweetAlert").show().delay(2000).fadeOut(1000);
 				$("#tweet").val("");
