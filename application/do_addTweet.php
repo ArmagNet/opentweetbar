@@ -164,7 +164,22 @@ foreach($accounts as $account) {
 			$tweetBo->addValidation($validation);
 		}
 
-		if (isset($config["cron_enabled"]) && $config["cron_enabled"]) {
+		if ($validation["tva_score"] >= $account["sco_validation_score"]) {
+
+			$tweet["twe_destination_id"] = 	$tweet["twe_destination"];
+
+			if (isset($tweet["twe_cron_datetime"]) && $tweet["twe_cron_datetime"] && $tweet["twe_cron_datetime"] != "0000-00-00 00:00:00") {
+				//			error_log("Will do cron");
+				$tweetBo->updateStatus($tweet, "croned");
+			}
+			else {
+				//			error_log("Will do sending");
+				$tweetBo->sendTweet($tweet);
+				$tweetBo->updateStatus($tweet, "validated");
+			}
+
+		}
+		else if (isset($config["cron_enabled"]) && $config["cron_enabled"]) {
 	//		error_log("php do_cron_notifier.php $accountId $userId " . $tweet["twe_id"] . " > /dev/null 2> /dev/null &");
 			exec("php do_cron_notifier.php $accountId $userId " . $tweet["twe_id"] . " > /dev/null 2> /dev/null &");
 		}
