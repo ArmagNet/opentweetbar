@@ -119,7 +119,7 @@ function verifyAll() {
 }
 
 function computeTweetLenght(text) {
-	return 140 - text.length;
+	return 140 - text.length - ($(".mediaImage").length > 0 ? 22 : 0);
 }
 
 function urlized(tweetContent) {
@@ -147,8 +147,8 @@ function urlized(tweetContent) {
 	return returned;
 }
 
-function cutTweet(text, tweets, urls) {
-	var maxLength = 140 - 7;
+function cutTweet(text, tweets, urls, hasImage) {
+	var maxLength = 140 - 7 - (hasImage ? 22 : 0);
 
 	if (text.length > maxLength) {
 		var cutLength = text.regexLastIndexOf(/[ ,;]/, maxLength);
@@ -158,7 +158,7 @@ function cutTweet(text, tweets, urls) {
 
 		text = text.substring(cutLength + 1).trim();
 
-		cutTweet(text, tweets, urls);
+		cutTweet(text, tweets, urls, false);
 
 		return;
 	}
@@ -335,7 +335,7 @@ $(function() {
 			var tweetLength = computeTweetLenght(tweetContent);
 
 			if (tweetLength < 0) {
-				cutTweet(tweetContent, [], computed.urls);
+				cutTweet(tweetContent, [], computed.urls, $(".mediaImage").length > 0 ? true : false);
 				$("#cutTweets").show();
 			}
 

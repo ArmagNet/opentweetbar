@@ -46,8 +46,8 @@ class TweetBo {
 		return $result;
 	}
 
-	static function cutTweet($text, &$tweets, $urls) {
-		$maxLength = 140 - 7;
+	static function cutTweet($text, &$tweets, $urls, $hasImage = false) {
+		$maxLength = 140 - 7 - ($hasImage ? 22 : 0);
 
 		if (strlen(utf8_decode($text)) > $maxLength) {
 			$cutLength = regexLastIndexOf($text, '/[ ,;]/mi', $maxLength);
@@ -329,7 +329,7 @@ class TweetBo {
 
 			$result = TweetBo::urlized($tweet["twe_content"]);
 
-			if (strlen(utf8_decode($result["content"])) <= 140) {
+			if (strlen(utf8_decode($result["content"])) <= 140 - 22 * (count($twitterMediaIds) ? 1 : 0)) {
 				$parameters = array('status' => $tweet["twe_content"]);
 
 				if (count($twitterMediaIds)) {
@@ -342,7 +342,7 @@ class TweetBo {
 				include_once "engine/utils/StringUtils.php";
 
 				$contents = array();
-				TweetBo::cutTweet($result["content"], $contents, $result["urls"]);
+				TweetBo::cutTweet($result["content"], $contents, $result["urls"], count($twitterMediaIds) ? true : false);
 
 				foreach($contents as $index => $content) {
 					$parameters = array('status' => $content);
