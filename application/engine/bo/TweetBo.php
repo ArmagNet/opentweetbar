@@ -252,6 +252,7 @@ class TweetBo {
 
 		include_once "engine/facebook/facebook.php";
 		include_once "engine/bo/MediaBo.php";
+		include_once "engine/bo/UserBo.php";
 
 		$account = $this->getAccount($tweet["twe_destination_id"]);
 
@@ -259,7 +260,46 @@ class TweetBo {
 		$accessToken = $account["sfp_access_token"];
 
 		$facebookApiClient = new FacebookApiClient($accessToken);
-		$response = $facebookApiClient->postMessage($pageId, $tweet["twe_content"]);
+
+		$medias = array();
+
+		if (isset($tweet["twe_id"])) {
+			$mediaBo = MediaBo::newInstance($this->pdo);
+			$medias = $mediaBo->getMedias(array("tme_tweet_id" => $tweet["twe_id"]));
+		}
+
+		$facebookImageIds = array();
+
+//		if (count($medias) == 1) {
+		if (count($medias)) {
+			global $config;
+			$media = $medias[0];
+			$media["med_hash"] = UserBo::computePassword($media["med_id"]);
+			$url = $config["base_url"] . "/do_loadMedia.php?med_id=" . $media["med_id"] . "&med_hash=" . $media["med_hash"];
+//			$response = $facebookApiClient->postImageByUrl($pageId, $url);
+
+			error_log("Url : $url");
+// 			error_log(print_r($response, true));
+
+// 			$id = $response["id"];
+
+//			$facebookImageIds[] = $id;
+			$facebookImageIds[] = $url;
+		}
+// 		else if (count($medias) > 1) {
+// 			global $config;
+// 			foreach($medias as $index => $media) {
+// 				if ($index >= 5) continue;
+
+// 				$media["med_hash"] = UserBo::computePassword($media["med_id"]);
+
+// 				$url = $config["base_url"] . "/do_loadMedia.php?med_id=" . $media["med_id"] . "&med_hash=" . $media["med_hash"];
+
+// 				$facebookImageIds[] = $url;
+// 			}
+// 		}
+
+		$response = $facebookApiClient->postMessage($pageId, $tweet["twe_content"], $facebookImageIds);
 
 		$updateTweet = array("twe_id" => $tweet["twe_id"]);
 		$updateTweet["twe_facebook_page_id"] = $response["id"];

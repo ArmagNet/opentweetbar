@@ -52,8 +52,37 @@ class FacebookApiClient {
 		return $messages;
 	}
 
-	function postMessage($pageId, $message) {
-		$response = $this->_post("/$pageId/feed", array("access_token" => $this->token, "message" => $message));
+	function postMessage($pageId, $message, $imageIds = null) {
+
+		$request = array("access_token" => $this->token, "message" => $message);
+
+		if ($imageIds) {
+			if (count($imageIds) == 1) {
+//				$request["object_attachment"] = $imageIds[0];
+
+  				$request["link"] = $imageIds[0];
+//  				$request["link"] = "";
+  				$request["picture"] = $imageIds[0];
+			}
+// 			else if (count($imageIds) > 1) {
+// 				$childAttachments = array();
+
+// 				foreach($imageIds as $imageId) {
+// 					$childAttachments[] = array("link" => $imageId, "picture" => $imageId);
+// 				}
+
+// 				$request["child_attachments"] = $childAttachments;
+// 			}
+		}
+
+		$response = $this->_post("/$pageId/feed", $request);
+
+		return $response;
+	}
+
+	function postImageByUrl($pageId, $url) {
+//		$response = $this->_post("/$pageId/photos", array("access_token" => $this->token, "url" => $url, "published" => "false"));
+		$response = $this->_post("/$pageId/photos", array("access_token" => $this->token, "url" => $url));
 
 		return $response;
 	}
@@ -100,10 +129,13 @@ class FacebookApiClient {
 		$url .= "/v" . $this->version;
 		$url .= $method;
 
-		error_log("FB API Url call : " . $url);
+//		error_log("FB API Url call : " . $url);
 
 		//url-ify the data for the POST
 		$fieldsString = http_build_query($fields);
+
+		error_log("Post Request");
+		error_log($fieldsString);
 
 		//open connection
 		$ch = curl_init();

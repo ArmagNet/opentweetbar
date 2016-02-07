@@ -58,7 +58,10 @@ function isAdministrator($accountId) {
 	<?php 	foreach($accounts as $accountArray) {
 
 				$account = $accountArray["sna_name"];
-				$tweets = $tweetsByAccount[$account];
+				$tweets = array();
+				if (isset($tweetsByAccount[$account])) {
+					$tweets = $tweetsByAccount[$account];
+				}
 
 				if (!count($tweets)) continue;
 	?>
