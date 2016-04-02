@@ -119,7 +119,7 @@ function verifyAll() {
 }
 
 function computeTweetLenght(text) {
-	return 140 - text.length - ($(".mediaImage").length > 0 ? 22 : 0);
+	return 140 - text.length - ($(".mediaImage").length > 0 ? 24 : 0);
 }
 
 function urlized(tweetContent) {

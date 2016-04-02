@@ -38,7 +38,10 @@ $hash = $_REQUEST["hash"];
 $tweetId = $_REQUEST["tweetId"];
 $remoteIp = (isset($_SERVER["HTTP_X_REAL_IP"]) && $_SERVER["HTTP_X_REAL_IP"]) ? $_SERVER["HTTP_X_REAL_IP"] : $_SERVER["REMOTE_ADDR"];
 
-if (strpos($remoteIp, "199.59.148.") !== false ||
+if (strpos($remoteIp, "52.20.") !== false ||
+	strpos($remoteIp, "52.21.") !== false ||
+	strpos($remoteIp, "52.22.") !== false ||
+	strpos($remoteIp, "199.59.148.") !== false ||
 	strpos($remoteIp, "199.16.156.") !== false
 	) {
 	// We exit cause it's a twitter validation
