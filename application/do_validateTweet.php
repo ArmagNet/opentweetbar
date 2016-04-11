@@ -42,8 +42,7 @@ if (strpos($remoteIp, "52.20.") !== false ||
 	strpos($remoteIp, "52.21.") !== false ||
 	strpos($remoteIp, "52.22.") !== false ||
 	strpos($remoteIp, "199.59.148.") !== false ||
-	strpos($remoteIp, "199.16.156.") !== false ||
-	strpos($remoteIp, "109.220.52.") !== false
+	strpos($remoteIp, "199.16.156.") !== false
 	) {
 	// We exit cause it's a twitter validation
 	exit();
