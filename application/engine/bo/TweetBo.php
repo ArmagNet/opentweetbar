@@ -515,6 +515,24 @@ class TweetBo {
 	}
 
 	function addValidation(&$validation) {
+
+		$query = "	SELECT *
+					FROM tweet_validations
+					WHERE
+						tva_validator = :tva_validator
+					AND tva_tweet_id = :tva_tweet_id ";
+		$statement = $this->pdo->prepare($query);
+		$statement->execute(array("tva_validator" => $validation["tva_validator"], "tva_tweet_id" => $validation["tva_tweet_id"]));
+
+		$foundValidation = $statement->fetchAll();
+		if (count($foundValidation) > 0) {
+			$foundValidation = $foundValidation[0];
+
+			// TODO add update query if score is different
+
+			return false;
+		}
+
 		$query = "	INSERT INTO tweet_validations
 						(tva_validator, tva_tweet_id, tva_status, tva_score, tva_ip, tva_referer, tva_datetime, tva_motivation)
 					VALUES

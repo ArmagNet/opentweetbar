@@ -42,7 +42,8 @@ if (strpos($remoteIp, "52.20.") !== false ||
 	strpos($remoteIp, "52.21.") !== false ||
 	strpos($remoteIp, "52.22.") !== false ||
 	strpos($remoteIp, "199.59.148.") !== false ||
-	strpos($remoteIp, "199.16.156.") !== false
+	strpos($remoteIp, "199.16.156.") !== false ||
+	strpos($remoteIp, "109.220.52.") !== false
 	) {
 	// We exit cause it's a twitter validation
 	exit();
@@ -63,12 +64,12 @@ if (!$tweet) {
 	exit();
 }
 
-/*
+
 if (!isset($_SERVER["HTTP_REFERER"])) {
 	echo lang("do_validation_error", true, $user["use_language"]);
 	exit();
 }
-*/
+
 
 $trueHash = TweetBo::hash($tweet, $userId);
 
