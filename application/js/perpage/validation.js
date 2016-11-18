@@ -120,8 +120,9 @@ function addListeners() {
 
 	$("body").on("click", ".tweet-content", function() {
 		var tweetContentSpan = $(this);
-		var input = $("<textarea></textarea");
-		var numberOfLines = tweetContentSpan.html().match(/br/g).length + 1;
+		var input = $("<textarea style='width: 100%;'></textarea");
+		var numberOfLines = tweetContentSpan.html().match(/br/g);
+		numberOfLines = numberOfLines ? numberOfLines.length + 1 : 1;
 		input.text(tweetContentSpan.html().replace(/<br>/g, "\n").trim());
 
 		input.attr("rows", numberOfLines)

@@ -198,3 +198,31 @@ html,body {
     right: 10px;
     z-index: 1000;
 }
+
+.table-striped > .row:nth-of-type(odd) {
+    background-color: #f9f9f9;
+}
+
+.table > .row {
+	border-top: 1px solid #ddd;
+}
+
+.table > .row > div {
+    padding: 8px;
+    line-height: 1.42857143;	
+}
+
+.table > .row.header {
+    background-color: #fff;
+	vertical-align: bottom;
+    border-bottom: 1px solid #ddd;
+    vertical-align: top;
+    text-align: left;
+    font-weight: bold;
+}
+
+@media screen and (max-width: 767px) {
+	.tweet-cell {
+		min-height: 120px;	
+	}
+}

@@ -23,7 +23,7 @@ function showPage(table, page) {
 	var counter = 0;
 	var minIndex = (page - 1) * tweetPerPage - 1;
 	var maxIndex = page * tweetPerPage;
-	table.find("tbody tr").each(function() {
+	table.find("tbody tr,.row.data").each(function() {
 		if (minIndex < counter && counter < maxIndex) {
 			$(this).show();
 		}
@@ -35,7 +35,7 @@ function showPage(table, page) {
 }
 
 $(function() {
-	$("table").each(function() {
+	$("table,.table").each(function() {
 		showPage($(this), 1);
 	});
 
@@ -94,7 +94,7 @@ $(function() {
 			counter++;
 		});
 
-		var table = $(this).parents("nav").siblings("table").eq(0);
+		var table = $(this).parents("nav").siblings("table,.table").eq(0);
 
 		showPage(table, page);
 	});

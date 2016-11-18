@@ -72,25 +72,22 @@ function isAdministrator($accountId) {
 		</div>
 
 		<!-- Table -->
-		<table class="table table-striped">
-			<thead>
-				<tr>
-					<th><?php echo lang("property_tweet"); ?></th>
-					<th class="authorColumn"><?php echo lang("property_author"); ?></th>
-					<th class="dateColumn"><?php echo lang("property_date"); ?></th>
-					<th class="supportsColumn"><?php echo lang("property_supports"); ?></th>
-					<th class="validationColumn"><?php echo lang("property_validation"); ?></th>
-					<th class="actionColumn"><?php echo lang("property_actions"); ?></th>
-				</tr>
-			</thead>
-			<tbody>
+		<div class="container table table-striped">
+			<div class="row header">
+					<div class="col-xs-6 col-sm-3"><?php echo lang("property_tweet"); ?></div>
+					<div class="col-xs-6 col-sm-1" class="authorColumn"><?php echo lang("property_author"); ?></div>
+					<div class="col-xs-6 col-xs-offset-6 col-sm-2 col-sm-offset-0" class="dateColumn"><?php echo lang("property_date"); ?></div>
+					<div class="col-xs-2 col-xs-offset-6 col-sm-1 col-sm-offset-0" class="supportsColumn"><?php echo lang("property_supports"); ?></div>
+					<div class="col-xs-4 col-sm-2" class="validationColumn"><?php echo lang("property_validation"); ?></div>
+					<div class="col-xs-6 col-xs-offset-6 col-sm-3 col-sm-offset-0" class="actionColumn"><?php echo lang("property_actions"); ?></div>
+			</div>
 				<?php 	foreach($tweets as $tweet) {
 
 					$medias = $mediaBo->getMedias(array("tme_tweet_id" => $tweet["twe_id"]));
 
 				?>
-				<tr id="row_<?php echo $tweet["twe_id"]; ?>" class="tweet-row">
-					<td class="vertical-middle">
+				<div id="row_<?php echo $tweet["twe_id"]; ?>" class="tweet-row row data">
+					<div class="col-xs-6 col-sm-3 vertical-middle tweet-cell">
 						<?php if ($tweet["twe_to_retweet"]) {?>
 							<?php echo lang("validation_retweet_proposition"); ?>
 
@@ -163,22 +160,22 @@ $(function() {
 						value="<?php echo TweetBo::hash($tweet, $userId); ?>" />
 						<input id="user_<?php echo $tweet["twe_id"]; ?>" type="hidden"
 						value="<?php echo $userId; ?>" />
-					</td>
-					<td class="vertical-middle">
+					</div>
+					<div class="col-xs-6 col-sm-1 vertical-middle">
 						<?php 	if ($tweet["twe_author_id"]) {?>
 						<a href="https://twitter.com/<?php echo $tweet["twe_author"]; ?>" target="_blank"><?php echo $tweet["twe_author"]; ?></a>
 						<?php 	} else { ?>
 						<?php echo $tweet["twe_anonymous_nickname"]; ?> <?php echo lang("validation_anonymous"); ?>
 						<?php 	}?>
-					</td>
-					<td class="vertical-middle"><?php
+					</div>
+					<div class="col-xs-6 col-sm-2 vertical-middle"><?php
 						if ($tweet["twe_creation_datetime"]) {
 							$date = new DateTime($tweet["twe_validation_datetime"]);
 
 							echo str_replace("{date}", $date->format(lang("date_format")), str_replace("{time}", $date->format(lang("time_format")), lang("datetime_format")));
 						}
-					?></td>
-					<td class="vertical-middle text-center"><?php
+					?></div>
+					<div class="col-xs-2 col-sm-1 vertical-middle text-center"><?php
 						$supports = json_decode($tweet["twe_supports"]);
 //						print_r($supports);
 						foreach($supports as $support) {
@@ -191,8 +188,8 @@ $(function() {
 									break;
 							}
 						}
-					?></td>
-					<td class="vertical-middle">
+					?></div>
+					<div class="col-xs-4 col-sm-2 vertical-middle">
 						<?php 	$totalScore = $tweet["validation"][0] + $tweet["validation"][1] + $tweet["validation"][2]; ?>
 						<div class="progress margin-bottom-0"
 							data-toggle="tooltip" data-placement="top"
@@ -216,8 +213,8 @@ $(function() {
 								<span class="sr-only"><?php echo round($tweet["validation"][2] * 100 / $tweet["twe_validation_score"]); ?>% Complete</span>
 							</div>
 						</div>
-					</td>
-					<td class="vertical-middle">
+					</div>
+					<div class="col-xs-6 col-sm-3 vertical-middle">
 
 						<?php 	if ($tweet["validation"][1] == 0 && ($tweet["twe_author_id"] != $userId || $tweet["validation"][0] == 0)) {?>
 						<button id="validate_<?php echo $tweet["twe_id"]; ?>" class="btn btn-success validate-button" type="button">
@@ -251,11 +248,10 @@ $(function() {
 						</button>
 						<?php 	}?>
 
-					</td>
-				</tr>
+					</div>
+				</div>
 				<?php 	}?>
-			</tbody>
-		</table>
+		</div>
 
 		<?php echo addPagination(count($tweets), 5); ?>
 	</div>
