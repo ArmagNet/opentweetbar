@@ -38,7 +38,7 @@ class TweetBo {
 
 		foreach($matches[0] as $index => $match) {
 			if (strlen($matches[3][$index][0]) > 15) {
-				$result["content"] = str_replace($match[0], $matches[2][$index][0] . "://##############" . count($result["urls"]), $result["content"]);
+				$result["content"] = str_replace($match[0], $matches[2][$index][0] . "://################" . count($result["urls"]), $result["content"]);
 				$result["urls"][] = $match[0];
 			}
 		}
@@ -47,8 +47,9 @@ class TweetBo {
 	}
 
 	static function cutTweet($text, &$tweets, $urls, $hasImage = false) {
-		$maxLength = 140 - 7 - ($hasImage ? 24 : 0);
-
+//		$maxLength = 140 - 7 - ($hasImage ? 24 : 0);
+		$maxLength = 140 - 7;
+		
 		if (strlen(utf8_decode($text)) > $maxLength) {
 			$cutLength = regexLastIndexOf($text, '/[ ,;]/mi', $maxLength);
 
@@ -67,8 +68,8 @@ class TweetBo {
 		// add n/m
 		foreach($tweets as $index => $tweet) {
 			foreach($urls as $jndex => $url) {
-				$tweet = str_replace("http://##############" . $jndex, $url, $tweet);
-				$tweet = str_replace("https://##############" . $jndex, $url, $tweet);
+				$tweet = str_replace("http://################" . $jndex, $url, $tweet);
+				$tweet = str_replace("https://################" . $jndex, $url, $tweet);
 			}
 
 			$tweets[$index] = $tweet . " " . ($index + 1) . "/" . count($tweets);
@@ -369,7 +370,8 @@ class TweetBo {
 
 			$result = TweetBo::urlized($tweet["twe_content"]);
 
-			if (strlen(utf8_decode($result["content"])) <= 140 - 24 * (count($twitterMediaIds) ? 1 : 0)) {
+//			if (strlen(utf8_decode($result["content"])) <= 140 - 24 * (count($twitterMediaIds) ? 1 : 0)) {
+			if (strlen(utf8_decode($result["content"])) <= 140) {
 				$parameters = array('status' => $tweet["twe_content"]);
 
 				if (count($twitterMediaIds)) {

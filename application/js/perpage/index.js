@@ -119,7 +119,8 @@ function verifyAll() {
 }
 
 function computeTweetLenght(text) {
-	return 140 - text.length - ($(".mediaImage").length > 0 ? 24 : 0);
+//	return 140 - text.length - ($(".mediaImage").length > 0 ? 24 : 0);
+	return 140 - text.length;
 }
 
 function urlized(tweetContent) {
@@ -137,7 +138,7 @@ function urlized(tweetContent) {
 	    // eg m[0] etc.
 
 	    if (m[3].length > 15) {
-		    finalContent = finalContent.replace(m[0], m[2] + "://##############" + urls.length);
+		    finalContent = finalContent.replace(m[0], m[2] + "://################" + urls.length);
 		    urls[urls.length] = m[0];
 	    }
 	}
@@ -148,7 +149,8 @@ function urlized(tweetContent) {
 }
 
 function cutTweet(text, tweets, urls, hasImage) {
-	var maxLength = 140 - 7 - (hasImage ? 22 : 0);
+//	var maxLength = 140 - 7 - (hasImage ? 22 : 0);
+	var maxLength = 140 - 7;
 
 	if (text.length > maxLength) {
 		var cutLength = text.regexLastIndexOf(/[ ,;]/, maxLength);
@@ -172,8 +174,8 @@ function cutTweet(text, tweets, urls, hasImage) {
 		var text = tweets[index];
 
 		for(var jndex = 0; jndex < urls.length; ++jndex) {
-			text = text.replace("http://##############" + jndex, urls[jndex]);
-			text = text.replace("https://##############" + jndex, urls[jndex]);
+			text = text.replace("http://################" + jndex, urls[jndex]);
+			text = text.replace("https://################" + jndex, urls[jndex]);
 		}
 
 		cutTweetElement.text(text);
