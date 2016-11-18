@@ -473,26 +473,26 @@ $(function() {
 	});
 
 	$("#supportDiv label#facebookLabel input").change(function() {
-		if ($(this).attr("checked")) {
-			if ($("#tweet").is(":visible")) {
+//		if ($(this).attr("checked")) {
+//			if ($("#tweet").is(":visible")) {
 				$("#tweet").hide();
 				$("#tweet-big").show();
 				$("#tweet-big").val($("#tweet").val());
 
 				$("#accountButton").css({height: $("#tweet-big").css("height")});
 				$("#tweetButton").css({height: $("#tweet-big").css("height")});
-			}
-		}
-		else {
-			if (!$("#tweet").is(":visible")) {
-				$("#tweet").show();
-				$("#tweet-big").hide();
-				$("#tweet").val($("#tweet-big").val());
-
-				$("#accountButton").css({height: ""});
-				$("#tweetButton").css({height: ""});
-			}
-		}
+//			}
+//		}
+//		else {
+//			if (!$("#tweet").is(":visible")) {
+//				$("#tweet").show();
+//				$("#tweet-big").hide();
+//				$("#tweet").val($("#tweet-big").val());
+//
+//				$("#accountButton").css({height: ""});
+//				$("#tweetButton").css({height: ""});
+//			}
+//		}
 	});
 
 	$("#tweet").keyup();
