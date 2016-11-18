@@ -121,8 +121,11 @@ function addListeners() {
 	$("body").on("click", ".tweet-content", function() {
 		var tweetContentSpan = $(this);
 		var input = $("<textarea></textarea");
-		input.text(tweetContentSpan.text().trim());
+		var numberOfLines = tweetContentSpan.html().match(/br/g).length + 1;
+		input.text(tweetContentSpan.html().replace(/<br>/g, "\n").trim());
 
+		input.attr("rows", numberOfLines)
+		
 		tweetContentSpan.before(input);
 		input.focus();
 
