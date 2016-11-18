@@ -79,18 +79,16 @@ $tweetsByAccount = TweetBo::accounted($tweets);
 		</div>
 
 		<!-- Table -->
-		<table class="table table-striped">
-			<thead>
-				<tr>
-					<th><?php echo lang("property_tweet"); ?></th>
-					<th class="authorColumn"><?php echo lang("property_author"); ?></th>
-					<th class="dateColumn"><?php echo lang("property_date"); ?></th>
-					<th class="supportsColumn"><?php echo lang("property_supports"); ?></th>
-					<th class="validationColumn"><?php echo lang("property_validators"); ?></th>
-					<th class="actionColumn"><?php echo lang("property_actions"); ?></th>
-				</tr>
-			</thead>
-			<tbody>
+		<div class="container table table-striped">
+			<div class="row header">
+					<div class="col-xs-6 col-sm-3"><?php echo lang("property_tweet"); ?></div>
+					<div class="col-xs-6 col-sm-1" class="authorColumn"><?php echo lang("property_author"); ?></div>
+					<div class="col-xs-6 col-xs-offset-6 col-sm-2 col-sm-offset-0" class="dateColumn"><?php echo lang("property_date"); ?></div>
+					<div class="col-xs-2 col-xs-offset-6 col-sm-1 col-sm-offset-0" class="supportsColumn"><?php echo lang("property_supports"); ?></div>
+					<div class="col-xs-4 col-sm-2" class="validationColumn"><?php echo lang("property_validators"); ?></div>
+					<div class="col-xs-6 col-xs-offset-6 col-sm-3 col-sm-offset-0" class="actionColumn"><?php echo lang("property_actions"); ?></div>
+			</div>
+
 				<?php
 
 				$index = -1;
@@ -105,22 +103,22 @@ $tweetsByAccount = TweetBo::accounted($tweets);
 					$medias = $mediaBo->getMedias(array("tme_tweet_id" => $tweet["twe_id"]));
 
 				?>
-				<tr id="row_<?php echo $tweet["twe_id"]; ?>" <?php
+				<div id="row_<?php echo $tweet["twe_id"]; ?>" class="tweet-row row data <?php
 
 							switch($tweet["twe_status"]) {
 								case "expired":
-									echo ' class="warning" ';
+									echo ' warning ';
 									break;
 								case "croned":
-									echo ' class="info" ';
+									echo ' info ';
 									break;
 								case "deleted":
 								case "rejected":
-									echo ' class="danger" ';
+									echo ' danger ';
 									break;
 							}
-					?>>
-					<td class="vertical-middle">
+					?>">
+					<div class="col-xs-6 col-sm-3 vertical-middle tweet-cell">
 						<?php if ($tweet["twe_to_retweet"]) {?>
 							<?php echo lang("history_retweet_proposition"); ?>
 
@@ -162,22 +160,22 @@ $(function() {
 									echo str_replace("{date}", $date->format(lang("date_format")), str_replace("{time}", $date->format(lang("time_format")), lang("history_cron_datetime_format")));?>
 								</span>
 						<?php	}?>
-					</td>
-					<td class="vertical-middle">
+					</div>
+					<div class="col-xs-6 col-sm-1 vertical-middle">
 						<?php 	if ($tweet["twe_author_id"]) {?>
 						<a href="https://twitter.com/<?php echo $tweet["twe_author"]; ?>" target="_blank"><?php echo $tweet["twe_author"]; ?></a>
 						<?php 	} else { ?>
 						<?php echo $tweet["twe_anonymous_nickname"]; ?> <?php echo lang("validation_anonymous"); ?>
 						<?php 	}?>
-					</td>
-					<td class="vertical-middle"><?php
+					</div>
+					<div class="col-xs-6 col-sm-2 vertical-middle"><?php
 						if ($tweet["twe_validation_datetime"]) {
 							$date = new DateTime($tweet["twe_validation_datetime"]);
 
 							echo str_replace("{date}", $date->format(lang("date_format")), str_replace("{time}", $date->format(lang("time_format")), lang("datetime_format")));
 						}
-					?></td>
-					<td class="vertical-middle text-center"><?php
+					?></div>
+					<div class="col-xs-2 col-sm-1 vertical-middle text-center"><?php
 						$supports = json_decode($tweet["twe_supports"]);
 //						print_r($supports);
 						foreach($supports as $support) {
@@ -190,8 +188,8 @@ $(function() {
 									break;
 							}
 						}
-					?></td>
-					<td class="vertical-middle">
+					?></div>
+					<div class="col-xs-4 col-sm-2 vertical-middle">
 						<div class="dropdown">
 							<button class="btn btn-default dropdown-toggle" type="button" id="validators_5" data-toggle="dropdown" aria-expanded="true">
 								<?php echo lang("history_button_validators"); ?> <span class="caret"></span>
@@ -207,8 +205,8 @@ $(function() {
 								<?php 	}?>
 							</ul>
 						</div>
-					</td>
-					<td class="vertical-middle">
+					</div>
+					<div class="col-xs-6 col-sm-3 vertical-middle">
 
 						<?php 	if ($tweet["twe_author_id"]) {?>
 						<button id="fork_<?php echo $tweet["twe_id"]; ?>"
@@ -217,11 +215,10 @@ $(function() {
 							<?php echo lang("common_fork"); ?> <span class="glyphicon glyphicon-duplicate"></span>
 						</button>
 						<?php 	}?>
-					</td>
-				</tr>
+					</div>
+				</div>
 				<?php 	}?>
-			</tbody>
-		</table>
+		</div>
 
 		<?php echo addPagination(count($tweets), 5, $tweetPage, false); ?>
 	</div>
