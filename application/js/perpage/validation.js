@@ -27,7 +27,7 @@ function deleteTweetUI(id) {
 			showPage(table, currentPage);
 		}
 
-		if (table.find("tbody tr").length == 0) {
+		if (table.find("tbody tr,.table .row.data").length == 0) {
 			table.parents(".account").hide();
 		}
 	});
@@ -151,7 +151,7 @@ function addListeners() {
 		modifyButton.click(function() {
 			// modify content
 
-			var tr = $(this).parents("tr");
+			var tr = $(this).parents("tr,.row");
 
 			var id = getElementId(tr);
 
