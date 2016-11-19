@@ -477,7 +477,7 @@ $(function() {
 //			if ($("#tweet").is(":visible")) {
 				$("#tweet").hide();
 				$("#tweet-big").show();
-				$("#tweet-big").val($("#tweet").val());
+//				$("#tweet-big").val($("#tweet").val());
 
 				$("#accountButton").css({height: $("#tweet-big").css("height")});
 				$("#tweetButton").css({height: $("#tweet-big").css("height")});
