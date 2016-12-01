@@ -102,7 +102,7 @@ You can directly validate this tweet by clicking on this link below :
 The @OpenTweetBar Team";
 $lang["add_tweet_mail_only_a_retweet"] = "Retweet proposition of :";
 
-$lang["ask_for_modification_mail_subject"] = "[OTB] Tweet modification request";
+$lang["ask_for_modification_mail_subject"] = "[OTB][{account}] Tweet modification request";
 $lang["ask_for_modification_mail_content"] = "Hello {login},
 
 You're the author of a tweet on the account {account}, and, a validator request you to modify it.

@@ -39,7 +39,24 @@ class SimpleDmNotifier {
 		$noticeTweet["twe_destination"] = $account["sna_name"];
 		$noticeTweet["twe_destination_id"] = $account["sna_id"];
 
-		$noticeTweet["twe_content"] = "D ". $validator["use_login"] . " un message en attente de validation vous attend sur " . $config["base_url"];
+		if ($tweet["twe_to_retweet"]) {
+			$retweet = json_decode($tweet["twe_to_retweet"], true);
+		
+			if ($tweet["twe_content"]) {
+		
+			}
+			else {
+				$tweetContent = lang("add_tweet_mail_only_a_retweet", false, $validator["use_language"]);
+				$tweetContent .= " https://twitter.com/" . $retweet["user"]["screen_name"] . "/status/" . $retweet["id_str"];
+				$tweetContent .= "\n";
+				$wteetContent .= $retweet["text"];
+			}
+		}
+		else {
+			$tweetContent = $tweet["twe_content"];
+		}
+		
+		$noticeTweet["twe_content"] = "D ". $validator["use_login"] . " un message en attente de validation vous attend sur " . $config["base_url"] . " : \n" .  $tweetContent;
 		$tweetBo->sendTweet($noticeTweet);
 	}
 }

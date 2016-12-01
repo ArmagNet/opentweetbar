@@ -76,8 +76,10 @@ class MailNotifier {
 		$mailMessage = str_replace("{tweet}", $tweetContent, $mailMessage);
 
 		$mailMessage = str_replace("{account}", $account["sna_name"], $mailMessage);
-		$mailSubject = lang("add_tweet_mail_subject", false, $validator["use_language"]);
 
+		$mailSubject = lang("add_tweet_mail_subject", false, $validator["use_language"]);
+		$mailSubject = str_replace("{account}", $account["sna_name"], $mailSubject);
+		
 		$mail->Subject = mb_encode_mimeheader(utf8_decode($mailSubject), "ISO-8859-1");
 		$mail->msgHTML(str_replace("\n", "<br>\n", utf8_decode($mailMessage)));
 		$mail->AltBody = utf8_decode($mailMessage);

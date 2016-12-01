@@ -89,7 +89,7 @@ $lang["anonymous_form_passwordInput"] = "Mot de passe";
 $lang["anonymous_form_iamabot"] = "Je suis un robot et je ne sais pas décocher une case";
 $lang["anonymous_form_legend"] = "Informations";
 
-$lang["add_tweet_mail_subject"] = "[OTB] Validation d'un tweet demandé";
+$lang["add_tweet_mail_subject"] = "[OTB][{account}] Validation d'un tweet demandé";
 $lang["add_tweet_mail_content"] = "Bonjour {login},
 
 Vous êtes dans une liste de validateurs du compte {account}, et, un tweet vous attend sur OpenTweetBar dont voici le contenu :
