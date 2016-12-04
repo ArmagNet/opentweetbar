@@ -48,6 +48,12 @@ class TweetBo {
 
 	static function cutTweet($text, &$tweets, $urls, $hasImage = false) {
 //		$maxLength = 140 - 7 - ($hasImage ? 24 : 0);
+
+// 		if (strpos($text, "D ") === 0) {
+// 			$tweets[] = $text;
+// 			return;
+// 		}
+		
 		$maxLength = 140 - 7;
 		
 		if (strlen(utf8_decode($text)) > $maxLength) {
@@ -371,7 +377,7 @@ class TweetBo {
 			$result = TweetBo::urlized($tweet["twe_content"]);
 
 //			if (strlen(utf8_decode($result["content"])) <= 140 - 24 * (count($twitterMediaIds) ? 1 : 0)) {
-			if (strlen(utf8_decode($result["content"])) <= 140) {
+			if (strlen(utf8_decode($result["content"])) <= 140 || strpos($result["content"], "D ") === 0) {
 				$parameters = array('status' => $tweet["twe_content"]);
 
 				if (count($twitterMediaIds)) {
