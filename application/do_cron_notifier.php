@@ -57,7 +57,8 @@ $validators = $accountBo->getAccountValidators($accountId);
 
 foreach($validators as $validator) {
 	if ($validator["use_id"] == $userId) continue;
-
+	if ($validator["vgr_score"] < 1) continue;
+	
 	$hash = TweetBo::hash($tweet, $validator["use_id"]);
 
 	$validationLink = $config["base_url"] . "dvt.php?";
