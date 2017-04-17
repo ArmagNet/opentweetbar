@@ -150,6 +150,7 @@ class AccountBo {
 
 				$validatorGroup = $validatorGroups[count($validatorGroups) - 1];
 				$validatorGroup["vgr_score"] = $line["vgr_score"];
+				$validatorGroup["vgr_show_timeline"] = $line["vgr_show_timeline"];
 				$validatorGroup["validators"][] = array("use_id" => $line["use_id"], "use_login" => $line["use_login"]);
 
 				$validatorGroups[count($validatorGroups) - 1] = $validatorGroup;
