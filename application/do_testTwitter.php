@@ -26,10 +26,10 @@ $testConfig = array();
 $referer = isset($_SERVER["HTTP_REFERER"]) ? $_SERVER["HTTP_REFERER"] : '';
 if (!$referer) exit();
 
-$testConfig["api_key"] = $_REQUEST["apiKey"];
-$testConfig["api_secret"] = $_REQUEST["apiSecret"];
-$testConfig["access_token"] = $_REQUEST["accessToken"];
-$testConfig["access_token_secret"] = $_REQUEST["accessTokenSecret"];
+$testConfig["api_key"] = trim($_REQUEST["apiKey"]);
+$testConfig["api_secret"] = trim($_REQUEST["apiSecret"]);
+$testConfig["access_token"] = trim($_REQUEST["accessToken"]);
+$testConfig["access_token_secret"] = trim($_REQUEST["accessTokenSecret"]);
 
 $tweetBo = TweetBo::newInstance(openConnection());
 
