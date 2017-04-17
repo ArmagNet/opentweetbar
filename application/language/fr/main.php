@@ -181,6 +181,7 @@ $lang["myaccounts_administrators_form_addUserInput"] = "Utilisateur";
 $lang["myaccounts_validators_form_legend"] = "Gestion des validateurs";
 $lang["myaccounts_validators_form_groupNameInput"] = "Nom du groupe";
 $lang["myaccounts_validators_form_groupScoreInput"] = "Score";
+$lang["myaccounts_validators_form_groupShowInTimeline"] = "Montrer la timeline";
 $lang["myaccounts_validators_form_addUserInput"] = "Utilisateur";
 $lang["myaccounts_validators_form_deleteGroupInput"] = "Supprimer groupe";
 $lang["myaccounts_validators_form_addGroupInput"] = "Ajouter groupe";
