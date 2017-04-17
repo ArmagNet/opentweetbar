@@ -475,6 +475,11 @@ foreach($accounts as $key => $account) {
 								<input id="scoreInput" name="scoreInput" value="<?php echo $validatorGroup["vgr_score"];?>" type="text"
 									placeholder="" class="form-control input-md">
 							</div>
+                                                        <label class="col-md-4 control-label" for="timelineInput"><?php echo lang("myaccounts_validators_form_groupShowInTimeline"); ?></label>
+                                                        <div class="col-md-2">
+                                                                <input id="timelineInput" name="timelineInput" value="1" <?php if ($validatorGroup["vgr_score"] == "1") echo "checked='checked'"; ?>" type="checkbox"
+                                                                        placeholder="" class="form-control input-md">
+                                                        </div>
 						</div>
 
 						<div class="form-group">
@@ -622,6 +627,11 @@ $(function() {
 		html += "		<input id=\"scoreInput\" name=\"scoreInput\" value=\"\" type=\"text\"";
 		html += "			placeholder=\"\" class=\"form-control input-md\">";
 		html += "	</div>";
+		html += "	<label class=\"col-md-4 control-label\" for=\"timelineInput\"><?php echo lang("myaccounts_validators_form_groupShowInTimeline"); ?></label>";
+                html += "	<div class=\"col-md-2\">";
+                html += "		<input id=\"timelineInput\" name=\"timelineInput\" value=\"1\" type=\"checkbox\"";
+		html += "			placeholder=\"\" class=\"form-control input-md\">";
+		html += "        </div>";
 		html += "</div>";
 
 		html += "<div class=\"form-group\">";
@@ -718,6 +728,7 @@ $(function() {
 		formInputs.find(".validatorGroup").each(function() {
 			var validatorGroup = {	vgr_name: $(this).find("#nameInput").val(),
 									vgr_score: $(this).find("#scoreInput").val(),
+					      				vgr_show_timeline: $(this).find("#timelineInput:checked").length,
 									validators: []};
 
 			var validatorIdInputs = $(this).find(".validators .validatorId");
