@@ -64,7 +64,9 @@ foreach ($accounts as $account) {
 		</div>
 	</div>
 
-	<?php 	foreach ($accounts as $account) {?>
+	<?php 	foreach ($accounts as $account) {
+		if ($account["vgr_show_timeline"] != "1") continue;
+        ?>
 	<div class="col-md-4 account-panel" class="account-panel" id="account-panel-<?php echo $account["sna_id"];?>" data-account-id="<?php echo $account["sna_id"];?>">
 		<div class="panel panel-default">
 			<!-- Default panel contents -->
