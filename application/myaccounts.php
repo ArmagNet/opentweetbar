@@ -477,7 +477,7 @@ foreach($accounts as $key => $account) {
 							</div>
                                                         <label class="col-md-4 control-label" for="timelineInput"><?php echo lang("myaccounts_validators_form_groupShowInTimeline"); ?></label>
                                                         <div class="col-md-2">
-                                                                <input id="timelineInput" name="timelineInput" value="1" <?php if ($validatorGroup["vgr_score"] == "1") echo "checked='checked'"; ?>" type="checkbox"
+                                                                <input id="timelineInput" name="timelineInput" value="1" <?php if ($validatorGroup["vgr_show_timeline"] == "1") echo "checked='checked'"; ?>" type="checkbox"
                                                                         placeholder="" class="form-control input-md">
                                                         </div>
 						</div>
