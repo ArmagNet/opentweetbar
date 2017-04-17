@@ -103,7 +103,7 @@ class AccountBo {
 		$statement = $this->pdo->prepare($query);
 		$statement->execute($args);
 
-		$query = "	INSERT validator_groups (vgr_sna_id, vgr_name, vgr_score) VALUES (:sna_id, :vgr_name, :vgr_score)";
+		$query = "	INSERT validator_groups (vgr_sna_id, vgr_name, vgr_score, vgr_show_timeline) VALUES (:sna_id, :vgr_name, :vgr_score, :vgr_show_timeline)";
 		$statement = $this->pdo->prepare($query);
 
 		$vquery = "	INSERT validators (val_validator_group_id, val_user_id) VALUES (:val_validator_group_id, :val_user_id)";
@@ -112,6 +112,7 @@ class AccountBo {
 		foreach($validatorGroups as $validatorGroup) {
 			$args["vgr_name"] = $validatorGroup["vgr_name"];
 			$args["vgr_score"] = $validatorGroup["vgr_score"];
+			$args["vgr_show_timeline"] = $validatorGroup["vgr_show_timeline"];
 			$statement->execute($args);
 
 			$vargs = array("val_validator_group_id" => $this->pdo->lastInsertId());
