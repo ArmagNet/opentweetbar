@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2014-2015 Cédric Levieux, Jérémy Collot, ArmagNet
+	Copyright 2014-2017 Cédric Levieux, Jérémy Collot, ArmagNet
 
 	This file is part of OpenTweetBar.
 
@@ -46,15 +46,13 @@ class TweetBo {
 		return $result;
 	}
 
-	static function cutTweet($text, &$tweets, $urls, $hasImage = false) {
+	static function cutTweet($text, &$tweets, $urls, $hasImage = false, $maxlength = 133) {
 //		$maxLength = 140 - 7 - ($hasImage ? 24 : 0);
 
 // 		if (strpos($text, "D ") === 0) {
 // 			$tweets[] = $text;
 // 			return;
 // 		}
-		
-		$maxLength = 140 - 7;
 		
 		if (strlen(utf8_decode($text)) > $maxLength) {
 			$cutLength = regexLastIndexOf($text, '/[ ,;]/mi', $maxLength);
@@ -64,7 +62,7 @@ class TweetBo {
 
 			$text = trim(substr($text, $cutLength + 1));
 
-			TweetBo::cutTweet($text, $tweets, $urls);
+			TweetBo::cutTweet($text, $tweets, $urls, false, $maxlength);
 
 			return;
 		}
@@ -90,6 +88,7 @@ class TweetBo {
 		$query .= "	FROM social_network_accounts sna";
 		$query .= "	LEFT JOIN sna_configuration ON sco_sna_id = sna_id";
 		$query .= "	LEFT JOIN sna_twitter_configuration ON stc_sna_id = sna_id";
+		$query .= "	LEFT JOIN sna_mastodon_configuration ON smc_sna_id = sna_id";
 		$query .= "	LEFT JOIN sna_facebook_page_configuration ON sfp_sna_id = sna_id";
 		$query .= "	WHERE sna_id = :sna_id";
 
@@ -249,6 +248,9 @@ class TweetBo {
 					break;
 				case "facebookPage":
 					$this->sendTweetOnFacebookPage($tweet);
+					break;
+				case "mastodon":
+					$this->sendTweetOnMastodon($tweet);
 					break;
 			}
 		}
@@ -851,5 +853,210 @@ class TweetBo {
 		krsort($indexedTweets);
 
 		return $indexedTweets;
+	}
+
+	/** Mastodon */
+
+	static function createMastodonAccess($config) {
+		require_once 'engine/mastodon/Mastodon-api.php';
+
+		$mastodon_api = new Mastodon_api();
+		$mastodon_api->set_url($config["smc_url"]);
+
+		$status = array();
+
+//		print_r($config);
+		
+		$response = $mastodon_api->create_app($config["smc_client_name"], null, null, 'https://www.opentweetbar.org/');
+
+		if (!isset($response["html"]["client_id"])) {
+			return $status;
+		}
+
+		$status["clientId"] = $response["html"]["client_id"];
+		$status["clientSecret"] = $response["html"]["client_secret"];
+
+		$mastodon_api->set_client($status["clientId"], $status["clientSecret"]);
+
+		$response = $mastodon_api->login($config["smc_email"], $config["smc_password"]);
+
+		if (!isset($response["html"]["access_token"])) {
+			return $status;
+		}
+
+		$status["userToken"] = $response["html"]["access_token"];
+
+		return $status;
+	}
+	
+	static function testMastodon($config) {
+		require_once 'engine/mastodon/Mastodon-api.php';
+
+		$mastodon_api = new Mastodon_api();
+		$mastodon_api->set_url($config["smc_url"]);
+
+		$mastodon_api->set_client($config["smc_client_id"], $config["smc_client_secret"]);
+
+		$mastodon_api->set_token($config["smc_user_token"], $config["smc_token_type"]);
+
+		$status = $mastodon_api->instance();
+
+		return $status;
+	}
+	
+	
+	function sendTweetOnMastodon($tweet) {
+		require_once 'engine/mastodon/Mastodon-api.php';
+		
+		$mastodon_api = new Mastodon_api();
+		
+		$account = $this->getAccount($tweet["twe_destination_id"]);
+		
+		$mastodon_api->set_url($account["smc_url"]);
+		$mastodon_api->set_client($account["smc_client_id"], $account["smc_client_secret"]);
+		$mastodon_api->set_token($account["smc_user_token"], $account["smc_token_type"]);
+		
+		$twitterMediaIds = array();
+		$medias = array();
+		
+		if (isset($tweet["twe_id"])) {
+			include_once "engine/bo/MediaBo.php";
+			
+			$mediaBo = MediaBo::newInstance($this->pdo);
+			$medias = $mediaBo->getMedias(array("tme_tweet_id" => $tweet["twe_id"]));
+		}
+
+		// 
+		$paths = array();
+
+		foreach($medias as $media) {
+			$path = "";
+
+			$tmpfname = tempnam(sys_get_temp_dir(), "OTB_");
+
+			error_log("Create $tmpfname");
+			
+			$handle = fopen($tmpfname, "w");
+			fwrite($handle, $media["med_content"]);
+			fclose($handle);
+			
+			// traitement
+			
+			$paths[] = $tmpfname;
+			
+			$status = $mastodon_api->media($tmpfname);
+			
+//			$parameters = array('media_data' => base64_encode($media["med_content"]));
+//			$status = $connection->post('media/upload', $parameters);
+
+/*			
+			[id] => 182284
+			[type] => image
+			[url] => https://dsqf.dfsq.fqds/system/media_attachments/files/000/182/284/original/b40f8daeba1e9c59.png?1498064275
+			[preview_url] => https://dsqf.dfsq.fqds/system/media_attachments/files/000/182/284/small/b40f8daeba1e9c59.png?1498064275
+			[text_url] => https://dsqf.dfsq.fqds/media/vHIMqCCgpeWGsuCZfYI
+			[meta] => Array
+			(
+					[original] => Array
+					(
+							[width] => 32
+							[height] => 32
+							[size] => 32x32
+							[aspect] => 1
+							)
+					
+					[small] => Array
+					(
+							[width] => 32
+							[height] => 32
+							[size] => 32x32
+							[aspect] => 1
+							)
+					
+					)
+*/
+			error_log("Send media : " . $status["html"]["id"]);
+			
+			$twitterMediaIds[] = $status["html"]["id"];
+		}
+		
+
+// 		if ($tweet["twe_to_retweet"]) {
+// 			$retweet = json_decode($tweet["twe_to_retweet"], true);
+// 			$retweetId = $retweet["id_str"];
+//			
+// 			//			error_log("Will retweet $retweetId");
+//
+// 			if ($tweet["twe_content"]) {
+// 				//				error_log("with content");
+// 			}
+// 			else {
+// 				//				error_log("without content");
+// 				$parameters = array('id' => $retweetId);
+//
+// 				$status = $connection->post('statuses/retweet/' . $retweetId, $parameters);
+// 			}
+// 		}
+// 		else {
+			//			error_log("Will send a tweet");
+/*
+		*          string      $parameters['status']               The text of the status
+		*          int         $parameters['in_reply_to_id']       (optional): local ID of the status you want to reply to
+		*          int         $parameters['media_ids']            (optional): array of media IDs to attach to the status (maximum 4)
+		*          string      $parameters['sensitive']            (optional): set this to mark the media of the status as NSFW
+		*          string      $parameters['spoiler_text']         (optional): text to be shown as a warning before the actual content
+		*          string      $parameters['visibility']           (optional): either "direct", "private", "unlisted" or "public"
+*/				
+		
+			$result = TweetBo::urlized($tweet["twe_content"]);
+			
+			//			if (strlen(utf8_decode($result["content"])) <= 140 - 24 * (count($twitterMediaIds) ? 1 : 0)) {
+			if (strlen(utf8_decode($result["content"])) <= 500) {
+				$parameters = array('status' => $tweet["twe_content"]);
+				
+				if (count($twitterMediaIds)) {
+//					$parameters["media_ids"] = "[" . implode(",", $twitterMediaIds) . "]";
+					$parameters["media_ids"] = $twitterMediaIds;
+				}
+
+				$status = $mastodon_api->post_statuses($parameters);
+			}
+			else {
+				include_once "engine/utils/StringUtils.php";
+				
+				$contents = array();
+				TweetBo::cutTweet($result["content"], $contents, $result["urls"], count($twitterMediaIds) ? true : false, 493);
+				
+				foreach($contents as $index => $content) {
+					$parameters = array('status' => $content);
+					
+					if (count($twitterMediaIds) && $index == 0) {
+//						$parameters["media_ids"] = implode(",", $twitterMediaIds);
+						$parameters["media_ids"] = $twitterMediaIds;
+					}
+
+					$status = $mastodon_api->post_statuses($parameters);
+
+					time_nanosleep(0, 500000000);
+				}
+			}
+			
+			
+//		}
+
+			foreach($paths as $path) {
+				unlink($path);
+			}
+
+			// TODO
+// 		if ($status && isset($status->id_str)) {
+// 			$updateTweet = array("twe_id" => $tweet["twe_id"]);
+// 			$updateTweet["twe_mastodon_id"] = $status->id_str;
+			
+// 			$this->update($updateTweet);
+// 		}
+		
+		//		error_log(print_r($response, true));
+		//		print_r($status);
 	}
 }

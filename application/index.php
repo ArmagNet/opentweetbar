@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2014-2015 Cédric Levieux, Jérémy Collot, ArmagNet
+	Copyright 2014-2017 Cédric Levieux, Jérémy Collot, ArmagNet
 
 	This file is part of OpenTweetBar.
 
@@ -163,6 +163,9 @@ else {
 		&nbsp;
 		<label id="facebookLabel" style="font-weight: normal;"><input type="checkbox" name="supports" value="facebookPage" /> <?php echo lang("index_supports_facebook"); ?>
 			<span class="social grey facebook" style="height: 30px;"></span></label>
+		&nbsp;
+		<label id="mastodonLabel" style="font-weight: normal;"><input type="checkbox" name="supports" value="mastodon" /> <?php echo lang("index_supports_mastodon"); ?>
+			<img src="images/mastodon.svg" style="height: 24px; position: relative; top: -3px;"></label>
 	</div>
 	<div class="text-right">
 		<span class="tweeter-count"></span>
@@ -291,6 +294,7 @@ var accounts = {};
 	accounts["<?php echo $gaccount["sna_name"]; ?>"] = {
 			label : "<?php echo $gaccount["sna_name"]; ?>",
 			hasTwitter : <?php echo $gaccount["stc_access_token"] ? "true" : "false"; ?>,
+			hasMastodon : <?php echo $gaccount["smc_user_token"] ? "true" : "false"; ?>,
 			hasFacebookPage : <?php echo $gaccount["sfp_access_token"] ? "true" : "false"; ?>};
 <?php 	}?>
 
@@ -298,6 +302,7 @@ var accounts = {};
 	accounts["<?php echo $gaccount["sna_name"]; ?>"] = {
 			label : "<?php echo $gaccount["sna_name"]; ?>",
 			hasTwitter : <?php echo $gaccount["stc_access_token"] ? "true" : "false"; ?>,
+			hasMastodon : <?php echo $gaccount["smc_user_token"] ? "true" : "false"; ?>,
 			hasFacebookPage : <?php echo $gaccount["sfp_access_token"] ? "true" : "false"; ?>};
 <?php 	}?>
 

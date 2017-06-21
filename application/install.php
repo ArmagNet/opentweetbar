@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2014 Cédric Levieux, Jérémy Collot, ArmagNet
+	Copyright 2014-2017 Cédric Levieux, Jérémy Collot, ArmagNet
 
 	This file is part of OpenTweetBar.
 
@@ -46,7 +46,6 @@ $opentweetbarPath = str_replace("install.php", "", $_SERVER["SCRIPT_FILENAME"]);
     <![endif]-->
 <link href="css/opentweetbar.css" rel="stylesheet">
 <link href="css/flags.css" rel="stylesheet">
-<link rel="shortcut icon" type="image/png" href="favicon.png" />
 </head>
 <body>
 
@@ -187,7 +186,7 @@ $opentweetbarPath = str_replace("install.php", "", $_SERVER["SCRIPT_FILENAME"]);
 
 							<!-- Text input-->
 							<div class="form-group">
-								<label class="col-md-4 control-label" for="mailPortInput"><?php echo lang("install_mail_portInput");?></label>
+								<label class="col-md-4 control-label" for="mailPortInput"><?php echo lang("install_mail_portInput");?>Port</label>
 								<div class="col-md-6">
 									<input id="mailPortInput" name="mailPortInput" value="<?php echo @$config["smtp"]["port"];?>" type="text"
 										placeholder="<?php echo lang("install_mail_portPlaceholder");?>" class="form-control input-md">

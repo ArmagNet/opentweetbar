@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2014-2015 Cédric Levieux, Jérémy Collot, ArmagNet
+	Copyright 2014-2017 Cédric Levieux, Jérémy Collot, ArmagNet
 
 	This file is part of OpenTweetBar.
 
@@ -180,6 +180,9 @@ $(function() {
 //						print_r($supports);
 						foreach($supports as $support) {
 							switch($support) {
+								case "mastodon":
+									echo "<img src=\"images/mastodon.svg\" title=\"Mastodon\" data-toggle=\"tooltip\" data-placement=\"top\" style=\"height: 24px; position: relative; top: -3px;\">";
+									break;
 								case "twitter":
 									echo "<span class=\"social grey twitter\" title=\"Twitter\" data-toggle=\"tooltip\" data-placement=\"top\" style=\"height: 30px;\"></span>";
 									break;

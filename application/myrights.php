@@ -1,5 +1,5 @@
 <?php /*
-Copyright 2014 Cédric Levieux, Jérémy Collot, ArmagNet
+Copyright 2014-2017 Cédric Levieux, Jérémy Collot, ArmagNet
 
 This file is part of OpenTweetBar.
 
@@ -86,15 +86,18 @@ $administratedAccounts = $accountBo->getAdministratedAccounts($userId);
 		</div>
 		<?php 	}?>
 
-		<?php 	if (count($administratedAccounts)) {?>
+		<?php 	if (count($administratedAccounts)) {
+			?>
 		<ul class="list-group">
-			<?php	foreach($administratedAccounts as $account) {?>
+			<?php
+					foreach($administratedAccounts as $account) {?>
 			<li class="list-group-item"><?php echo $account["sna_name"] ?>
 				<span class="badge">
 					<a class="color-inherit" href="myaccounts.php#<?php echo $account["sna_name"] ?>"><span class="glyphicon glyphicon-chevron-right"></span></a>
 				</span>
 			</li>
-			<?php 	}?>
+			<?php 	}
+			?>
 		</ul>
 		<?php	}	?>
 	</div>

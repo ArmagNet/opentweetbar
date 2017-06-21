@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2014 Cédric Levieux, Jérémy Collot, ArmagNet
+	Copyright 2014-2017 Cédric Levieux, Jérémy Collot, ArmagNet
 
 	This file is part of OpenTweetBar.
 
@@ -39,6 +39,8 @@ class AccountBo {
 			$args["sna_id"] = $this->pdo->lastInsertId();
 			$account["sna_id"] = $args["sna_id"];
 
+//			print_r($args);
+
 			$query = "INSERT INTO sna_configuration (sco_sna_id) VALUES (:sna_id) ";
 			$statement = $this->pdo->prepare($query);
 			$statement->execute($args);
@@ -46,11 +48,17 @@ class AccountBo {
 			$query = "INSERT INTO sna_twitter_configuration (stc_sna_id) VALUES (:sna_id) ";
 			$statement = $this->pdo->prepare($query);
 			$statement->execute($args);
-
+			
 			$query = "INSERT INTO sna_facebook_page_configuration (sfp_sna_id) VALUES (:sna_id) ";
 			$statement = $this->pdo->prepare($query);
 			$statement->execute($args);
+			
+			$query = "INSERT INTO sna_mastodon_configuration (smc_sna_id) VALUES (:sna_id) ";
+			$statement = $this->pdo->prepare($query);
+			$statement->execute($args);
 		}
+
+//		echo "Post insert \n";
 
 		$administrators = $account["administrators"];
 		unset($account["administrators"]);
@@ -58,20 +66,36 @@ class AccountBo {
 		unset($account["validatorGroups"]);
 
 		// Update the row
-		$query = "	UPDATE social_network_accounts, sna_configuration, sna_twitter_configuration, sna_facebook_page_configuration
+		$query = "	UPDATE social_network_accounts, sna_configuration, sna_twitter_configuration, sna_facebook_page_configuration, sna_mastodon_configuration
 					SET
 						sna_name = :sna_name,
 						sco_validation_score = :sco_validation_score,
 						sco_anonymous_permitted = :sco_anonymous_permitted,
 						sco_anonymous_password = :sco_anonymous_password,
+
 						stc_api_key = :stc_api_key,
 						stc_api_secret = :stc_api_secret,
 						stc_access_token = :stc_access_token,
 						stc_access_token_secret = :stc_access_secret,
+
 						sfp_page_id = :sfp_page_id,
-						sfp_access_token = :sfp_access_token
-						WHERE sna_id = :sna_id AND sco_sna_id = :sna_id AND stc_sna_id = :sna_id AND sfp_sna_id = :sna_id";
+						sfp_access_token = :sfp_access_token,
+
+						smc_url = :smc_url,
+						smc_client_id = :smc_client_id,
+						smc_client_secret = :smc_client_secret,
+						smc_user_token = :smc_user_token,
+						smc_token_type = :smc_token_type
+
+						WHERE sna_id = :sna_id 
+							AND sco_sna_id = :sna_id 
+							AND stc_sna_id = :sna_id 
+							AND sfp_sna_id = :sna_id
+							AND smc_sna_id = :sna_id
+";
 		$statement = $this->pdo->prepare($query);
+
+//		echo showQuery($query, $account);
 
 		$account["stc_access_secret"] = $account["stc_access_token_secret"];
 		unset($account["stc_access_token_secret"]);
@@ -84,6 +108,10 @@ class AccountBo {
 		$query = "	DELETE FROM administrators WHERE adm_sna_id = :sna_id";
 		$statement = $this->pdo->prepare($query);
 		$statement->execute($args);
+
+//		print_r($args);
+
+//		echo "\n";
 
 		$query = "	INSERT administrators (adm_sna_id, adm_user_id) VALUES (:sna_id, :use_id)";
 		$statement = $this->pdo->prepare($query);
@@ -194,10 +222,11 @@ class AccountBo {
 		$query .= "	SELECT DISTINCT *";
 		$query .= "	FROM social_network_accounts sna";
 		$query .= "	JOIN sna_configuration ON sco_sna_id = sna_id";
- 		$query .= "	LEFT JOIN sna_twitter_configuration ON stc_sna_id = sna_id";
- 		$query .= "	LEFT JOIN sna_facebook_page_configuration ON sfp_sna_id = sna_id";
+		$query .= "	LEFT JOIN sna_twitter_configuration ON stc_sna_id = sna_id";
+		$query .= "	LEFT JOIN sna_mastodon_configuration ON smc_sna_id = sna_id";
+		$query .= "	LEFT JOIN sna_facebook_page_configuration ON sfp_sna_id = sna_id";
 		$query .= "	WHERE sco_anonymous_permitted = 1 ";
-
+ 
 		$excludedIds = array();
 
 		if (count($excludedAccounts)) {
@@ -238,7 +267,8 @@ class AccountBo {
 		$query .= "	JOIN validators ON val_validator_group_id = vgr_id";
  		$query .= "	LEFT JOIN sna_twitter_configuration ON stc_sna_id = sna_id";
  		$query .= "	LEFT JOIN sna_facebook_page_configuration ON sfp_sna_id = sna_id";
-		$query .= "	WHERE val_user_id = :use_id";
+ 		$query .= "	LEFT JOIN sna_mastodon_configuration ON smc_sna_id = sna_id";
+ 		$query .= "	WHERE val_user_id = :use_id";
 		$query .= "	ORDER BY sna_name ASC";
 
 		$args = array("use_id" => $userId);
@@ -336,6 +366,7 @@ class AccountBo {
  		$query .= "	LEFT JOIN sna_configuration ON sco_sna_id = sna_id";
  		$query .= "	LEFT JOIN sna_twitter_configuration ON stc_sna_id = sna_id";
  		$query .= "	LEFT JOIN sna_facebook_page_configuration ON sfp_sna_id = sna_id";
+ 		$query .= "	LEFT JOIN sna_mastodon_configuration ON smc_sna_id = sna_id";
  		$query .= "	LEFT JOIN administrators ON adm_sna_id = sna_id";
 		$query .= "	WHERE adm_user_id = :adm_user_id";
 
@@ -362,6 +393,7 @@ class AccountBo {
 		$query .= "	LEFT JOIN sna_configuration ON sco_sna_id = sna_id";
 		$query .= "	LEFT JOIN sna_twitter_configuration ON stc_sna_id = sna_id";
 		$query .= "	LEFT JOIN sna_facebook_page_configuration ON sfp_sna_id = sna_id";
+		$query .= "	LEFT JOIN sna_mastodon_configuration ON smc_sna_id = sna_id";
 		$query .= "	WHERE sna_id = :sna_id";
 
 		$args = array("sna_id" => $accountId);

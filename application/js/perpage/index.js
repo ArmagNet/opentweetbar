@@ -1,5 +1,5 @@
 /*
-    Copyright 2014-2015 Cédric Levieux, Jérémy Collot, ArmagNet
+    Copyright 2014-2017 Cédric Levieux, Jérémy Collot, ArmagNet
 
     This file is part of OpenTweetBar.
 
@@ -34,7 +34,7 @@ function humanFileSize(bytes, si) {
     return bytes.toFixed(1)+' '+units[u];
 }
 
-function changeStatus(data, field) {
+function changeStatus(data, field) {h
 	if (data.ok && !data.exist) {
 		$("#" + field).addClass("glyphicon-ok");
 		$("#" + field).removeClass("glyphicon-remove");
@@ -439,8 +439,13 @@ $(function() {
 			$("#supportDiv label#tweetLabel input").removeAttr("disabled");
 			$("#supportDiv label#tweetLabel input").click();
 		}
+		if (account.hasMastodon) {
+			$("#supportDiv label#mastodonLabel input").removeAttr("disabled");
+			$("#supportDiv label#mastodonLabel input").click();
+		}
 
 		$("#supportDiv label#facebookLabel input").change();
+		$("#supportDiv label#mastodonLabel input").change();
 
 		$("#account").val(accountText);
 		$("#account2").val(accountText);

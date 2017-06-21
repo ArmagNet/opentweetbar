@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2014-2015 Cédric Levieux, Jérémy Collot, ArmagNet
+	Copyright 2014-2017 Cédric Levieux, Jérémy Collot, ArmagNet
 
 	This file is part of OpenTweetBar.
 
@@ -20,9 +20,9 @@ session_start();
 include_once("config/database.php");
 require_once("engine/utils/SessionUtils.php");
 require_once("engine/bo/AccountBo.php");
-//require_once("engine/bo/MediaBo.php");
+require_once("engine/bo/MediaBo.php");
 require_once("engine/bo/TweetBo.php");
-//require_once("engine/bo/UserBo.php");
+require_once("engine/bo/UserBo.php");
 include_once("language/language.php");
 
 $connection = openConnection();

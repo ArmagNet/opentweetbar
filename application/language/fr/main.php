@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2014-2015 Cédric Levieux, Jérémy Collot, ArmagNet
+	Copyright 2014-2017 Cédric Levieux, Jérémy Collot, ArmagNet
 
 	This file is part of OpenTweetBar.
 
@@ -74,6 +74,7 @@ $lang["index_tweetPlaceholder"] = "tweet...";
 $lang["index_tweetButton"] = "Tweeter";
 $lang["index_supports_tweet"] = "Tweet";
 $lang["index_supports_facebook"] = "Facebook";
+$lang["index_supports_mastodon"] = "Mastodon";
 $lang["index_cutTweets_legend"] = "Découpage automatique";
 $lang["index_options_mediaInput"] = "Media";
 $lang["index_options_cronDateInput"] = "Départ différé";
@@ -176,6 +177,14 @@ $lang["myaccounts_facebook_page_form_applicationIdInput"] = "Application Id";
 $lang["myaccounts_facebook_page_form_applicationSecretKeyInput"] = "Clé secrète de l'application";
 $lang["myaccounts_facebook_page_form_shortLiveUserAccessTokenInput"] = "Access Token utilisateur de courte durée";
 $lang["myaccounts_facebook_page_form_createFacebookPageAccessTokenButton"] = "Créer un Page Access Token";
+$lang["myaccounts_mastodon_form_legend"] = "Configuration Mastodon";
+$lang["myaccounts_mastodon_form_mstdUrlInput"] = "Url racine de l'API";
+$lang["myaccounts_mastodon_form_mstdClientNameInput"] = "Nom de l'application";
+$lang["myaccounts_mastodon_form_mstdClientIdInput"] = "Id application";
+$lang["myaccounts_mastodon_form_mstdClientSecretInput"] = "Secret application";
+$lang["myaccounts_mastodon_form_mstdUserTokenInput"] = "Token utilisateur";
+$lang["myaccounts_mastodon_form_mstdEmailInput"] = "Email de connexion";
+$lang["myaccounts_mastodon_form_mstdPasswordInput"] = "Mot de passe de connexion";
 $lang["myaccounts_administrators_form_legend"] = "Gestion des administrateurs";
 $lang["myaccounts_administrators_form_addUserInput"] = "Utilisateur";
 $lang["myaccounts_validators_form_legend"] = "Gestion des validateurs";
@@ -186,6 +195,8 @@ $lang["myaccounts_validators_form_addUserInput"] = "Utilisateur";
 $lang["myaccounts_validators_form_deleteGroupInput"] = "Supprimer groupe";
 $lang["myaccounts_validators_form_addGroupInput"] = "Ajouter groupe";
 $lang["myaccount_button_testTwitter"] = "Tester";
+$lang["myaccount_button_testMastodon"] = "Tester";
+$lang["myaccount_button_createMastodonAccess"] = "Créer les tokens";
 $lang["myaccount_add"] = "Ajouter ce compte";
 $lang["myaccount_save"] = "Sauver les paramètres";
 
@@ -288,6 +299,8 @@ $lang["error_login_ban"] = "Votre IP a été bloquée pour 10mn.";
 $lang["error_login_bad"] = "Vérifier vos identifiants, l'identification a échouée.";
 $lang["ok_twitter_success"] = "La configuration Twitter fonctionne";
 $lang["error_twitter_cant_authenticate"] = "La configuration Twitter ne fonctionne pas, vérifiez les différents paramètres de connexion";
+$lang["ok_mastodon_success"] = "La configuration Mastodon fonctionne";
+$lang["error_mastodon_cant_authenticate"] = "La configuration Mastodon ne fonctionne pas, vérifiez les différents paramètres de connexion";
 $lang["error_media_typeError"] = "Le fichier envoyé doit être une image";
 $lang["error_media_sizeError"] = "Le fichier envoyé est trop volumineux (Taille maximum : <span id='maxSize'></span>)";
 $lang["error_media_defaultError"] = "Une erreur est survenue dans le traitement d'un envoi de fichier, veuillez essayer ultérieurement";

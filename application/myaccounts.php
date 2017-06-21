@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2014 Cédric Levieux, Jérémy Collot, ArmagNet
+	Copyright 2014-2017 Cédric Levieux, Jérémy Collot, ArmagNet
 
 	This file is part of OpenTweetBar.
 
@@ -210,6 +210,103 @@ foreach($accounts as $key => $account) {
 								<button id="createFacebookPageAccessTokenButton" name="createFacebookPageAccessTokenButton" class="createFacebookPageAccessTokenButton btn btn-primary"><?php echo lang("myaccounts_facebook_page_form_createFacebookPageAccessTokenButton"); ?></button>
 							</div>
 						</div>
+
+						<legend>
+							<?php echo lang("myaccounts_mastodon_form_legend"); ?>
+						</legend>
+
+
+						<div class="form-group">
+							<label class="col-md-4 control-label" for="mstdUrlInput"><?php echo lang("myaccounts_mastodon_form_mstdUrlInput"); ?></label>
+							<div class="col-md-6">
+								<input id="mstdUrlInput" name="mstdUrlInput" value="" type="text"
+									placeholder="" class="form-control input-md">
+							</div>
+						</div>
+
+
+						<div class="form-group">
+							<label class="col-md-4 control-label" for="mstdClientNameInput"><?php echo lang("myaccounts_mastodon_form_mstdClientNameInput"); ?></label>
+							<div class="col-md-6">
+								<input id="mstdClientNameInput" name="mstdClientNameInput" value="OpenTweetBar Mastodon Client" type="text"
+									placeholder="" class="form-control input-md">
+							</div>
+						</div>
+
+
+						<div class="form-group">
+							<label class="col-md-4 control-label" for="mstdEmailInput"><?php echo lang("myaccounts_mastodon_form_mstdEmailInput"); ?></label>
+							<div class="col-md-6">
+								<input id="mstdEmailInput" name="mstdEmailInput" value="" type="text"
+									placeholder="" class="form-control input-md">
+							</div>
+						</div>
+
+
+						<div class="form-group">
+							<label class="col-md-4 control-label" for="mstdPasswordInput"><?php echo lang("myaccounts_mastodon_form_mstdPasswordInput"); ?></label>
+							<div class="col-md-6">
+								<input id="mstdPasswordInput" name="mstdPasswordInput" value="" type="password"
+									placeholder="" class="form-control input-md">
+							</div>
+						</div>
+
+
+						<div class="form-group">
+							<label class="col-md-4 control-label" for="createMastodonAccessButton"></label>
+							<div class="col-md-8">
+								<button id="createMastodonAccessButton" name="createMastodonAccessButton" 
+									class="createMastodonAccessButton btn btn-primary"><?php echo lang("myaccount_button_createMastodonAccess"); ?></button>
+							</div>
+						</div>
+
+
+						<div class="form-group">
+							<label class="col-md-4 control-label" for="mstdClientIdInput"><?php echo lang("myaccounts_mastodon_form_mstdClientIdInput"); ?></label>
+							<div class="col-md-6">
+								<input id="mstdClientIdInput" name="mstdClientIdInput" value="" type="text"
+									placeholder="" class="form-control input-md">
+							</div>
+						</div>
+
+
+						<div class="form-group">
+							<label class="col-md-4 control-label" for="mstdClientSecretInput"><?php echo lang("myaccounts_mastodon_form_mstdClientSecretInput"); ?></label>
+							<div class="col-md-6">
+								<input id="mstdClientSecretInput" name="mstdClientSecretInput" value="" type="text"
+									placeholder="" class="form-control input-md">
+							</div>
+						</div>
+
+
+						<div class="form-group">
+							<label class="col-md-4 control-label" for="mstdUserTokenInput"><?php echo lang("myaccounts_mastodon_form_mstdUserTokenInput"); ?></label>
+							<div class="col-md-6">
+								<input id="mstdUserTokenInput" name="mstdUserTokenInput" value="" type="text"
+									placeholder="" class="form-control input-md">
+							</div>
+						</div>
+
+<!-- 
+						<div class="form-group">
+							<label class="col-md-4 control-label" for="mstdUrlInput"><?php echo lang("myaccounts_mastodon_form_mstdUrlInput"); ?></label>
+							<div class="col-md-6">
+								<input id="mstdUrlInput" name="mstdUrlInput" value="" type="text"
+									placeholder="" class="form-control input-md">
+							</div>
+						</div>
+ -->
+ 						<input id="mstdTokenTypeInput" name="mstdTokenTypeInput" value="bearer" type="hidden">
+ 
+						<div class="form-group">
+							<label class="col-md-4 control-label" for="testMastodonButton"></label>
+							<div class="col-md-8">
+								<button id="testMastodonButton" name="testMastodonButton" class="testMastodonButton btn btn-primary"><?php echo lang("myaccount_button_testMastodon"); ?></button>
+							</div>
+						</div>
+
+						<?php echo addAlertDialog("ok_mastodon_successAlert", lang("ok_mastodon_success"), "success"); ?>
+						<?php echo addAlertDialog("error_mastodon_cant_authenticateAlert", lang("error_mastodon_cant_authenticate"), "danger"); ?>
 
 						<legend>
 							<?php echo lang("myaccounts_administrators_form_legend"); ?>
@@ -428,6 +525,103 @@ foreach($accounts as $key => $account) {
 						<?php echo addAlertDialog("error_facebook_page_cant_authenticateAlert", lang("error_facebook_page_cant_authenticate"), "danger"); ?>
 
 						<legend>
+							<?php echo lang("myaccounts_mastodon_form_legend"); ?>
+						</legend>
+
+
+						<div class="form-group">
+							<label class="col-md-4 control-label" for="mstdUrlInput"><?php echo lang("myaccounts_mastodon_form_mstdUrlInput"); ?></label>
+							<div class="col-md-6">
+								<input id="mstdUrlInput" name="mstdUrlInput" value="<?php echo @$account["smc_url"];?>" type="text"
+									placeholder="" class="form-control input-md">
+							</div>
+						</div>
+
+
+						<div class="form-group">
+							<label class="col-md-4 control-label" for="mstdClientNameInput"><?php echo lang("myaccounts_mastodon_form_mstdClientNameInput"); ?></label>
+							<div class="col-md-6">
+								<input id="mstdClientNameInput" name="mstdClientNameInput" value="<?php echo @$account["smc_client_name"];?>" type="text"
+									placeholder="" class="form-control input-md">
+							</div>
+						</div>
+
+
+						<div class="form-group">
+							<label class="col-md-4 control-label" for="mstdEmailInput"><?php echo lang("myaccounts_mastodon_form_mstdEmailInput"); ?></label>
+							<div class="col-md-6">
+								<input id="mstdEmailInput" name="mstdEmailInput" value="" type="text"
+									placeholder="" class="form-control input-md">
+							</div>
+						</div>
+
+
+						<div class="form-group">
+							<label class="col-md-4 control-label" for="mstdPasswordInput"><?php echo lang("myaccounts_mastodon_form_mstdPasswordInput"); ?></label>
+							<div class="col-md-6">
+								<input id="mstdPasswordInput" name="mstdPasswordInput" value="" type="password"
+									placeholder="" class="form-control input-md">
+							</div>
+						</div>
+
+
+						<div class="form-group">
+							<label class="col-md-4 control-label" for="createMastodonAccessButton"></label>
+							<div class="col-md-8">
+								<button id="createMastodonAccessButton" name="createMastodonAccessButton" 
+									class="createMastodonAccessButton btn btn-primary"><?php echo lang("myaccount_button_createMastodonAccess"); ?></button>
+							</div>
+						</div>
+
+
+						<div class="form-group">
+							<label class="col-md-4 control-label" for="mstdClientIdInput"><?php echo lang("myaccounts_mastodon_form_mstdClientIdInput"); ?></label>
+							<div class="col-md-6">
+								<input id="mstdClientIdInput" name="mstdClientIdInput" value="<?php echo @$account["smc_client_id"];?>" type="text"
+									placeholder="" class="form-control input-md">
+							</div>
+						</div>
+
+
+						<div class="form-group">
+							<label class="col-md-4 control-label" for="mstdClientSecretInput"><?php echo lang("myaccounts_mastodon_form_mstdClientSecretInput"); ?></label>
+							<div class="col-md-6">
+								<input id="mstdClientSecretInput" name="mstdClientSecretInput" value="<?php echo @$account["smc_client_secret"];?>" type="text"
+									placeholder="" class="form-control input-md">
+							</div>
+						</div>
+
+
+						<div class="form-group">
+							<label class="col-md-4 control-label" for="mstdUserTokenInput"><?php echo lang("myaccounts_mastodon_form_mstdUserTokenInput"); ?></label>
+							<div class="col-md-6">
+								<input id="mstdUserTokenInput" name="mstdUserTokenInput" value="<?php echo @$account["smc_user_token"];?>" type="text"
+									placeholder="" class="form-control input-md">
+							</div>
+						</div>
+
+<!-- 
+						<div class="form-group">
+							<label class="col-md-4 control-label" for="mstdUrlInput"><?php echo lang("myaccounts_mastodon_form_mstdUrlInput"); ?></label>
+							<div class="col-md-6">
+								<input id="mstdUrlInput" name="mstdUrlInput" value="" type="text"
+									placeholder="" class="form-control input-md">
+							</div>
+						</div>
+ -->
+ 						<input id="mstdTokenTypeInput" name="mstdTokenTypeInput" value="bearer" type="hidden">
+
+						<div class="form-group">
+							<label class="col-md-4 control-label" for="testMastodonButton"></label>
+							<div class="col-md-8">
+								<button id="testMastodonButton" name="testMastodonButton" class="testMastodonButton btn btn-primary"><?php echo lang("myaccount_button_testMastodon"); ?></button>
+							</div>
+						</div>
+
+						<?php echo addAlertDialog("ok_mastodon_successAlert", lang("ok_mastodon_success"), "success"); ?>
+						<?php echo addAlertDialog("error_mastodon_cant_authenticateAlert", lang("error_mastodon_cant_authenticate"), "danger"); ?>
+
+						<legend>
 							<?php echo lang("myaccounts_administrators_form_legend"); ?>
 						</legend>
 
@@ -475,11 +669,11 @@ foreach($accounts as $key => $account) {
 								<input id="scoreInput" name="scoreInput" value="<?php echo $validatorGroup["vgr_score"];?>" type="text"
 									placeholder="" class="form-control input-md">
 							</div>
-                                                        <label class="col-md-4 control-label" for="timelineInput"><?php echo lang("myaccounts_validators_form_groupShowInTimeline"); ?></label>
-                                                        <div class="col-md-2">
-                                                                <input id="timelineInput" name="timelineInput" value="1" <?php if ($validatorGroup["vgr_show_timeline"] == "1") echo "checked='checked'"; ?>" type="checkbox"
-                                                                        placeholder="" class="form-control input-md">
-                                                        </div>
+							<label class="col-md-4 control-label" for="timelineInput"><?php echo lang("myaccounts_validators_form_groupShowInTimeline"); ?></label>
+							<div class="col-md-2">
+								<input id="timelineInput" name="timelineInput" value="1" <?php if ($validatorGroup["vgr_show_timeline"] == "1") echo "checked='checked'"; ?>" type="checkbox"
+									placeholder="" class="form-control input-md">
+							</div>
 						</div>
 
 						<div class="form-group">
@@ -556,6 +750,8 @@ foreach($accounts as $key => $account) {
 <script>
 
 function responseHandler(data) {
+//	debugger;
+	
 	if (data.ok) {
 		$("#ok_operation_successAlert").show().delay(2000).fadeOut(1000);
 		window.location.reload(true);
@@ -711,6 +907,53 @@ $(function() {
 		}, "json");
 	});
 
+	$('.createMastodonAccessButton').click(function (e) {
+		e.preventDefault();
+
+		var formInputs = $(this).parents("form");
+		var myform = 	{
+				url: formInputs.find("#mstdUrlInput").val(),
+				clientName: formInputs.find("#mstdClientNameInput").val(),
+				email: formInputs.find("#mstdEmailInput").val(),
+				password: formInputs.find("#mstdPasswordInput").val()
+			};
+		
+		$.post("do_createMastodonAccess.php", myform, function(data) {
+			if (data.ok) {
+				formInputs.find("#ok_mastodon_successAlert").show().delay(2000).fadeOut(1000);
+
+				formInputs.find("#mstdClientIdInput").val(data.smc_client_id);
+				formInputs.find("#mstdClientSecretInput").val(data.smc_client_secret);
+				formInputs.find("#mstdUserTokenInput").val(data.smc_user_token);
+			}
+			else {
+				formInputs.find("#" + data.message + "Alert").show().delay(2000).fadeOut(1000);
+			}
+		}, "json");
+	});
+
+	$('.testMastodonButton').click(function (e) {
+		e.preventDefault();
+
+		var formInputs = $(this).parents("form");
+		var myform = 	{
+				url: formInputs.find("#mstdUrlInput").val(),
+				clientId: formInputs.find("#mstdClientIdInput").val(),
+				clientSecret: formInputs.find("#mstdClientSecretInput").val(),
+				userToken: formInputs.find("#mstdUserTokenInput").val(),
+				tokenType: formInputs.find("#mstdTokenTypeInput").val()
+			};
+
+		$.post("do_testMastodon.php", myform, function(data) {
+			if (data.ok) {
+				formInputs.find("#ok_mastodon_successAlert").show().delay(2000).fadeOut(1000);
+			}
+			else {
+				formInputs.find("#" + data.message + "Alert").show().delay(2000).fadeOut(1000);
+			}
+		}, "json");
+	});
+
 	$('.saveAccountButton').click(function (e) {
 		e.preventDefault();
 
@@ -750,16 +993,27 @@ $(function() {
 							validationScore: formInputs.find("#validationScoreInput").val(),
 							anonymousPermitted: formInputs.find("#anonymousInput").attr("checked") ? "1" : "0",
 							anonymousPassword: formInputs.find("#anonymousPasswordInput").val(),
+							
 							apiKey: formInputs.find("#apiKeyInput").val(),
 							apiSecret: formInputs.find("#apiSecretInput").val(),
 							accessToken: formInputs.find("#accessTokenInput").val(),
 							accessTokenSecret: formInputs.find("#accessTokenSecretInput").val(),
+
 							pageId: formInputs.find("#pageIdInput").val(),
 							fpAccessToken: formInputs.find("#fpAccessTokenInput").val(),
+
+							url: formInputs.find("#mstdUrlInput").val(),
+							clientId: formInputs.find("#mstdClientIdInput").val(),
+							clientSecret: formInputs.find("#mstdClientSecretInput").val(),
+							userToken: formInputs.find("#mstdUserTokenInput").val(),
+							tokenType: formInputs.find("#mstdTokenTypeInput").val(),
+
 							administratorIds: JSON.stringify(administratorIds),
 							validatorGroups: JSON.stringify(validatorGroups)
 						};
 
+//		debugger;
+		
 		$.post("do_myaccounts.php", myform, responseHandler, "json");
 	});
 

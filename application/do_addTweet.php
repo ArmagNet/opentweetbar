@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2014-2015 Cédric Levieux, Jérémy Collot, ArmagNet
+	Copyright 2014-2017 Cédric Levieux, Jérémy Collot, ArmagNet
 
 	This file is part of OpenTweetBar.
 
@@ -191,7 +191,7 @@ foreach($accounts as $account) {
 			foreach($validators as $validator) {
 				if ($validator["use_id"] == $userId) continue;
 				if ($validator["vgr_score"] < 1) continue;
-				
+
 				$hash = TweetBo::hash($tweet, $validator["use_id"]);
 
 				$validationLink = $config["base_url"] . "dvt.php?";

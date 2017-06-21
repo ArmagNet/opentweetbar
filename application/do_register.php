@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2014 Cédric Levieux, Jérémy Collot, ArmagNet
+	Copyright 2014-2017 Cédric Levieux, Jérémy Collot, ArmagNet
 
 	This file is part of OpenTweetBar.
 
@@ -72,8 +72,8 @@ $mailMessage = str_replace("{activationUrl}", $url, $mailMessage);
 $mailMessage = str_replace("{login}", $login, $mailMessage);
 $mailSubject = lang("register_mail_subject", false);
 
-$mail->Subject = mb_encode_mimeheader(utf8_decode($mailSubject), "ISO-8859-1");
-$mail->msgHTML(str_replace("\n", "<br>\n", utf8_decode($mailMessage)));
+$mail->Subject = utf8_decode($mailSubject);
+$mail->msgHTML(str_replace("\n", "<br>\n", $mailMessage));
 $mail->AltBody = utf8_decode($mailMessage);
 
 if (!$mail->send()) {

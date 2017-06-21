@@ -27,12 +27,16 @@ $shortLiveUserAccessToken = $_REQUEST["shortLiveUserAccessToken"];
 $longLivefacebookClientApi = new FacebookApiClient($shortLiveUserAccessToken);
 $response = $longLivefacebookClientApi->oauthAccessToken($applicationId, $applicationSecretKey);
 
+error_log(print_r($response, true));
+
 $longLiveUserAccessToken = $response["access_token"];
 
 $pagefacebookClientApi = new FacebookApiClient($longLiveUserAccessToken);
 $response = $pagefacebookClientApi->meAccounts();
 
 $pageAccessToken = "";
+
+error_log(print_r($response, true));
 
 foreach($response["data"] as $datum) {
 	if ($datum["id"] == $pageId) {

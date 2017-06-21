@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2014 Cédric Levieux, Jérémy Collot, ArmagNet
+	Copyright 2014-2017 Cédric Levieux, Jérémy Collot, ArmagNet
 
 	This file is part of OpenTweetBar.
 
@@ -98,8 +98,6 @@ else if ($action == "deploy") {
 		$createTweetsTableQuery = "CREATE TABLE IF NOT EXISTS `tweets` (
 		`twe_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Id of the handled tweet',
 		`twe_author` varchar(255) NOT NULL COMMENT 'id of the tweet author',
-		`twe_anonymous_nickname` VARCHAR( 255 ) NULL,
-		`twe_anonymous_mail` VARCHAR( 255 ) NULL,
 		`twe_content` varchar(255) NOT NULL COMMENT 'Content of the tweet',
 		`twe_destination` varchar(255) NOT NULL COMMENT 'Account which will tweet this tweet',
 		`twe_status` enum('inValidation','validated','expirated','rejected','deleted') NOT NULL DEFAULT 'inValidation' COMMENT 'Status of the tweet',
@@ -117,15 +115,13 @@ else if ($action == "deploy") {
 		`tva_score` int(11) NOT NULL,
 		`tva_ip` VARCHAR( 50 ) NOT NULL ,
 		`tva_referer` VARCHAR( 255 ) NOT NULL ,
-		`tva_datetime` TIMESTAMP NOT NULL DEFAULT '0000-00-00 00:00:00';
+		`tva_datetime` TIMESTAMP NOT NULL ;
 		PRIMARY KEY (`tva_id`)
 		) ENGINE=InnoDB  DEFAULT CHARSET=latin1;";
 
 		$createSNAConfigurationTableQuery = "CREATE TABLE IF NOT EXISTS `sna_configuration` (
 				`sco_id` int(11) NOT NULL AUTO_INCREMENT,
 				`sco_sna_id` int(11) NOT NULL,
-				`sco_anonymous_permitted` TINYINT NOT NULL DEFAULT,
-				`sco_anonymous_password` VARCHAR( 255 ) NOT NULL,
 				`sco_validation_score` int(11) NOT NULL,
 				PRIMARY KEY (`sco_id`),
 				KEY `sco_sna_id` (`sco_sna_id`)
@@ -150,14 +146,14 @@ else if ($action == "deploy") {
 		) ENGINE=InnoDB  DEFAULT CHARSET=latin1;";
 
 		$createUsersTableQuery = "CREATE TABLE IF NOT EXISTS `users` (
-				 `use_id` int(11) NOT NULL AUTO_INCREMENT,
-				 `use_login` varchar(255) NOT NULL,
-				 `use_password` varchar(255) NOT NULL,
-				 `use_activated` tinyint(1) NOT NULL DEFAULT '0',
-				 `use_activation_key` varchar(255) NOT NULL,
-				 `use_mail` varchar(255) NOT NULL,
-				 `use_language` char(2) NOT NULL DEFAULT 'fr',
-				 `use_notification` enum('none', 'mail', 'simpledm', 'dm') NOT NULL DEFAULT 'dm',
+				  `use_id` int(11) NOT NULL AUTO_INCREMENT,
+				  `use_login` varchar(255) NOT NULL,
+				  `use_password` varchar(255) NOT NULL,
+				  `use_activated` tinyint(1) NOT NULL DEFAULT '0',
+				  `use_activation_key` varchar(255) NOT NULL,
+				  `use_mail` varchar(255) NOT NULL,
+				  `use_language` char(2) NOT NULL DEFAULT 'fr',
+				  `use_notification` enum('none', 'mail', 'simpledm', 'dm') NOT NULL DEFAULT  'dm',
 				  PRIMARY KEY (`use_id`),
 				  KEY `use_login` (`use_login`)
 				) ENGINE=InnoDB  DEFAULT CHARSET=latin1;";
@@ -197,15 +193,9 @@ else if ($action == "deploy") {
 				`lac_status` tinyint(4) NOT NULL,
 				`lac_login` varchar(255) NOT NULL,
 				`lac_ip` varchar(255) NOT NULL,
-				`lac_timestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+				`lac_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 				PRIMARY KEY (`lac_id`)
 		) ENGINE=InnoDB DEFAULT CHARSET=latin1;";
-
-		$alterTweetsTableQuery = "ALTER TABLE `tweets` ADD `twe_validation_duration` INT NOT NULL DEFAULT '0',
-		ADD `twe_cron_datetime` TIMESTAMP NOT NULL DEFAULT '0000-00-00 00:00:00',
-		ADD `twe_creation_datetime` TIMESTAMP NOT NULL DEFAULT '0000-00-00 00:00:00';";
-
-		$alterTweetsTable2Query = "ALTER TABLE `tweets` CHANGE `twe_status` `twe_status` ENUM('inValidation', 'validated', 'expired', 'rejected', 'deleted', 'croned') NOT NULL DEFAULT 'inValidation' COMMENT 'Status of the tweet';";
 
 		$pdo->exec($createSNAConfigurationTableQuery);
 		$pdo->exec($createSNATwitterConfigurationTableQuery);
@@ -218,8 +208,6 @@ else if ($action == "deploy") {
 		$pdo->exec($createTweetValidationsTableQuery);
 		$pdo->exec($createAdministratorsTableQuery);
 		$pdo->exec($createLogActionsTableQuery);
-		$pdo->exec($alterTweetsTableQuery);
-		$pdo->exec($alterTweetsTable2Query);
 
 		$data["ok"] = "ok";
 	}

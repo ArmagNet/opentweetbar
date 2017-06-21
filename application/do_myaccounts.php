@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2014 Cédric Levieux, Jérémy Collot, ArmagNet
+	Copyright 2014-2017 Cédric Levieux, Jérémy Collot, ArmagNet
 
 	This file is part of OpenTweetBar.
 
@@ -34,10 +34,18 @@ $account["sna_name"] = $_REQUEST["name"];
 $account["sco_validation_score"] = $_REQUEST["validationScore"];
 $account["sco_anonymous_permitted"] = $_REQUEST["anonymousPermitted"];
 $account["sco_anonymous_password"] = $_REQUEST["anonymousPassword"];
+
 $account["stc_api_key"] = trim($_REQUEST["apiKey"]);
 $account["stc_api_secret"] = trim($_REQUEST["apiSecret"]);
 $account["stc_access_token"] = trim($_REQUEST["accessToken"]);
 $account["stc_access_token_secret"] = trim($_REQUEST["accessTokenSecret"]);
+
+$account["smc_url"] = trim($_REQUEST["url"]);
+$account["smc_client_id"] = trim($_REQUEST["clientId"]);
+$account["smc_client_secret"] = trim($_REQUEST["clientSecret"]);
+$account["smc_user_token"] = trim($_REQUEST["userToken"]);
+$account["smc_token_type"] = trim($_REQUEST["tokenType"]);
+
 $account["sfp_page_id"] = trim($_REQUEST["pageId"]);
 $account["sfp_access_token"] = trim($_REQUEST["fpAccessToken"]);
 
