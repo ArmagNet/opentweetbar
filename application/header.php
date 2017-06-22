@@ -61,6 +61,26 @@ if (count($accounts)) {
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title><?php echo lang("opentweetbar_title"); ?></title>
+<meta name="description" content="<?php echo lang("opentweetbar_description"); ?>" />
+<meta name="keywords" content="twitter,mastodon,facebook,armagnet,opentweetbar,collaboratif,collaborative" />
+
+<!-- Facebook -->
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://www.opentweetbar.net/" />
+<meta property="og:title" content="<?php echo lang("opentweetbar_title"); ?>" />
+<meta property="og:description" content="<?php echo lang("opentweetbar_description"); ?>" />
+<meta property="og:image" content="https://www.opentweetbar.net/images/logo.png" />
+<!-- Google +1 -->
+<meta itemprop="name" content="<?php echo lang("opentweetbar_title"); ?>" />
+<meta itemprop="description" content="<?php echo lang("opentweetbar_description"); ?>" />
+<meta itemprop="image" content="https://www.opentweetbar.net/images/logo.png" />
+<!-- Twitter -->
+<meta name="twitter:site" content="@OpenTweetBar" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:url" content="https://www.opentweetbar.net/" />
+<meta name="twitter:title" content="<?php echo lang("opentweetbar_title"); ?>" />
+<meta name="twitter:description" content="<?php echo lang("opentweetbar_description"); ?>" />
+<meta name="twitter:image" content="https://www.opentweetbar.net/images/logo.png" />
 
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="js/jquery-1.11.1.min.js"></script>

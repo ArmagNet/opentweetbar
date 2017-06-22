@@ -32,6 +32,7 @@ $lang["language_en"] = "Anglais";
 $lang["language_de"] = "Allemand";
 
 $lang["opentweetbar_title"] = "OpenTweetBar - Le tweet communautaire";
+$lang["opentweetbar_description"] = "Utiliser les réseaux sociaux de manière collaborative : twitter, page facebook, mastodon";
 
 $lang["menu_language"] = "Langue : {language}";
 $lang["menu_tweet"] = "Tweet";
