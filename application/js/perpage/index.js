@@ -118,9 +118,9 @@ function verifyAll() {
 	}
 }
 
-function computeTweetLenght(text) {
+function computeTweetLength(text, maxLength) {
 //	return 140 - text.length - ($(".mediaImage").length > 0 ? 24 : 0);
-	return 140 - text.length;
+	return maxLength - text.length;
 }
 
 function urlized(tweetContent) {
@@ -148,9 +148,8 @@ function urlized(tweetContent) {
 	return returned;
 }
 
-function cutTweet(text, tweets, urls, hasImage) {
+function cutTweet(text, tweets, urls, hasImage, maxLength, type) {
 //	var maxLength = 140 - 7 - (hasImage ? 22 : 0);
-	var maxLength = 140 - 7;
 
 	if (text.length > maxLength) {
 		var cutLength = text.regexLastIndexOf(/[ ,;]/, maxLength);
@@ -160,7 +159,7 @@ function cutTweet(text, tweets, urls, hasImage) {
 
 		text = text.substring(cutLength + 1).trim();
 
-		cutTweet(text, tweets, urls, false);
+		cutTweet(text, tweets, urls, false, maxLength, type);
 
 		return;
 	}
@@ -170,7 +169,7 @@ function cutTweet(text, tweets, urls, hasImage) {
 	var cutTweets = $("#cutTweets ul");
 
 	for(var index = 0; index < tweets.length; ++index) {
-		var cutTweetElement = $("<li class='list-group-item'></li>");
+		var cutTweetElement = $("<li class='list-group-item "+type+"'></li>");
 		var text = tweets[index];
 
 		for(var jndex = 0; jndex < urls.length; ++jndex) {
@@ -178,7 +177,9 @@ function cutTweet(text, tweets, urls, hasImage) {
 			text = text.replace("https://################" + jndex, urls[jndex]);
 		}
 
-		cutTweetElement.text(text);
+		text = text.replace(/\n/g, "<br>");
+
+		cutTweetElement.html(text);
 
 		var position = (index + 1) + "/" + tweets.length;
 
@@ -322,6 +323,10 @@ $(function() {
 		eval("verify_" + field + "();");
 	});
 
+	$("input[name=supports]").click(function() {
+		$("#tweet,#tweet-big").keyup();
+	});
+
 	$("#tweet,#tweet-big").keyup(function() {
 		var visibileInput = $("#tweet:visible,#tweet-big:visible");
 
@@ -334,18 +339,66 @@ $(function() {
 		$("#cutTweets ul").children().remove();
 
 		if (tweetContent) {
-			var tweetLength = computeTweetLenght(tweetContent);
+			
+			var hasTwitterCuts = false;
+			
+			{
+				var tweetLength = computeTweetLength(tweetContent, 140);
+				
+				if (tweetLength < 0 && $("input[name=supports][value=twitter]:checked").length) {
+					var cutTweetElement = $("<li class='list-group-item twitter'><span class='social grey twitter' style='height: 30px; margin-right: -5px; '></span> Twitter</li>");
+					$("#cutTweets ul").append(cutTweetElement);
 
-			if (tweetLength < 0) {
-				cutTweet(tweetContent, [], computed.urls, $(".mediaImage").length > 0 ? true : false);
-				$("#cutTweets").show();
+					cutTweet(tweetContent, [], computed.urls, $(".mediaImage").length > 0 ? true : false, 133, "twitter");
+					$("#cutTweets").show();
+					hasTwitterCuts = true;
+				}
+	
+				verifyAll();
+	
+				$(".twitter .tweeter-count").text(tweetLength);
+			}
+			{
+				var tweetLength = computeTweetLength(tweetContent, 500);
+	
+				if (tweetLength < 0 && $("input[name=supports][value=mastodon]:checked").length) {
+					if (hasTwitterCuts) {
+						var cutTweetElement = $("<li class='list-group-item twitter mastodon'></li>");
+						$("#cutTweets ul").append(cutTweetElement);
+					}
+
+					var cutTweetElement = $("<li class='list-group-item mastodon'><img src='images/mastodon.svg' style='height: 24px; position: relative; top: -3px;'> Mastodon</li>");
+					$("#cutTweets ul").append(cutTweetElement);
+
+					cutTweet(tweetContent, [], computed.urls, $(".mediaImage").length > 0 ? true : false, 493, "mastodon");
+					$("#cutTweets").show();
+					
+				}
+	
+				verifyAll();
+	
+				$(".mastodon .tweeter-count").text(tweetLength);
 			}
 
-			verifyAll();
+			$("#cutTweets .twitter").show();
+			$(".twitter .tweeter-count").parent().show();
+			$("#cutTweets .mastodon").show();
+			$(".mastodon .tweeter-count").parent().show();
 
-			$(".tweeter-count").text(tweetLength);
+			if (!$("input[name=supports][value=twitter]:checked").length) {
+				$("#cutTweets .twitter").hide();
+				$(".twitter .tweeter-count").parent().hide();
+			}
+
+			if (!$("input[name=supports][value=mastodon]:checked").length) {
+				$("#cutTweets .mastodon").hide();
+				$(".mastodon .tweeter-count").parent().hide();
+			}
 		}
 		else {
+			$(".twitter .tweeter-count").parent().hide();
+			$(".mastodon .tweeter-count").parent().hide();
+
 			$(".tweeter-count").text("");
 			$("#tweetButton").attr("disabled", "disabled");
 		}

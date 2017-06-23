@@ -167,8 +167,11 @@ else {
 		<label id="mastodonLabel" style="font-weight: normal;"><input type="checkbox" name="supports" value="mastodon" /> <?php echo lang("index_supports_mastodon"); ?>
 			<img src="images/mastodon.svg" style="height: 24px; position: relative; top: -3px;"></label>
 	</div>
-	<div class="text-right">
-		<span class="tweeter-count"></span>
+	<div class="text-right twitter">
+		<span class="social grey twitter" style="height: 30px; margin-right: -5px; "></span> : <span class="tweeter-count"></span>
+	</div>
+	<div class="text-right mastodon">
+		<img src="images/mastodon.svg" style="height: 24px; position: relative; top: -3px;"> : <span class="tweeter-count"></span>
 	</div>
 
 	<fieldset id="cutTweets" style="display: none;">
