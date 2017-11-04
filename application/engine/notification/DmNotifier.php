@@ -27,8 +27,11 @@ class DmNotifier {
 		$noticeTweet["twe_destination"] = $account["sna_name"];
 		$noticeTweet["twe_destination_id"] = $account["sna_id"];
 
-		$noticeTweet["twe_content"] = "D ". $author["use_login"] . " un message demande à être relu pour modification " . $config["base_url"] . "validation.php";
-		$tweetBo->sendTweet($noticeTweet);
+//		$noticeTweet["twe_content"] = "D ". $author["use_login"] . " un message demande à être relu pour modification " . $config["base_url"] . "validation.php";
+//		$tweetBo->sendTweet($noticeTweet);
+
+		$noticeTweet["twe_content"] = "un message demande à être relu pour modification " . $config["base_url"] . "validation.php";
+		$tweetBo->sendDMOnTwitter($author["use_login"], $noticeTweet);
 	}
 
 	function notifyValidationLink($account, $validator, $tweet, $validationLink) {
@@ -39,8 +42,12 @@ class DmNotifier {
 		$noticeTweet["twe_destination"] = $account["sna_name"];
 		$noticeTweet["twe_destination_id"] = $account["sna_id"];
 
-		$noticeTweet["twe_content"] = "D ". $validator["use_login"] . " un message en attente de validation vous attend : ";
-		$tweetBo->sendTweet($noticeTweet);
+//		$noticeTweet["twe_content"] = "D ". $validator["use_login"] . " un message en attente de validation vous attend : ";
+//		$tweetBo->sendTweet($noticeTweet);
+
+		$noticeTweet["twe_content"] = "un message en attente de validation vous attend : ";
+		$tweetBo->sendDMOnTwitter($validator["use_login"], $noticeTweet);
+
 		time_nanosleep(0, 300000000);
 
 		$tweetContent = "";
@@ -61,17 +68,21 @@ class DmNotifier {
 			$tweetContent = $tweet["twe_content"];
 		}
 
-		$noticeTweet["twe_content"] = "D ". $validator["use_login"] . " " . $tweetContent;
+//		$noticeTweet["twe_content"] = "D ". $validator["use_login"] . " " . $tweetContent;
+		$noticeTweet["twe_content"] = $tweetContent;
 
 		if (strlen($noticeTweet["twe_content"]) > 140) {
 			$noticeTweet["twe_content"] = substr($noticeTweet["twe_content"], 0, 140);
 		}
 
-		$tweetBo->sendTweet($noticeTweet);
+//		$tweetBo->sendTweet($noticeTweet);
+		$tweetBo->sendDMOnTwitter($validator["use_login"], $noticeTweet);
 		time_nanosleep(0, 300000000);
 
-		$noticeTweet["twe_content"] = "D ". $validator["use_login"] . " Pour valider : " . $validationLink;
-		$tweetBo->sendTweet($noticeTweet);
+//		$noticeTweet["twe_content"] = "D ". $validator["use_login"] . " Pour valider : " . $validationLink;
+//		$tweetBo->sendTweet($noticeTweet);
+		$noticeTweet["twe_content"] = "Pour valider : " . $validationLink;
+		$tweetBo->sendDMOnTwitter($validator["use_login"], $noticeTweet);
 	}
 }
 ?>

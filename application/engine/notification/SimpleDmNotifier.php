@@ -27,8 +27,10 @@ class SimpleDmNotifier {
 		$noticeTweet["twe_destination"] = $account["sna_name"];
 		$noticeTweet["twe_destination_id"] = $account["sna_id"];
 
-		$noticeTweet["twe_content"] = "D ". $author["use_login"] . " un message demande à être relu pour modification " . $config["base_url"] . "validation.php";
-		$tweetBo->sendTweet($noticeTweet);
+//		$noticeTweet["twe_content"] = "D ". $author["use_login"] . " un message demande à être relu pour modification " . $config["base_url"] . "validation.php";
+//		$tweetBo->sendTweet($noticeTweet);
+		$noticeTweet["twe_content"] = "un message demande à être relu pour modification " . $config["base_url"] . "validation.php";
+		$tweetBo->sendDMOnTwitter($author["use_login"], $noticeTweet);
 	}
 
 	function notifyValidationLink($account, $validator, $tweet, $validationLink) {
@@ -41,9 +43,9 @@ class SimpleDmNotifier {
 
 		if ($tweet["twe_to_retweet"]) {
 			$retweet = json_decode($tweet["twe_to_retweet"], true);
-		
+
 			if ($tweet["twe_content"]) {
-		
+
 			}
 			else {
 				$tweetContent = lang("add_tweet_mail_only_a_retweet", false, $validator["use_language"]);
@@ -55,9 +57,11 @@ class SimpleDmNotifier {
 		else {
 			$tweetContent = $tweet["twe_content"];
 		}
-		
-		$noticeTweet["twe_content"] = "D ". $validator["use_login"] . " un message en attente de validation vous attend sur " . $config["base_url"] . " : \n" .  $tweetContent;
-		$tweetBo->sendTweet($noticeTweet);
+
+//		$noticeTweet["twe_content"] = "D ". $validator["use_login"] . " un message en attente de validation vous attend sur " . $config["base_url"] . " : \n" .  $tweetContent;
+//		$tweetBo->sendTweet($noticeTweet);
+		$noticeTweet["twe_content"] = "un message en attente de validation vous attend sur " . $config["base_url"] . " : \n" .  $tweetContent;
+		$tweetBo->sendDMOnTwitter($validator["use_login"], $noticeTweet);
 	}
 }
 ?>

@@ -53,7 +53,7 @@ class TweetBo {
 // 			$tweets[] = $text;
 // 			return;
 // 		}
-		
+
 		if (strlen(utf8_decode($text)) > $maxLength) {
 			$cutLength = regexLastIndexOf($text, '/[ ,;]/mi', $maxLength);
 
@@ -418,6 +418,91 @@ class TweetBo {
 //		error_log(print_r($response, true));
 		//		print_r($status);
 	}
+
+
+	function sendDMOnTwitter($receiver, $tweet) {
+		error_log("send dm on twitter");
+
+		include_once "engine/twitter/twitteroauth.php";
+		include_once "engine/bo/MediaBo.php";
+
+		$account = $this->getAccount($tweet["twe_destination_id"]);
+
+		$key = $account["stc_api_key"];
+		$secret = $account["stc_api_secret"];
+		$token = $account["stc_access_token"];
+		$token_secret = $account["stc_access_token_secret"];
+
+		//		print_r($account);
+
+		$connection = new TwitterOAuth($key, $secret, $token, $token_secret);
+
+		$twitterMediaIds = array();
+		$medias = array();
+
+		if (isset($tweet["twe_id"])) {
+			$mediaBo = MediaBo::newInstance($this->pdo);
+			$medias = $mediaBo->getMedias(array("tme_tweet_id" => $tweet["twe_id"]));
+		}
+
+		// We change the url for media sending
+		$connection->host = "https://upload.twitter.com/1.1/";
+
+		foreach($medias as $media) {
+			$parameters = array('media_data' => base64_encode($media["med_content"]));
+			$status = $connection->post('media/upload', $parameters);
+
+			$twitterMediaIds[] = $status->media_id;
+		}
+
+		// We change back the url for tweet sending
+		$connection->host = "https://api.twitter.com/1.1/";
+		$status = null;
+
+		$result = TweetBo::urlized($tweet["twe_content"]);
+
+		//			if (strlen(utf8_decode($result["content"])) <= 140 - 24 * (count($twitterMediaIds) ? 1 : 0)) {
+		if (strlen(utf8_decode($result["content"])) <= 140 || strpos($result["content"], "D ") === 0) {
+			$parameters = array('text' => $tweet["twe_content"]);
+			$parameters["screen_name"] = str_replace("@", "", $receiver);
+
+			if (count($twitterMediaIds)) {
+				$parameters["media_ids"] = implode(",", $twitterMediaIds);
+			}
+
+			$status = $connection->post('direct_messages/new', $parameters);
+		}
+		else {
+			include_once "engine/utils/StringUtils.php";
+
+			$contents = array();
+			TweetBo::cutTweet($result["content"], $contents, $result["urls"], count($twitterMediaIds) ? true : false);
+
+			foreach($contents as $index => $content) {
+				$parameters = array('text' => $content);
+				$parameters["screen_name"] = str_replace("@", "", $receiver);
+
+				if (count($twitterMediaIds) && $index == 0) {
+					$parameters["media_ids"] = implode(",", $twitterMediaIds);
+				}
+
+				$status = $connection->post('direct_messages/new', $parameters);
+
+				time_nanosleep(0, 500000000);
+			}
+		}
+
+		if ($status && isset($status->id_str)) {
+			$updateTweet = array("twe_id" => $tweet["twe_id"]);
+			$updateTweet["twe_twitter_id"] = $status->id_str;
+
+			$this->update($updateTweet);
+		}
+
+		error_log(print_r($parameters, true));
+		error_log(print_r($status, true));
+	}
+
 
 	static function getProfileBanner($account) {
 		include_once "engine/twitter/twitteroauth.php";
@@ -866,7 +951,7 @@ class TweetBo {
 		$status = array();
 
 //		print_r($config);
-		
+
 		$response = $mastodon_api->create_app($config["smc_client_name"], null, null, 'https://www.opentweetbar.org/');
 
 		if (!isset($response["html"]["client_id"])) {
@@ -888,7 +973,7 @@ class TweetBo {
 
 		return $status;
 	}
-	
+
 	static function testMastodon($config) {
 		require_once 'engine/mastodon/Mastodon-api.php';
 
@@ -903,30 +988,30 @@ class TweetBo {
 
 		return $status;
 	}
-	
-	
+
+
 	function sendTweetOnMastodon($tweet) {
 		require_once 'engine/mastodon/Mastodon-api.php';
-		
+
 		$mastodon_api = new Mastodon_api();
-		
+
 		$account = $this->getAccount($tweet["twe_destination_id"]);
-		
+
 		$mastodon_api->set_url($account["smc_url"]);
 		$mastodon_api->set_client($account["smc_client_id"], $account["smc_client_secret"]);
 		$mastodon_api->set_token($account["smc_user_token"], $account["smc_token_type"]);
-		
+
 		$twitterMediaIds = array();
 		$medias = array();
-		
+
 		if (isset($tweet["twe_id"])) {
 			include_once "engine/bo/MediaBo.php";
-			
+
 			$mediaBo = MediaBo::newInstance($this->pdo);
 			$medias = $mediaBo->getMedias(array("tme_tweet_id" => $tweet["twe_id"]));
 		}
 
-		// 
+		//
 		$paths = array();
 
 		foreach($medias as $media) {
@@ -935,21 +1020,21 @@ class TweetBo {
 			$tmpfname = tempnam(sys_get_temp_dir(), "OTB_");
 
 			error_log("Create $tmpfname");
-			
+
 			$handle = fopen($tmpfname, "w");
 			fwrite($handle, $media["med_content"]);
 			fclose($handle);
-			
+
 			// traitement
-			
+
 			$paths[] = $tmpfname;
-			
+
 			$status = $mastodon_api->media($tmpfname);
-			
+
 //			$parameters = array('media_data' => base64_encode($media["med_content"]));
 //			$status = $connection->post('media/upload', $parameters);
 
-/*			
+/*
 			[id] => 182284
 			[type] => image
 			[url] => https://dsqf.dfsq.fqds/system/media_attachments/files/000/182/284/original/b40f8daeba1e9c59.png?1498064275
@@ -964,7 +1049,7 @@ class TweetBo {
 							[size] => 32x32
 							[aspect] => 1
 							)
-					
+
 					[small] => Array
 					(
 							[width] => 32
@@ -972,19 +1057,19 @@ class TweetBo {
 							[size] => 32x32
 							[aspect] => 1
 							)
-					
+
 					)
 */
 			error_log("Send media : " . $status["html"]["id"]);
-			
+
 			$twitterMediaIds[] = $status["html"]["id"];
 		}
-		
+
 
 // 		if ($tweet["twe_to_retweet"]) {
 // 			$retweet = json_decode($tweet["twe_to_retweet"], true);
 // 			$retweetId = $retweet["id_str"];
-//			
+//
 // 			//			error_log("Will retweet $retweetId");
 //
 // 			if ($tweet["twe_content"]) {
@@ -1006,14 +1091,14 @@ class TweetBo {
 		*          string      $parameters['sensitive']            (optional): set this to mark the media of the status as NSFW
 		*          string      $parameters['spoiler_text']         (optional): text to be shown as a warning before the actual content
 		*          string      $parameters['visibility']           (optional): either "direct", "private", "unlisted" or "public"
-*/				
-		
+*/
+
 			$result = TweetBo::urlized($tweet["twe_content"]);
-			
+
 			//			if (strlen(utf8_decode($result["content"])) <= 140 - 24 * (count($twitterMediaIds) ? 1 : 0)) {
 			if (strlen(utf8_decode($result["content"])) <= 500) {
 				$parameters = array('status' => $tweet["twe_content"]);
-				
+
 				if (count($twitterMediaIds)) {
 //					$parameters["media_ids"] = "[" . implode(",", $twitterMediaIds) . "]";
 					$parameters["media_ids"] = $twitterMediaIds;
@@ -1023,13 +1108,13 @@ class TweetBo {
 			}
 			else {
 				include_once "engine/utils/StringUtils.php";
-				
+
 				$contents = array();
 				TweetBo::cutTweet($result["content"], $contents, $result["urls"], count($twitterMediaIds) ? true : false, 493);
-				
+
 				foreach($contents as $index => $content) {
 					$parameters = array('status' => $content);
-					
+
 					if (count($twitterMediaIds) && $index == 0) {
 //						$parameters["media_ids"] = implode(",", $twitterMediaIds);
 						$parameters["media_ids"] = $twitterMediaIds;
@@ -1040,8 +1125,8 @@ class TweetBo {
 					time_nanosleep(0, 500000000);
 				}
 			}
-			
-			
+
+
 //		}
 
 			foreach($paths as $path) {
@@ -1052,10 +1137,10 @@ class TweetBo {
 // 		if ($status && isset($status->id_str)) {
 // 			$updateTweet = array("twe_id" => $tweet["twe_id"]);
 // 			$updateTweet["twe_mastodon_id"] = $status->id_str;
-			
+
 // 			$this->update($updateTweet);
 // 		}
-		
+
 		//		error_log(print_r($response, true));
 		//		print_r($status);
 	}
