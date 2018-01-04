@@ -46,8 +46,8 @@ class TweetBo {
 		return $result;
 	}
 
-	static function cutTweet($text, &$tweets, $urls, $hasImage = false, $maxLength= 133) {
-//		$maxLength = 140 - 7 - ($hasImage ? 24 : 0);
+	static function cutTweet($text, &$tweets, $urls, $hasImage = false, $maxLength= 270) {
+//		$maxLength = 280 - 10 - ($hasImage ? 24 : 0);
 
 // 		if (strpos($text, "D ") === 0) {
 // 			$tweets[] = $text;
@@ -378,8 +378,8 @@ class TweetBo {
 
 			$result = TweetBo::urlized($tweet["twe_content"]);
 
-//			if (strlen(utf8_decode($result["content"])) <= 140 - 24 * (count($twitterMediaIds) ? 1 : 0)) {
-			if (strlen(utf8_decode($result["content"])) <= 140 || strpos($result["content"], "D ") === 0) {
+//			if (strlen(utf8_decode($result["content"])) <= 280 - 24 * (count($twitterMediaIds) ? 1 : 0)) {
+			if (strlen(utf8_decode($result["content"])) <= 280 || strpos($result["content"], "D ") === 0) {
 				$parameters = array('status' => $tweet["twe_content"]);
 
 				if (count($twitterMediaIds)) {
@@ -461,8 +461,8 @@ class TweetBo {
 
 		$result = TweetBo::urlized($tweet["twe_content"]);
 
-		//			if (strlen(utf8_decode($result["content"])) <= 140 - 24 * (count($twitterMediaIds) ? 1 : 0)) {
-		if (strlen(utf8_decode($result["content"])) <= 140 || strpos($result["content"], "D ") === 0) {
+		//			if (strlen(utf8_decode($result["content"])) <= 280 - 24 * (count($twitterMediaIds) ? 1 : 0)) {
+		if (strlen(utf8_decode($result["content"])) <= 280 || strpos($result["content"], "D ") === 0) {
 			$parameters = array('text' => $tweet["twe_content"]);
 			$parameters["screen_name"] = str_replace("@", "", $receiver);
 
@@ -1095,7 +1095,7 @@ class TweetBo {
 
 			$result = TweetBo::urlized($tweet["twe_content"]);
 
-			//			if (strlen(utf8_decode($result["content"])) <= 140 - 24 * (count($twitterMediaIds) ? 1 : 0)) {
+			//			if (strlen(utf8_decode($result["content"])) <= 280 - 24 * (count($twitterMediaIds) ? 1 : 0)) {
 			if (strlen(utf8_decode($result["content"])) <= 500) {
 				$parameters = array('status' => $tweet["twe_content"]);
 
