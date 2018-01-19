@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2014-2017 Cédric Levieux, Jérémy Collot, ArmagNet
+	Copyright 2014-2018 Cédric Levieux, Jérémy Collot, ArmagNet
 
 	This file is part of OpenTweetBar.
 
@@ -42,7 +42,29 @@ function isAdministrator($accountId) {
 	return false;
 }
 
+$skeleton = true;
+$requestAccountId = null;
+
+if (isset($_REQUEST["id"])) {
+	$skeleton = false;
+	$requestAccountId = $_REQUEST["id"];
+}
+
 ?>
+<style>
+
+.nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover {
+    color: #555;
+    cursor: default;
+    background-color: #fff;
+    border: 1px solid #ddd;
+}
+
+.nav-tabs>li>a {
+    border-radius: 4px;
+}
+
+</style>
 <div class="container theme-showcase" role="main">
 	<ol class="breadcrumb">
 		<li><a href="index.php"><?php echo lang("breadcrumb_index"); ?></a></li>
@@ -55,7 +77,65 @@ function isAdministrator($accountId) {
 
 	<?php 	if ($user) {?>
 
+<?php if ($skeleton) {?>
+
+	<div class="row">
+		<div class="col-md-3">
+
+        	<!-- Nav tabs -->
+        	<ul class="nav nav-tabs" role="tablist">
+<?php 	$active = "active";
+
+		foreach($accounts as $accountArray) {
+
+			$account = $accountArray["sna_name"];
+			$tweets = array();
+			if (isset($tweetsByAccount[$account])) {
+				$tweets = $tweetsByAccount[$account];
+			}
+?>
+        		<li role="presentation" class="<?php echo $active; ?>"
+	        		data-account-id="<?php echo $accountArray["sna_id"]; ?>"
+	        		style="float: none;">
+        			<a href="#<?php echo $accountArray["sna_id"]; ?>" role="tab"
+        				data-toggle="tab"><?php echo $account; ?> (<span class="counter"><?php echo count($tweets); ?></span>)</a>
+        		</li>
+<?php 	    $active = "";
+		}?>
+        	</ul>
+    	</div>
+		<div class="col-md-9">
+
+	<!-- Tab panes -->
+        	<div class="tab-content">
+<?php 	$active = "active";
+		foreach($accounts as $accountArray) {
+
+			$account = $accountArray["sna_name"];
+			$tweets = array();
+			if (isset($tweetsByAccount[$account])) {
+				$tweets = $tweetsByAccount[$account];
+			}
+	?>
+        		<div role="tabpanel" class="tab-pane <?php echo $active; ?>"
+        			data-account-id="<?php echo $accountArray["sna_id"]; ?>"
+        			id="<?php echo $accountArray["sna_id"]; ?>">
+
+        		</div>
+<?php 		$active = "";
+		}?>
+        	</div>
+
+    	</div>
+	</div>
+
+<?php } ?>
+
+<?php   if (!$skeleton) {?>
+
 	<?php 	foreach($accounts as $accountArray) {
+
+				if ($accountArray["sna_id"] != $requestAccountId) continue;
 
 				$account = $accountArray["sna_name"];
 				$tweets = array();
@@ -63,8 +143,9 @@ function isAdministrator($accountId) {
 					$tweets = $tweetsByAccount[$account];
 				}
 
-				if (!count($tweets)) continue;
+//				if (!count($tweets)) continue;
 	?>
+	<div id="<?php echo $accountArray["sna_id"]; ?>">
 	<div class="panel panel-default account" id="account-<?php echo $accountArray["sna_id"]; ?>" data-account-id="<?php echo $accountArray["sna_id"]; ?>">
 		<!-- Default panel contents -->
 		<div class="panel-heading">
@@ -258,6 +339,7 @@ $(function() {
 
 		<?php echo addPagination(count($tweets), 5); ?>
 	</div>
+	</div>
 
 	<br>
 
@@ -272,6 +354,8 @@ $(function() {
 	<script>
 		var accountIdLabels = <?php echo json_encode($accountIdLabels) ?>;
 	</script>
+
+<?php }?>
 
 	<?php 	} else {
 		include("connectButton.php");

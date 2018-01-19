@@ -1,3 +1,24 @@
+/*
+	Copyright 2014-2018 Cédric Levieux, ArmagNet
+
+	This file is part of OpenTweetBar.
+
+    OpenTweetBar is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    OpenTweetBar is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with OpenTweetBar.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+/* global $ */
+
 function getElementId(element) {
 	var id = element.attr("id");
 
@@ -310,18 +331,69 @@ function addListeners() {
 function updateValidations() {
 	$.get("validation.php", {}, function(data) {
 
-		var newAccount = $(data).find(".account");
-
+//		var newAccount = $(data).find(".account");
+/*
 		var previous = $(".account");
 		previous.remove();
 
 		$(".well").after(newAccount);
 
 		newAccount.find('[data-toggle="tooltip"]').tooltip();
-
+*/
+		$(data).find(".nav-tabs li").each(function() {
+			var accountId = $(this).data("account-id");
+			var numberOfTweets = $(this).find("span.counter").text();
+			
+			$(".nav-tabs li a[href=#"+accountId+"] span.counter").text(numberOfTweets);
+		});
+		
+		loadActive();
+		
 	}, "html");
 }
 
 $(function() {
 	addListeners();
+});
+
+
+function loadGroup(group, div, from) {
+//    console.log(group);
+    
+    $.get("", {id: group}, function(data) {
+        var previousChildren = div.children();
+        var children = $(data).find("#" + group).children();
+        
+        div.append(children);
+        previousChildren.remove();
+        
+    	$("table,.table").each(function() {
+    		showPage($(this), 1);
+    	});
+    }, "html");
+}
+
+function loadActive() {
+    $('li.active a[data-toggle="tab"]').each(function () {
+        var newlyGroup = $(this).attr("href");
+        var newlyDiv = $(newlyGroup);
+
+        loadGroup(newlyGroup.replace("#", ""), newlyDiv, 0);
+    });
+}
+
+$(function() {
+    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+        // console.log(e.target); // newly activated tab
+        // console.log(e.relatedTarget); // previous active tab
+        
+        var newlyGroup = $(e.target).attr("href");
+        
+        var newlyDiv = $(newlyGroup);
+        var previousDiv = $($(e.relatedTarget).attr("href"));
+        
+        loadGroup(newlyGroup.replace("#", ""), newlyDiv, 0);
+    });
+
+    loadActive();
 });
