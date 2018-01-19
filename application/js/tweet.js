@@ -1,3 +1,24 @@
+/*
+    Copyright 2014-2018 Cédric Levieux, Jérémy Collot, ArmagNet
+
+    This file is part of OpenTweetBar.
+
+    OpenTweetBar is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    OpenTweetBar is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with OpenTweetBar.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+/* global $ */
+
 function getHtmlTweet(tweet) {
 	var date = tweet.created_at;
 	date = new Date(date);
@@ -106,8 +127,19 @@ function addTweetHandlers(tweetElement) {
 //		bootbox.setLocale("fr");
 
 		var message = "<div>Pour les comptes ";
-		for(var accountId in accountIdLabels) {
-			var accountLabel = accountIdLabels[accountId];
+		
+		var accountLabelIds = new Array();
+		var accountLabels = new Array();
+		$.each(accountIdLabels, function(key, value) { 
+			accountLabelIds[value] = key;
+			accountLabels[accountLabels.length] = value;
+		});
+		
+		accountLabels = accountLabels.sort(function(a,b) {return a.toLowerCase() > b.toLowerCase() ? 1 : -1});
+		
+		for(var index in accountLabels) {
+			var accountLabel = accountLabels[index];
+			var accountId = accountLabelIds[accountLabel];
 			var checkbox = "<label><input type='checkbox' name=\"retweet_account_ids\" ";
 			if (accountId == tweetAccountId) {
 				checkbox += " checked='checked' ";

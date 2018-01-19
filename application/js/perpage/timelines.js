@@ -1,5 +1,5 @@
 /*
-    Copyright 2014-2015 Cédric Levieux, Jérémy Collot, ArmagNet
+    Copyright 2014-2018 Cédric Levieux, Jérémy Collot, ArmagNet
 
     This file is part of OpenTweetBar.
 
@@ -16,6 +16,8 @@
     You should have received a copy of the GNU General Public License
     along with OpenTweetBar.  If not, see <http://www.gnu.org/licenses/>.
 */
+
+/* global $ */
 
 var stacks = {};
 

@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2014-2017 Cédric Levieux, Jérémy Collot, ArmagNet
+	Copyright 2014-2018 Cédric Levieux, Jérémy Collot, ArmagNet
 
 	This file is part of OpenTweetBar.
 
@@ -116,7 +116,7 @@ foreach ($accounts as $account) {
 	</templates>
 
 	<script>
-		var accountIdLabels = <?php echo json_encode($accountIdLabels) ?>;
+		var accountIdLabels = <?php echo json_encode($accountIdLabels); ?>;
 	</script>
 
 	<?php 	} else {
