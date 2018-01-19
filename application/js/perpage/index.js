@@ -343,13 +343,13 @@ $(function() {
 			var hasTwitterCuts = false;
 			
 			{
-				var tweetLength = computeTweetLength(tweetContent, 140);
+				var tweetLength = computeTweetLength(tweetContent, 280);
 				
 				if (tweetLength < 0 && $("input[name=supports][value=twitter]:checked").length) {
 					var cutTweetElement = $("<li class='list-group-item twitter'><span class='social grey twitter' style='height: 30px; margin-right: -5px; '></span> Twitter</li>");
 					$("#cutTweets ul").append(cutTweetElement);
 
-					cutTweet(tweetContent, [], computed.urls, $(".mediaImage").length > 0 ? true : false, 133, "twitter");
+					cutTweet(tweetContent, [], computed.urls, $(".mediaImage").length > 0 ? true : false, 273, "twitter");
 					$("#cutTweets").show();
 					hasTwitterCuts = true;
 				}

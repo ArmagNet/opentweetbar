@@ -46,7 +46,7 @@ class TweetBo {
 		return $result;
 	}
 
-	static function cutTweet($text, &$tweets, $urls, $hasImage = false, $maxLength= 270) {
+	static function cutTweet($text, &$tweets, $urls, $hasImage = false, $maxLength= 273) {
 //		$maxLength = 280 - 10 - ($hasImage ? 24 : 0);
 
 // 		if (strpos($text, "D ") === 0) {
