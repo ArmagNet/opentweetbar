@@ -113,6 +113,7 @@ $tweetsByAccount = TweetBo::accounted($tweets);
 		foreach($accounts as $accountArray) {
 
 			$account = $accountArray["sna_name"];
+			if (!$accountArray["vgr_score"]) continue;
 			$tweets = array();
 			if (isset($tweetsByAccount[$account])) {
 				$tweets = $tweetsByAccount[$account];

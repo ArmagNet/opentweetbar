@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2014 Cédric Levieux, Jérémy Collot, ArmagNet
+	Copyright 2014-2018 Cédric Levieux, Jérémy Collot, ArmagNet
 
 	This file is part of OpenTweetBar.
 
@@ -22,7 +22,7 @@ class FacebookApiClient {
 	var $version;
 	var $token;
 
-	function __construct($token, $apiUrl = "https://graph.facebook.com", $version = "2.5") {
+	function __construct($token, $apiUrl = "https://graph.facebook.com", $version = "2.6") {
 		$this->apiUrl = $apiUrl;
 		$this->version = $version;
 		$this->token = $token;

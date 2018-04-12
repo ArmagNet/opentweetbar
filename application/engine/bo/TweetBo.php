@@ -697,7 +697,7 @@ class TweetBo {
 
 		$accountIds = array();
 		foreach ($accounts as $account) {
-			if (isset($account["sna_id"])) {
+			if (isset($account["sna_id"]) && $account["vgr_score"]) {
 				$accountIds[] = $account["sna_id"];
 			}
 		}

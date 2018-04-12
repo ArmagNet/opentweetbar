@@ -48,11 +48,11 @@ class AccountBo {
 			$query = "INSERT INTO sna_twitter_configuration (stc_sna_id) VALUES (:sna_id) ";
 			$statement = $this->pdo->prepare($query);
 			$statement->execute($args);
-			
+
 			$query = "INSERT INTO sna_facebook_page_configuration (sfp_sna_id) VALUES (:sna_id) ";
 			$statement = $this->pdo->prepare($query);
 			$statement->execute($args);
-			
+
 			$query = "INSERT INTO sna_mastodon_configuration (smc_sna_id) VALUES (:sna_id) ";
 			$statement = $this->pdo->prepare($query);
 			$statement->execute($args);
@@ -87,9 +87,9 @@ class AccountBo {
 						smc_user_token = :smc_user_token,
 						smc_token_type = :smc_token_type
 
-						WHERE sna_id = :sna_id 
-							AND sco_sna_id = :sna_id 
-							AND stc_sna_id = :sna_id 
+						WHERE sna_id = :sna_id
+							AND sco_sna_id = :sna_id
+							AND stc_sna_id = :sna_id
 							AND sfp_sna_id = :sna_id
 							AND smc_sna_id = :sna_id
 ";
@@ -226,7 +226,7 @@ class AccountBo {
 		$query .= "	LEFT JOIN sna_mastodon_configuration ON smc_sna_id = sna_id";
 		$query .= "	LEFT JOIN sna_facebook_page_configuration ON sfp_sna_id = sna_id";
 		$query .= "	WHERE sco_anonymous_permitted = 1 ";
- 
+
 		$excludedIds = array();
 
 		if (count($excludedAccounts)) {
@@ -269,6 +269,9 @@ class AccountBo {
  		$query .= "	LEFT JOIN sna_facebook_page_configuration ON sfp_sna_id = sna_id";
  		$query .= "	LEFT JOIN sna_mastodon_configuration ON smc_sna_id = sna_id";
  		$query .= "	WHERE val_user_id = :use_id";
+
+// 		$query .= "	AND vgr_score <> 0";
+
 		$query .= "	ORDER BY sna_name ASC";
 
 		$args = array("use_id" => $userId);
