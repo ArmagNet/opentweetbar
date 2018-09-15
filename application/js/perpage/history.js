@@ -112,7 +112,7 @@ $(function() {
 
 //		console.log("Get page " + page + " for " + accountId);
 
-		$.get("history.php", {page: page, accountId: accountId, numberPerPage: tweetPerPage}, function(data) {
+		$.get("history.php", {page: page, id: accountId, numberPerPage: tweetPerPage}, function(data) {
 			var newAccount = $(data).find(".account");
 			var previous = $("#account-" + accountId);
 			previous.before(newAccount);

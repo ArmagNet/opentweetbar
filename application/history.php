@@ -36,18 +36,6 @@ foreach ($accounts as $account) {
 
 $mediaBo = MediaBo::newInstance($connection);
 
-if (isset($_REQUEST["accountId"])) {
-	$strictAccounts = array();
-
-	foreach($accounts as $account) {
-		if ($account["sna_id"] == $_REQUEST["accountId"]) {
-			$strictAccounts[] = $account;
-		}
-	}
-
-	$accounts = $strictAccounts;
-}
-
 $tweetPage = 1;
 if (isset($_REQUEST["page"])) {
 	$tweetPage =	$_REQUEST["page"];
