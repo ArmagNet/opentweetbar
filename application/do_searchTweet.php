@@ -31,12 +31,18 @@ $userId = SessionUtils::getUserId($_SESSION);
 
 $accountBo = AccountBo::newInstance($connection);
 $accounts = $accountBo->getAccessibleAccounts($userId);
-$account = $accountBo->getAccount($accounts[0]["sna_id"]);
 
-//$tweetId = intval($_REQUEST["tweetId"]);
-$tweetId = $_REQUEST["tweetId"];
-//echo TweetBo::getOembed($account, $tweetId)
-$tweet = TweetBo::getTweetFromTwitter($account, $tweetId);
+foreach($accounts as $index => $accountArray) {
+	$account = $accountBo->getAccount($accountArray["sna_id"]);
 
-echo json_encode(array("ok" => "ok", "accountId" => -1, "tweetId" => $tweetId, "tweet" => $tweet));
+	//$tweetId = intval($_REQUEST["tweetId"]);
+	$tweetId = $_REQUEST["tweetId"];
+	//echo TweetBo::getOembed($account, $tweetId)
+	$tweet = TweetBo::getTweetFromTwitter($account, $tweetId);
+
+	if (!isset($tweet->errors)) {
+		echo json_encode(array("ok" => "ok", "index" => $index, "maxIndex" => count($accounts), "accountId" => -1, "tweetId" => $tweetId, "tweet" => $tweet));
+		break;
+	}
+}
 ?>
