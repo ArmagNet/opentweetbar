@@ -200,6 +200,74 @@ class TweetBo {
 		}
 	}
 
+	static function addTwitterFriend($account, $screenName) {
+		include_once "engine/twitter/twitteroauth.php";
+
+		$key = $account["stc_api_key"];
+		$secret = $account["stc_api_secret"];
+		$token = $account["stc_access_token"];
+		$token_secret = $account["stc_access_token_secret"];
+
+		$parameters = array();
+		$parameters["screen_name"] = $screenName;
+
+		$connection = new TwitterOAuth($key, $secret, $token, $token_secret);
+
+		$result = $connection->post('friendships/create', $parameters);
+
+//		print_r($parameters);
+//		print_r($result);
+	}
+
+	static function getTwitterFriends($account, $userScreenName = null) {
+		include_once "engine/twitter/twitteroauth.php";
+
+		$key = $account["stc_api_key"];
+		$secret = $account["stc_api_secret"];
+		$token = $account["stc_access_token"];
+		$token_secret = $account["stc_access_token_secret"];
+
+		//		print_r($account);
+
+		$parameters = array();
+		$parameters["count"] = 200;
+		$parameters["cursor"] = -1;
+		$parameters["skip_status"] = 1;
+
+		if ($userScreenName) {
+			$parameters["screen_name"] = $userScreenName;
+		}
+		else {
+//			$parameters["screen_name"] = $userScreenName;
+		}
+
+		$connection = new TwitterOAuth($key, $secret, $token, $token_secret);
+
+		$friends = array();
+		do {
+			$result = $connection->get('friends/list', $parameters);
+//			print_r($result);
+
+			if (isset($result->errors)) {
+				$parameters["cursor"] = 0;
+
+				$error = new stdClass();
+				$error->id = 0 - $result->errors[0]->code;
+				$error->name = $result->errors[0]->message;
+				$error->screen_name= $result->errors[0]->message;
+
+				$friends["-1"] = $error;
+			}
+			else {
+				$friends = array_merge($friends, $result->users);
+				$parameters["cursor"] = $result->next_cursor;
+			}
+		}
+		while($parameters["cursor"]);
+
+		return $friends;
+	}
+
 	static function getTimeline($account, $sinceId = null, $numberOfTweets = 20) {
 		// We check the cache of sinceId is given
 		if ($sinceId) {

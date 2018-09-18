@@ -22,6 +22,7 @@ $lang["time_format"] = "H:i";
 $lang["datetime_format"] = "le {date} à {time}";
 
 $lang["common_validate"] = "Valider";
+$lang["common_close"] = "Fermer";
 $lang["common_delete"] = "Supprimer";
 $lang["common_fork"] = "Copier";
 $lang["common_reject"] = "Rejeter";
@@ -196,10 +197,13 @@ $lang["myaccounts_validators_form_addUserInput"] = "Utilisateur";
 $lang["myaccounts_validators_form_deleteGroupInput"] = "Supprimer groupe";
 $lang["myaccounts_validators_form_addGroupInput"] = "Ajouter groupe";
 $lang["myaccount_button_testTwitter"] = "Tester";
+$lang["myaccount_button_followingTwitter"] = "Personnes que le compte suit";
 $lang["myaccount_button_testMastodon"] = "Tester";
 $lang["myaccount_button_createMastodonAccess"] = "Créer les tokens";
 $lang["myaccount_add"] = "Ajouter ce compte";
 $lang["myaccount_save"] = "Sauver les paramètres";
+$lang["see_friends_title"] = "Les abonnements";
+$lang["see_friends_add"] = "Ajouter";
 
 $lang["myrights_guide"] = "Une revue de vos droits.";
 $lang["myrights_scores_legend"] = "Mes validations possibles";

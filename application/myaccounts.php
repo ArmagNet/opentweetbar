@@ -147,6 +147,7 @@ foreach($accounts as $key => $account) {
 							<label class="col-md-4 control-label" for="testTweeterButton"></label>
 							<div class="col-md-8">
 								<button id="testTweeterButton" name="testTweeterButton" class="testTweeterButton btn btn-primary"><?php echo lang("myaccount_button_testTwitter"); ?></button>
+								<button id="followingTweeterButton" name="followingTweeterButton" class="followingTweeterButton btn btn-info"><?php echo lang("myaccount_button_followingTwitter"); ?></button>
 							</div>
 						</div>
 
@@ -255,7 +256,7 @@ foreach($accounts as $key => $account) {
 						<div class="form-group">
 							<label class="col-md-4 control-label" for="createMastodonAccessButton"></label>
 							<div class="col-md-8">
-								<button id="createMastodonAccessButton" name="createMastodonAccessButton" 
+								<button id="createMastodonAccessButton" name="createMastodonAccessButton"
 									class="createMastodonAccessButton btn btn-primary"><?php echo lang("myaccount_button_createMastodonAccess"); ?></button>
 							</div>
 						</div>
@@ -287,7 +288,7 @@ foreach($accounts as $key => $account) {
 							</div>
 						</div>
 
-<!-- 
+<!--
 						<div class="form-group">
 							<label class="col-md-4 control-label" for="mstdUrlInput"><?php echo lang("myaccounts_mastodon_form_mstdUrlInput"); ?></label>
 							<div class="col-md-6">
@@ -297,7 +298,7 @@ foreach($accounts as $key => $account) {
 						</div>
  -->
  						<input id="mstdTokenTypeInput" name="mstdTokenTypeInput" value="bearer" type="hidden">
- 
+
 						<div class="form-group">
 							<label class="col-md-4 control-label" for="testMastodonButton"></label>
 							<div class="col-md-8">
@@ -449,6 +450,7 @@ foreach($accounts as $key => $account) {
 							<label class="col-md-4 control-label" for="testTweeterButton"></label>
 							<div class="col-md-8">
 								<button id="testTweeterButton" name="testTweeterButton" class="testTweeterButton btn btn-primary"><?php echo lang("myaccount_button_testTwitter"); ?></button>
+								<button id="followingTweeterButton" name="followingTweeterButton" class="followingTweeterButton btn btn-info"><?php echo lang("myaccount_button_followingTwitter"); ?></button>
 							</div>
 						</div>
 
@@ -568,7 +570,7 @@ foreach($accounts as $key => $account) {
 						<div class="form-group">
 							<label class="col-md-4 control-label" for="createMastodonAccessButton"></label>
 							<div class="col-md-8">
-								<button id="createMastodonAccessButton" name="createMastodonAccessButton" 
+								<button id="createMastodonAccessButton" name="createMastodonAccessButton"
 									class="createMastodonAccessButton btn btn-primary"><?php echo lang("myaccount_button_createMastodonAccess"); ?></button>
 							</div>
 						</div>
@@ -600,7 +602,7 @@ foreach($accounts as $key => $account) {
 							</div>
 						</div>
 
-<!-- 
+<!--
 						<div class="form-group">
 							<label class="col-md-4 control-label" for="mstdUrlInput"><?php echo lang("myaccounts_mastodon_form_mstdUrlInput"); ?></label>
 							<div class="col-md-6">
@@ -746,12 +748,48 @@ foreach($accounts as $key => $account) {
 
 <div class="lastDiv"></div>
 
+<style>
+@media (min-width: 1024px)
+#see-friends .modal-dialog {
+    width: 900px;
+}
+
+@media (min-width: 1600px)
+#see-friends .modal-dialog {
+    width: 1300px;
+}
+</style>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="see-friends-modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+
+        <button type="button" class="close" data-dismiss="modal" aria-label="<?php echo lang("common_close"); ?>"><span aria-hidden="true">&times;</span></button>
+
+        <h4 class="modal-title"><?php echo lang("see_friends_title"); ?>...</h4>
+      </div>
+      <div class="modal-body">
+
+      </div>
+      <div class="modal-footer">
+
+        <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo lang("common_close"); ?></button>
+        <!--
+        <button type="button" class="btn btn-primary btn-save-agenda"><?php echo lang("common_create"); ?></button>
+		-->
+
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 <?php include("footer.php");?>
 <script>
 
 function responseHandler(data) {
 //	debugger;
-	
+
 	if (data.ok) {
 		$("#ok_operation_successAlert").show().delay(2000).fadeOut(1000);
 		window.location.reload(true);
@@ -886,6 +924,30 @@ $(function() {
 		}, "json");
 	});
 
+	$('body').on("click", "#addFriendButton", function(e) {
+		e.preventDefault();
+
+		var form = {friends : $("#toAddFriendArea").val(), accountId: $("#friendAccountIdInput").val() };
+
+		$("#addFriendButton").attr("disabled", "disabled");
+
+		$.post("do_addTwitterFriends.php", form, function(data) {
+			$("#toAddFriendArea").val("");
+			$("#addFriendButton").removeAttr("disabled");
+		}, "json");
+	});
+
+	$('.followingTweeterButton').click(function(e) {
+		e.preventDefault();
+
+		var accountId = $(this).parents("form").find("#accountIdInput").val();
+
+		$.get("seeFriends.php", {accountId: accountId}, function(data) {
+			$("#see-friends-modal").modal("show");
+			$("#see-friends-modal .modal-body").html(data);
+		}, "html");
+	});
+
 	$('.testTweeterButton').click(function (e) {
 		e.preventDefault();
 
@@ -917,7 +979,7 @@ $(function() {
 				email: formInputs.find("#mstdEmailInput").val(),
 				password: formInputs.find("#mstdPasswordInput").val()
 			};
-		
+
 		$.post("do_createMastodonAccess.php", myform, function(data) {
 			if (data.ok) {
 				formInputs.find("#ok_mastodon_successAlert").show().delay(2000).fadeOut(1000);
@@ -993,7 +1055,7 @@ $(function() {
 							validationScore: formInputs.find("#validationScoreInput").val(),
 							anonymousPermitted: formInputs.find("#anonymousInput").attr("checked") ? "1" : "0",
 							anonymousPassword: formInputs.find("#anonymousPasswordInput").val(),
-							
+
 							apiKey: formInputs.find("#apiKeyInput").val(),
 							apiSecret: formInputs.find("#apiSecretInput").val(),
 							accessToken: formInputs.find("#accessTokenInput").val(),
@@ -1013,7 +1075,7 @@ $(function() {
 						};
 
 //		debugger;
-		
+
 		$.post("do_myaccounts.php", myform, responseHandler, "json");
 	});
 
